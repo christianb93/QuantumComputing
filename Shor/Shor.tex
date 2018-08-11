@@ -520,6 +520,34 @@ $$
 $$
 which yields the factor 14 of M.
 
+Finally, let us look at a different example with a slightly larger value of $M$, e.g. $M=95$. Diagram \ref{fig:ShorSampleII} shows the probability distribution for $x = 71$.
+
+Now we already need 14 qubits, i.e. $ N = 2^{14} = 16384$. Here, we again see clear peaks. If we measure, for instance, s=11833, which is the peak corresponding to $c = 13$, we obtain the continued fraction expansion
+\begin{align*}
+\frac{0}{1}, 
+\frac{1}{1}, 
+\frac{2}{3}, 
+\frac{3}{4}, 
+\frac{5}{7},
+\frac{8}{11},
+\frac{13}{18},
+\frac{5910}{8183},
+\frac{11833}{16384}
+\end{align*}
+and $r = 18$. This is again even, and we find 
+$$
+x^9 - 1 \equiv 55 \mod M
+$$
+which gives us the greatest common divisor 5.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1.0\linewidth]{images/ShorSampleII}
+\caption[Sample for M = 95]{}
+\label{fig:ShorSampleII}
+\end{figure}
+
+
 
 \appendix
 	

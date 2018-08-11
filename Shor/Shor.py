@@ -245,7 +245,7 @@ def findPeriod(x,M):
 #
 # Let us do an example. We want to factor M 
 #
-M = 42
+M = 95
 #
 # Next we need to choose a number x which is coprime to M
 # We pick x randomly and start over if x is not coprime to M
@@ -267,10 +267,15 @@ if (1 == (r % 2)):
     exit
 
 #
-# Now use this to find a divisor
+# Now use this to find a divisor. We calculate x**(r/2) step
+# by step modulo M to avoid an overflow
 #
-
-d = gcd((x**(r/2) - 1) % M,M)
+a = 1
+for i in range(int(r/2)):
+    a = (a * x) % M
+a = (a - 1) % M
+print("Calculating gcd(",a, ",",M,")")
+d = gcd(a % M,M)
 if (0 != (M % d)):
     print("Ups, ",d,"should be a factor but is not - something went wrong")
 else:

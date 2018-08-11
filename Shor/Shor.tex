@@ -209,11 +209,11 @@ As any unitary transformation, this transformation can be realized by a quantum 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Period finding
+%% The quantum part of Shor's algorithm
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Period finding}
+\section{The quantum part of Shor's algorithm}
 
-Let us now see how the quantum Fourier transform can be applied to find the period of a function - a discovery which is at the heart of Shor's algorithm. 
+Shor's factoring algorithm consists of classical parts and quantum parts. In this section, we take a look at the heart of the algorithm - the quantum part. Essentially, this part is about finding the period of a unit modulo M.
 
 Suppose we are given a large number M and an element x in $\Z_M$, or, in other words, an integer $x \in \{0, 1, \dots, M-1\}$. If x and M are co-prime, we know that x is a unit modulo m, thus a certain power of x will be one modulo M. The purpose of the period-finding algorithm is to find the smallest number $r$ such that 
 
@@ -336,7 +336,11 @@ $$
 
 for all values of s for which $\{rs\}_N \in [-\frac{r}{2}, \frac{r}{2}]$. To obtain an estimate for s to be in that range, we need to use the fact shown above that there are precisely r values of s so that the residual falls into this range. By summing up the probabilities, we now see that with probability bounded below by $\frac{4}{\pi^2} \approx 0.4$, the measured value s will be such that $\{rs\}_N$ is in that range. This condition simply means that with probability at least 0.4, the measured value of s will be within an interval of length $\frac{1}{2}$ around an integer times $\frac{N}{r}$. 
 
-Let us see why this helps. What we have shown is that with reasonable probability, our measurement will give us a value s such that there exists an integer d with 
+\section{Finding the period}
+
+In the previous section, we have seen that with high probability, our measurement after applying the quantum Fourier transform will yield a value which is an integral multiple of $\frac{r}{N}$. Let us now see why this helps us to find the period r.
+
+What we have shown is that with reasonable probability, our measurement will give us a value s such that there exists an integer d with 
 
 $$
 -\frac{r}{2} \leq rs - dN \leq \frac{r}{2}
@@ -356,7 +360,7 @@ $$
 \frac{a}{b} - {c}{d} = \frac{ad - bc}{bd}
 $$
  
-As the order r we are looking for can be at least M, and $M^2 \leq N$, this shows that there is at most one fraction of the form $\frac{d}{r}$ in the region of size $\frac{1}{N}$ around $\frac{s}{N}$. As Shor points out in \cite{Shor96}, we can therefore obtain the unknown fraction $\frac{d}{r}$ from the known fraction $\frac{s}{N}$ by looking for the nearest fraction that has denominator at most M, and there is an algorithm available for this purpose that uses continued fraction expansions. The situation is visualized in diagram \ref{fig:ShorContinuedFraction}.
+As the order r we are looking for can be at least M, and $M^2 \leq N$, this shows that there is at most one fraction of the form $\frac{d}{r}$ in the region of size $\frac{1}{N}$ around $\frac{s}{N}$. As Shor points out in \cite{Shor96}, we can therefore obtain the unknown fraction $\frac{d}{r}$ from the known fraction $\frac{s}{N}$ by looking for the nearest fraction that has denominator at most M. The situation is visualized in diagram \ref{fig:ShorContinuedFraction}.
 
 \begin{figure}[ht]
 \centering
@@ -365,8 +369,156 @@ As the order r we are looking for can be at least M, and $M^2 \leq N$, this show
 \label{fig:ShorContinuedFraction}
 \end{figure}
 
+Now luckily, the theory of continued fractions (see \cite{HW} chapter 10 or the short summary in the appendix) provides a mechanism to calculate that approximation. In fact, we simply have to expand the number $\frac{s}{N}$ as a continued fraction and take the last convergent which has denominator smaller than $M$. This will then be our fraction $\frac{d}{r}$ and consequently its denominator will be the number $r$ we are looking for.
 
-Once we have that fraction, we can be lucky and $d$ and $r$ are relatively prime. If this happens, we can extract r and are done. If not, we can run our quantum algorithm once more. Shor argues in \cite{Shor96} that the overall success probability for the algorithm is bounded below so that a reasonably small number of iterations will suceed with a very high probability. 
+Once we have that fraction, we can be lucky and $d$ and $r$ are relatively prime. If this happens, we can extract r and are done. If not, we can run our quantum algorithm once more. Shor argues in \cite{Shor96} that the overall success probability for the algorithm is bounded below so that a reasonably small number of iterations will succeed with a very high probability. 
+
+With these considerations, we can now summarize the algorithm for finding the period of an element $x$ modulo $M$, assuming that $x$ and $M$ are relatively prime.
+
+\begin{enumerate}
+	\item Choose the number $n$ such that $N=2^n$ is between $M^2$ and $2M^2$, i.e. such that $M^2$ can be represented with $n$ bits.
+	\item Initialize the system in the state $\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |0\rangle$
+	\item Apply the transform $U_f$ with $f(x) = x^k \mod M$ to obtain the state
+	$\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |x^k \mod M \rangle$
+	\item Perform a measurement of the second register
+	\item Apply a quantum Fourier transform to the first register
+	\item Measure the value of the first register and call the result $s$.
+	\item Expand the rational number $\frac{r}{N}$ into a continued fraction and find the last convergent $\frac{c}{r}$ for which the denominator $r$ is smaller than $M$
+	\item Test whether $r$ is the period of $x$. If not, start over with a new iteration 
+\end{enumerate}
+
+
+\section{Omitting the intermediate measurement}
+
+Let us now see why the intermediate measurement that we have introduced before applying the quantum Fourier transform is actually not needed. Consider the state
+
+$$
+\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle |x^k \mod M \rangle
+$$
+that our system has immediately before doing this measurement. Let us now skip this measurement and apply the quantum Fourier transform directly. This will leave our system in the state
+$$
+\frac{1}{N} \sum_{k,s} \eta^{sk} |s\rangle |x^k \mod M \rangle
+$$
+We now analyze the probability to find the system in the state $|s\rangle |y = x^k \mod M \rangle$ after measuring both registers. Let us denote this probability by $P(s,y)$. Arguing as before, we find that
+$$
+P(s,y) = \frac{1}{N^2} \big| \sum_{j=1}1^{A-1} \eta^{sjr} \big|^2\big|
+$$
+where the symbol $A$ has the same meaning as before - note that this now depends on $y$. Now, this is again a geometric series, and using arguments very similar to our previous considerations, we find that asymptotically, we can estimate this from below by
+$$
+\frac{A^2}{N^2} \frac{4}{\pi^2}
+$$
+given that $|{rs}_N| \leq \frac{r}{2}$. 
+Note that at this point, $A$ still depends on $y$. However, we also know that approximately,
+$$
+\frac{A}{N} \approx  \frac{1}{r}
+$$
+so that, again asymptotically, we can replace our estimate by
+$$
+\frac{4}{\pi^2} \frac{1}{r^2}
+$$
+which is the same result that Shor obtains in \cite{Shor96} on page 18. Now, as the period of $x$ is $r$, there are exactly $r$ different values that $x^k$ can take. Thus, if we want to obtain a lower bound for the probability to obtain $s$ if we measure the first register, we need to multiply this bound by $r$. Again, we thus find that for all $s$ for which $|{rs}_N| \leq \frac{r}{2}$, the probability to obtain s as measurement of the first register is asymptotically bounded below by 
+$$
+r \cdot\frac{4}{\pi^2} \frac{1}{r^2} = \frac{4}{\pi^2} \frac{1}{r}
+$$
+As there are again $r$ values of $s$ that satisfy this condition on $\{rs\}_N$, we again obtain that with probability at least $\frac{4}{\pi^2}$, our measured value of $s$ will be close to a multiple of $\frac{r}{N}$. 
+
+This shows that the intermediate measurement is not really needed, and we are now ready to write down the final version of Shor's algorithm for finding the period.
+
+\begin{enumerate}
+	\item Choose the number $n$ such that $N=2^n$ is between $M^2$ and $2M^2$, i.e. such that $M^2$ can be represented with $n$ bits.
+	\item Initialize the system in the state $\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |0\rangle$
+	\item Apply the transform $U_f$ with $f(x) = x^k \mod M$ to obtain the state
+	$\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |x^k \mod M \rangle$
+	\item Apply a quantum Fourier transform to the first register
+	\item Measure the value of the first register and call the result $s$.
+	\item Expand the rational number $\frac{r}{N}$ into a continued fraction and find the last convergent $\frac{c}{r}$ for which the denominator $r$ is smaller than $M$
+	\item Test whether $r$ is the period of $x$. If not, start over with a new iteration 
+\end{enumerate}
+
+
+
+
+\section{Factoring large numbers}
+
+We have now seen how the quantum part of Shor's algorithm can be used to obtain the period of an integer $x$ modulo M. How would this help us to find a prime factor?
+
+Again, we need some number theory. We claim that given a period $r$ which is even, the greatest common divisor 
+$$
+\text{gcd}(x^{\frac{r}{2}} - 1, M)
+$$
+is a factor of $M$ unless $x^{\frac{r}{2}} \equiv - 1 \mod M$. 
+
+To see why this is true, let us assume the contrary, i.e. that the greatest common divisor is one, that $r$ is even and that $x^{\frac{r}{2}} \not\equiv - 1 \mod M$. We again start with the equation
+$$
+x^r - 1 \equiv 0 \mod M
+$$
+Assuming for a moment that the period is even, this is equivalent to 
+$$
+(x^{\frac{r}{2}} - 1) (x^{\frac{r}{2}} + 1) \equiv 0 \mod M
+$$
+In other words, we can find an integer $t$ such that
+$$
+(x^{\frac{r}{2}} - 1) (x^{\frac{r}{2}} + 1) = tM
+$$
+If now $p^s$ is any prime power dividing M, it divides the right hand side of the equation and therefore the left hand side of the equation. As we did assume that  $\text{gcd}(x^{\frac{r}{2}} - 1, M)$ is one, no power of $p$ does divide the first number, and therefore we obtain that $p^k$ divides $x^{\frac{r}{2}} + 1$. As this is true for all $p$, we can conclude that in fact, $M$ divides $x^{\frac{r}{2}} + 1$, a contradiction. 
+
+Thus, we can, in most cases, find a divisor of $M$ by taking the greatest common divisor of $M$ and $x^{\frac{r}{2}} - 1$. However, there are a few things that can go wrong. First, it might happen that $r$ is odd, in which case this approach does not work. Second, it might be that we do in fact have that $x^{\frac{r}{2}} \equiv - 1 \mod M$, so that our argument breaks down. In \cite{Shor96}, Shor again shows that for sufficiently large values of $M$, a random choice of $x$ will result in a period $r$ for which none of these exceptions applies, i.e. that repeating the algorithm several times will give us a factor with very high probability, unless $M$ is a prime power or $M$ itself is even. This is not a major restriction, as there are efficient classical methods to determine factors if $M$ is a prime power.
+
+Having gone through this exercise, we are now finally in a position to write down the full factoring algorithm.
+
+\begin{enumerate}
+	\item Verify that $M$ is odd and $M$ is not a prime power
+	\item Randomly pick a number $x$ 
+	\item If $\text{gcd}(x, M) > 1$, we have found a factor of $M$. Otherwise proceed.
+	\item Apply the period finding algorithm detailed in the last section to find the multiplicative period $r$ of $x$ modulo M
+	\item If $r$ is odd, start over with a new iteration using a different value of $x$
+	\item Calculate the greatest common divisor $\text{gcd}(x^{\frac{r}{2}} - 1, M)$ and verify that this is a factor of $M$.
+\end{enumerate}
+	
+
+\section{An example}
+
+Let us take a look at an example to see the algorithm in action. Assume that we wanted to factor the number $M = 42$. As $M^2 = 1764$, we will need 11 qubits and $N = 2048$. Now we pick our random number $x$, let us assume that $x = 11$ (which in fact has period six).
+
+Using a numerical library that offers an efficient way to run a discrete Fourier transform (for instance the numpy.fft Python package), it is not difficult to calculate the probability distribution $P(s)$ to measure a value s directly by building the initial state and running a Fourier transform on it. Diagram \ref{fig:ShorSample} shows the result for $N = 2048, M = 42$ and $x = 11$. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{images/ShorSample}
+\caption[Distribution of s]{}
+\label{fig:ShorSample}
+\end{figure}
+
+In this case, $x$ actually has period 6, thus we expect peaks at multiples of $\frac{2048}{6} = 341.333$. The diagram clearly shows these peaks, located at approximately 341, 683, 1024, 1365 and 1706. 
+
+Suppose first that we measure 1365. Building the continued fraction expansion of $\frac{1365}{2048}$, we find the convergents
+
+\begin{align*}
+\frac{0}{1}, \frac{1}{1}, 
+\frac{1}{2}, 
+\frac{2}{3}, 
+\frac{1365}{2048} 
+\end{align*}
+
+So our guess for the period would be $r = 3$ instead of $r = 6$. This is an example where the algorithm fails because we measure
+$$
+1365 \approx 4 \cdot \frac{2048}{6}
+$$
+but the fraction $\frac{4}{6}$ is not in lowest terms. However, if we measure 1707, then our continued fraction expansion will be
+
+\begin{align*}
+\frac{0}{1}, 
+\frac{1}{1}, 
+\frac{5}{6}, 
+\frac{851}{1021}, 
+\frac{1707}{2048} 
+\end{align*}
+
+The last convergent with denominator less than $M$ now gives the correct value $r=6$. This is even, so we can compute the greatest common divisor 
+$$
+\text{gcd}(x^3 -1 \mod M, M) = \text{gcd(28, 42)} = 14
+$$
+which yields the factor 14 of M.
 
 
 \appendix
@@ -429,7 +581,89 @@ $$
 | 1- e^{i\Phi}|   \geq 2 \frac{|\Phi|}{\pi}
 $$
 
+\section{Continued fractions}
 
+In this section, we briefly summarize some of the key facts about continuous fractions. The standard reference for this is still \cite{HW}, chapter 10 or even the classical source \cite{Perron}.
+
+For a sequence of symbols $a_0, a_1, \dots, a_N$, we can define the continued fraction given by that sequence as the function
+
+$$
+a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cdots}}}
+$$
+of the variables $a_0, a_1, \dots, a_N$, which is typically abbreviated using the notation
+$$
+[a_0 ; a_1, \dots, a_N]
+$$
+To make the notation clear, let us look at a few examples. Obviously, a continued fraction of length one is simply given by
+$$
+[a_0] = a_0
+$$
+A continued fraction of length two is given by
+$$
+[a_0;a_1] = a_0 + \frac{1}{a-1}
+$$
+and a continued fraction of length three is given by
+$$
+[a_0;a_1,a_2] = a_0 + \cfrac{1}{a_1 + \frac{1}{a_2}} = a_0 + \frac{1}{a_1a_2 + 1} = \frac{a_0 + a_2 + a_0 a_1 a_2}{a1a_2 + 1}
+$$
+
+Given a continued fraction $[a_0;a_1, a_2, \dots, a_N]$, we can of course, for any $m < N$, consider the continued fraction defined by taking only the first $m$ elements of the sequence, i.e. $[a_0;a_1, a_2, \dots, a_m]$. This expression is called the m-th \emph{convergent} of the continued fraction. Obviously, as it is the case for the full continued fraction, each convergent is a rational function in the $a_i$. As such, it can be expressed as
+$$
+[a_0; a_1, \dots, a_m] = \frac{p_m}{q_m}
+$$
+with polynomials $p_m, q_m$ in the $a_i$. It is not difficult to write down a recurison formula for these polynomials (see Theorem 149 in \cite{HW0}):
+\begin{align*}
+p_0 &= a_0 \\
+q_0 &= 1 \\
+p_1 &= a_1 a_0 + 1 \\
+q_1 &= a_0 \\
+p_n &= a_n p_{n-1} + p_{n-2} \quad \text{for} \quad 2 \leq n \\
+q_n &= a_n q_{n-1} + q_{n-2} \quad \text{for} \quad 2 \leq n 
+\end{align*}	
+
+In case the coefficients $a_i$ are non-negative and non-zero numbers, it is clear that this formula implies that the numbers $p_m$ and $q_m$ form two strictly increasing sequences. As shown in \cite{HW}, the convergents behave as follows.
+\begin{itemize}
+	\item The convergents $\frac{p_n}{q_n}$ with even n increase strictly
+	\item The convergents $\frac{p_n}{q_n}$ with odd n decrease strictly
+	\item The even convergents are bounded above by the value of the full continued fraction
+	\item The odd convergents are bounded below by the value of the full continued fraction
+	\item The convergents are in their lowest term
+\end{itemize}
+
+
+Thus, the convergents approximate the value of the full continued fraction, and the approximation gets better with increasing $m$. 
+
+Now suppose we start with an arbitrary rational number $\frac{p}{q}$. We can then expand this number into a continued fraction, using the Euclidian algorithm. In fact, if we write
+$$
+p = qs + r
+$$
+with integers $s$ and $r$, we see that 
+$$
+\frac{p}{q} = s + \cfrac{1}{\cfrac{q}{r}}
+$$
+and $r < q$. We can now proceed like this with $q$ in place of $p$ and $r$ in place of $q$. As the remainder $r$ gets smaller with every step and eventually reaches 1, the algorithm terminates and we obtain our desired continuous fraction expansion. This is maybe best explained using an example. Suppose we wanted to expand $\frac{5}{3}$. We would then first write
+$$
+5 = 1 \cdot 3 + 2
+$$
+so that
+$$
+\frac{5}{3} = 1 + \cfrac{1}{\cfrac{3}{2}}
+$$
+Now we do the same with $\frac{3}{2}$. We have
+$$
+3 = 1 \cdot 2 + 1
+$$
+so that
+$$
+\frac{3}{2} = 1 + \cfrac{1}{2}
+$$
+We thus find that
+$$
+\frac{5}{3} = 1 + \cfrac{1}{1 + \cfrac{1}{2}} = [1, 1, 2]
+$$
+and the algorithm terminates.
+
+Now given any rational number $x = \frac{p}{q}$, we can form the convergents of the (finite) continued fraction expansion of $x$. The convergents then give us a sequence $\frac{p_n}{q_n}$ of rational numbers with strictly increasing denominator. Thus if we wanted to find an approximation of $x$ by a fraction $\frac{p'}{q'}$ with a denominator smaller than some number $b$, we could form the n-th convergents until $q_{n+1} \geq b$ and use $\frac{p_n}{q_n}$ as an approximation. In fact, as shown in \cite{HW} (Theorem 181), this approximation is in some sense the best possible approximation to $x$ with that constraint for the denominator. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Bibliography
@@ -452,7 +686,11 @@ R.~Jozsa, \emph{Quantum Algorithms and the Fourier Transform},  	arXiv:quant-ph/
 \bibitem{P}
 J.~Preskill, \emph{Quantum computation}, Lecture notes (PH229), chapter 6, available online at \url{http://www.theory.caltech.edu/people/preskill/ph229/}
 
+\bibitem{Perron}
+O.~Perron, \emph{Die Lehre von den Kettenbr\"uchen}, Teubner Verlag, Leipzig, 1913, available online at \url{https://archive.org/details/dielehrevondenk00perrgoog}
 
+\bibitem{HW}
+G.H.~Hardy, E.M.~Wright, \emph{An introduction to the theory of numbers}, Oxford University Press, Oxford, 1975
 
 \end{thebibliography}
 

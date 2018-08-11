@@ -248,6 +248,9 @@ def findPeriod(x,M):
 M = 42
 #
 # Next we need to choose a number x which is coprime to M
+# We pick x randomly and start over if x is not coprime to M
+# (in a real-world application, we could stop if this happens
+# as we then have found a factor)
 #
 x = M
 while (gcd(x,M) != 1):  
@@ -258,6 +261,10 @@ print("Using x = ", x)
 # Run quantum part
 #
 r = findPeriod(x, M)
+
+if (1 == (r % 2)):
+    print("Period r is not even, please run script again")
+    exit
 
 #
 # Now use this to find a divisor

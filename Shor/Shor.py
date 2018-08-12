@@ -35,6 +35,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import tempfile
+import argparse
 
 
 
@@ -116,6 +118,23 @@ def gcd(a,b):
         a = t
     return a
 
+##############################################
+# Use exponentation by squaring to calculate
+# a power x**k mod M
+##############################################
+
+def power(x,k,M):
+    if k == 0:
+        return 1
+    p = 1
+    while k > 0:
+        if 0 == (k % 2):
+            x = x**2 % M
+        else:
+            p = p * x % M
+            x = x**2 % M
+        k = k // 2
+    return p
 
 
 ########################################################
@@ -129,7 +148,7 @@ def gcd(a,b):
 def init(N,M, x):
     state = np.zeros((N,M),dtype=np.complex)
     for k in range(N):
-        y = x**k % M
+        y = power(x,k,M)
         state[k,y] = np.complex(1, 0)
     return state / np.sqrt(N)
         
@@ -157,6 +176,7 @@ def QF(S):
     #
     return np.sqrt(N) * np.fft.ifft(S, axis = 0)
         
+
 ##############################################
 # Draw from a finite distribution defined
 # by a vector p with elements adding up
@@ -175,6 +195,7 @@ def draw(p):
         n += 1
     return i-i        
         
+
 ##############################################
 # Use Shor's algorithm to find the period of
 # a number x mod M. We assume that x and M
@@ -224,28 +245,40 @@ def findPeriod(x,M):
         #
         c,r = convergent(s, N, b = M, m = None)
         print("Guess for period: r = ", r, ", c = ", c)
-        if (1 == (x**r % M)):
-            print("Yes, that works")
+        if (1 == power(x,r,M)):
+            print("Quantum part successful")
             success = 1
         else:
             print("Algorithm failed, repeating")
     
-    #
-    # If we get to this point, the algorithm was sucessful. Plot P
-    #
-    fig = plt.figure(figsize=(12,5))
-    axis = fig.add_subplot(1,1,1)
-    axis.plot(P)
-    fig.savefig("/tmp/ShorSampleOutput.png")
-    plt.show()
         
-    return r
+    return r, P
     
+    
+####################################################
+# Parse arguments
+####################################################
+        
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--M", 
+                    type=int,
+                    default=21,
+                    help="Number that we want to factor")
+    args=parser.parse_args()
+    return args
+    
+####################################################
+#
+# Main
+#
+####################################################
 
 #
-# Let us do an example. We want to factor M 
+# Get the argument - this is the number M that we want to factor
 #
-M = 95
+M = get_args().M
+print("Trying to factor M = ",M)
 #
 # Next we need to choose a number x which is coprime to M
 # We pick x randomly and start over if x is not coprime to M
@@ -260,20 +293,16 @@ print("Using x = ", x)
 #
 # Run quantum part
 #
-r = findPeriod(x, M)
+r, P = findPeriod(x, M)
 
 if (1 == (r % 2)):
     print("Period r is not even, please run script again")
     exit
 
 #
-# Now use this to find a divisor. We calculate x**(r/2) step
-# by step modulo M to avoid an overflow
-#
-a = 1
-for i in range(int(r/2)):
-    a = (a * x) % M
-a = (a - 1) % M
+# Now use this to find a divisor. We calculate x**(r/2)  - 1
+# 
+a = (power(x, r // 2, M) - 1) % M
 print("Calculating gcd(",a, ",",M,")")
 d = gcd(a % M,M)
 if (0 != (M % d)):
@@ -281,3 +310,14 @@ if (0 != (M % d)):
 else:
     print("Found factor d = ", d)
 
+
+#
+# If we get to this point, the algorithm was sucessful. Plot P
+#
+fig = plt.figure(figsize=(12,5))
+axis = fig.add_subplot(1,1,1)
+axis.plot(P)
+outfile = tempfile.gettempdir() + "/ShorSampleOutput.png"
+print("Saving plot of probability distribution to ", outfile)
+fig.savefig(outfile)
+plt.show()

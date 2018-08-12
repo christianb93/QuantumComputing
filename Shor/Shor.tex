@@ -381,7 +381,7 @@ With these considerations, we can now summarize the algorithm for finding the pe
 	\item Apply the transform $U_f$ with $f(x) = x^k \mod M$ to obtain the state
 	$\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |x^k \mod M \rangle$
 	\item Perform a measurement of the second register
-	\item Apply a quantum Fourier transform to the first register
+	\item Apply an inverse quantum Fourier transform to the first register
 	\item Measure the value of the first register and call the result $s$.
 	\item Expand the rational number $\frac{r}{N}$ into a continued fraction and find the last convergent $\frac{c}{r}$ for which the denominator $r$ is smaller than $M$
 	\item Test whether $r$ is the period of $x$. If not, start over with a new iteration 
@@ -429,7 +429,7 @@ This shows that the intermediate measurement is not really needed, and we are no
 	\item Initialize the system in the state $\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |0\rangle$
 	\item Apply the transform $U_f$ with $f(x) = x^k \mod M$ to obtain the state
 	$\frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} |k \rangle  |x^k \mod M \rangle$
-	\item Apply a quantum Fourier transform to the first register
+	\item Apply an inverse quantum Fourier transform to the first register
 	\item Measure the value of the first register and call the result $s$.
 	\item Expand the rational number $\frac{r}{N}$ into a continued fraction and find the last convergent $\frac{c}{r}$ for which the denominator $r$ is smaller than $M$
 	\item Test whether $r$ is the period of $x$. If not, start over with a new iteration 

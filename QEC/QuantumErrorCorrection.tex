@@ -543,7 +543,7 @@ S_3 &= \sigma_z^1 \sigma_z^2 \sigma_x^3  \sigma_x^5 \\
 S_4 &= \sigma_z^1 \sigma_z^3 \sigma_x^4 \sigma_z^4 \sigma_x^5 \sigma_z^5
 \end{align*}
 
-It is a bit tidious, but not difficult, to verify that these generators commute. For instance, if we move $S_2$ past $S_1$, we pick up one minus one from the second qubit and one from the last qubit. When we commute $S_3$ past $S_3$, we pick up a sign from the second qubit and  a sign from the third qubit which is again an even number and so forth. 
+It is a bit tedious, but not difficult, to verify that these generators commute. For instance, if we move $S_2$ past $S_1$, we pick up one minus one from the second qubit and one from the last qubit. When we commute $S_3$ past $S_3$, we pick up a sign from the second qubit and  a sign from the third qubit which is again an even number and so forth. 
 
 Let us now in addition introduce two additional operators that we call $\bar{X}$ and $\bar{Z}$ which are defined as follows.
 
@@ -771,6 +771,362 @@ Unfortunately, the exact value of the threshold is not known. The initial estima
 As $c$ is in the order of $p_{crit}^{-1}$, this implies that we need as many as a few hundred to a few thousand physical gates and qubits to simulate one logical qubit. Note that in general, the overhead depends on the desired accurary and the level of simulations needed as well as on the factors entering the constant $c$, i.e. the encoding, the architecture of the logical gates, as well as on the quotient $\epsilon$ that measures how close the actual physical error rate is compared to the threshold. Improving the threshold and thereby reducing the overhead remains one of the most active areas of current research in quantum computing and is essential for paving the road towards a large-scale fully fault tolerant universal quantum computer.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Toric codes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Toric codes}
+
+So far we have studied stabilizer codes on abstract Hilbert spaces, assuming no additional relations between the involved qubits. However, in reality, qubits are typically organized on a surface or in a three-dimensional structure. In order to be able to apply a stabilizer code, qubits need to interact, and this is in general not possible between any two qubits in a real world quantum computer, but only between qubits which are direct neighbors. \emph{Topological codes} are quantum error correction codes that take this additional structure into account, and toric codes, which we describe in this section, have been the first example of topological codes.
+
+To describe toric codes, let us first assume that we have organized our qubits on a two-dimensional lattice $L$. More precisely, we assume that each edge of a regular two-dimensional lattice carries exactly one qubit. We identify opposite edges of the lattice so that alternatively, we could think of the lattice as a cell decomposition of the 2-dimensional torus $T^2 = S^1 \times S^1$. 
+
+Recall that the group $C_1(L;\Z_2)$ of 1-chains for that cell decomposition is the set of all formal linear combinations
+$$
+c = \sum_{\text{edges} \, e} a(e) e
+$$
+of edges, where we choose the coefficients $c(e)$ to be in $\Z_2$. If $E$ denotes the number of edges, then we can clearly identify this group with the group $\Z_2^E$, i.e. with the set of binary vectors of length $E$. But the edges are also in one-to-one correspondence to the qubits, so that binary strings of length $E$ are also in one-to-one correspondence with elements of the computational basis. Thus we have
+$$
+\Z_2^E \simeq C_1(L ; \Z_2) \simeq \text{computational basis}
+$$
+and we will switch back and forth between these views as needed. In particular, given a binary vector $c$ of length $E$, we can consider $c$ as an element of the group of one-chains $C_1(L; \Z_2)$ and as a member $|c \rangle$ of the computational basis. 
+
+Similary, given a binary vector $c$ of length $E$ with coefficients $c_i$, where $i$ ranges over the qubits / edges, we can form operators
+$$
+X_c = \prod_i (\sigma_{x}^i)^{c_i}
+$$
+and 
+$$
+X_c = \prod_i (\sigma_{z}^i)^{c_i}
+$$
+where again $\sigma_x^i$ is the Pauli matrix $\sigma_x$ acting on qubit $i$ and similarly for $\sigma_z^i$. As the Pauli matrices square to one, this gives us two group homomorphisms
+$$
+X, Z \colon C_1(L;\Z_2) \rightarrow \mathcal{G}_E
+$$
+into the Pauli group of $E$ qubits. Let us study these homomorphism in a bit more detail.
+
+\begin{lem}
+The homomorphisms $X$ and $Z$ from the group $C_1(L;\Z_2)$ into the Pauli group have the following properties.
+\begin{enumerate}
+	\item For a chain $c$ and a binary vector $b$, we have $X_c|b \rangle = |b \oplus c \rangle$ where $\oplus$ denotes bitwise addition
+	\item The homomorphism $X$ is one-to-one
+	\item $X$ and $Z$ are related by $Z_c = W X_c W$ where $W$ is the Hadamard-Walsh operator, i.e. the bitwise Hadamard operator
+	\item $Z$ is one-to-one
+	\item Letting $r \colon \mathcal{G}_E \rightarrow \Z_2^{2E}$ denote the homomorphism introduced as part of the check matrix formalism in appendix \ref{sec:checkmatrixformalism}, we have $r(X_c) = (c ; 0)$ and $r(Z_c) = (0 ; c)$, where we again identify 1-cycles and binary vectors of length $E$.
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+Given a chain $c$ and a a binary vector $b$, $X_c$ acts on the computational basis element $|b \rangle$ by flipping those bits for which $c_i$ is not zero, i.e. the qubits at those edges contained in $c$. In terms of the computational basis, this corresponds to bitwise addition of $c$, proving our first claim. This implies immediately that $X_c = 1$ can only happen if $b \oplus c \rangle  = c$ for all $b$, which is only possible if $c=0$, so $X$ is one-to-one. The third property follows immediately from the fundamental relation $H \sigma_x H = \sigma_z$, and in turn implies that $Z$ is one-to-one. Finally, the statement about the $r$-homomorphism is clear from the definitions.
+\end{proof}
+
+Our next goal is to define an abelian group $S$ that will act as the stabilizer of our code. First, suppose that $f$ is a face, so that $\partial f \in C_1(L;\Z_2)$. We can then apply the $X$-homomorpism to $\partial f$ to obtain the operator 
+$$
+X_f \colon = X_{\partial f} = \prod_{e \in \partial f} X_e
+$$
+where the second equality is obtained by simply unraveling the definition of $X$. Geometrically, the operator $X_f$ will apply the Pauli X-operator $\sigma_x$ to all qubits that are located on an edge in the boundary of the face $f$. In figure \ref{fig:ToricCode}, we have marked a face in red, the operator $X_f$ will flip the qubits on its boundary (marked in red as well) and leave all other qubits alone.
+
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ToricCode}
+\caption[Toric code]{Toric code}
+\label{fig:ToricCode}
+\end{figure}
+
+A similar construction can be done for vertices. Suppose that $v$ is a vertex. Then there are exactly four edges $e$ that touch $v$, in the sense that $v \in \partial e$. For each of these edges, we have an operator $Z_e$ and we can multiply them to obtain an operator
+$$
+Z_v = \prod_{v \in \partial e} Z_e
+$$
+In figure \ref{fig:ToricCode}, the operator $Z_v$ for the blue vertex $v$ will apply a Pauli Z-operator $\sigma_z$ to qubits attached to vertices touching $v$, which are marked in blue as well.
+
+\begin{defn}
+The stabilizer group $S$ is defined to be the subgroup of the Pauli group generated by the elements $X_f$ and $Z_v$, where $f$ runs over all faces and $v$ runs over all vertices.
+\end{defn}
+
+Before studying the group $S$ further, it is useful to expand on the apparent symmetry between $X_f$ and $Z_v$. To do this, let us consider the dual lattice $L^*$. This lattice is defined as follows. For each face of $L$, we introduce a vertex, sitting in the center of the face. For each edge $e$ of $L$, we introduce another edge which is perpendicular to $e$ and joins the centers of the two faces that meet in $e$. Finally, for each vertex, we introduce a face, centered at this vertex. In figure \ref{fig:ToricCode}, a part of the dual cell complex is indicated through dotted lines on the left hand side. It is obvious that the cell complex of $L$ and that of $L^*$ are related by
+\begin{align*}
+C_2^*(L^*;\Z_2) \sim C_0(L;\Z_2) \\
+C_0^*(L^*;\Z_2) \sim C_2(L;\Z_2) \\
+C_1^*(L^*;\Z_2) \sim C_1(L;\Z_2) 
+\end{align*}
+We can now define a co-boundary $\partial^*$ on $C_0$ as the composition
+$$
+C_0(L ; \Z_2) \rightarrow C_2^*(L^*; \Z_2) \rightarrow C_1(L^*;\Z_2) \rightarrow C_1(L;\Z_2)
+$$
+This composition takes a vertex $v$ to the corresponding face of the dual lattice, then applies the boundary operator to obtain a one-cycle in the dual lattice and finally switches back to the original lattice. From figure \ref{fig:ToricCode}, it is obvious that the co-boundary $\partial^* v$ for a vertex will be exactly the linear combination of all edges that touch $v$. With this, we can write our $Z$-operator as
+$$
+Z_v = Z_{\partial^* v}
+$$
+
+\begin{lem}
+The group $S$ as defined above has the following properties.
+\begin{enumerate}
+	\item $S$ is abelian
+	\item All elements in $S$ square to one
+	\item $-1 \notin S$
+	\item $S$ is generated by $V + F - 2$ independent generators, where $V$ is the number of vertices and $F$ the number of faces
+	\item The code space $T_S$, i.e. the subspace on which all elements of $S$ act trivially, has dimension $2^{b_1}$, where $b_1$ is the first Betti number of the lattice $L$
+	\item The first Betti number of the lattice is $2$ and therefore the dimension of $T_S$ is four
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+First, let us prove that $S$ is abelian. For this, it is obviously sufficient to show that all the $X_f$ and $Z_v$ commute. The only non-trivial part is that $X_f$ and $Z_v$ commute for all choices of $v$ and $f$. Now from the definition of $X_f$ and $Z_v$, it is clear that the supports of these two operators only overlap if $v$ touching $f$. But in this case, there are actually two qubits on which $Z_v$ and $X_f$ both operate (those qubits on the edges touching both $v$ and $f$). Each of those two qubits gives a minus one if we commute the operators, so the result will be plus one and the operators commute. The second statement immediately follows from the fact that the group is abelian and all generators square to one.
+
+Next let us show that $-1 \notin s$. For that purpose, assume that $-1 \in S$. This would give a relation
+$$
+\prod_f X_{\partial f} \prod_v Z_{\partial^* v} = - 1
+$$
+for some vertices $v$ and some faces $f$. Now let both sides act on the state $| 0 \dots 0 \rangle$. As each $Z$ acts trivially on this state, we obtain
+$$
+\prod_f X_{\partial f} \prod_v Z_{\partial^* v} |0 \dots 0 \rangle 
+= \prod_f X_{\partial f}  |0 \dots 0 \rangle = |\partial f \rangle = - |0 \rangle
+$$
+This would not only imply $\partial f = 0$ (which can happen) but also $| 0 \rangle = - |0 \rangle$ (which can not happen) and is therefore a contradiction. 
+
+To find the number of independent generators, we can now apply the check matrix formalism described in appendix \ref{sec:checkmatrixformalism}. This matrix has $2E$ columns and $F + V$ rows. The first $F$ rows are given by
+$$
+r(X_f) = r(X_{\partial f}) = \partial f
+$$
+where $f$ runs over all faces. Similarly, the last $V$ rows are given by the vectors $\partial^* v$. In a slight abuse of notation, the check matrix is
+$$
+\mathcal{C}  = \begin{pmatrix} \partial & 0 \\ 0 & \partial^* \end{pmatrix}
+$$
+Thus the rank of this matrix, i.e. the dimension of its image, is given as the sum
+$$
+\dim \text{range}(\partial) + \dim \text{range}(\partial^*)
+$$
+But the dimension of the range of $\partial$ is - by elementary linear algebra - the dimension of the domain, i.e. $F$, minus the dimension of the kernel. The dimension of the kernel is the dimension of the set of 2-cycles, which, by algebraic topology, is the dimension of the second homology group $H_2(L;\Z_2)$, i.e. the second Betti number $b_2(L)$. Similarly, by duality, the dimension of the kernel of $\partial^*$ is the zero-th betti number $b_0$. Thus the rank is
+$$
+F - b_2 + V - b_0 = (F + V - E) + E - (b_0 + b_2 - b_1) - b_1 = E - b_1
+$$
+where we have used that the Euler number of the lattice is given by
+$$
+\chi = F + V - E = b_0 + b_2 - b_1
+$$
+Now our lattice is topologically a torus, and therefore the first Betti number if $b_1 = 2$. Thus the rank is $E - 2$. If we compare this to $F + V$, using that the Euler characteristic of the lattice is that of the torus and hence zero, we find that the rank is $V + F - 2$. By the check matrix formalism, we can therefore conclude that there are $F + V - 2$ independent generators as claimed. Note that the two missing dimensions correspond to those chains which are in the kernel of $\partial$ and $\partial^*$, i.e. to the relations that the product of all the $X_f$ and the product of all the $Z_v$ are both the identity. Consequently the dimension of the code space is given (see Lemma \ref{lem:stabilizerdimension} in the appendix) by 
+$$
+2^{E - (E - b_1)} =2^{b_1} = 4
+$$
+as the Betti number of the torus is two.
+\end{proof}
+
+Thus the dimension of the code space is identical to the dimension of the first homology group of the lattice. In fact, there is a more direct relation between the code space and the homology group which we will now describe. Suppose we are given a one-cycle $c \in C_1(L;\Z_2)$, i.e. a one-chain with $\partial c = 0$. This cycle is exactly in one homology class. If we denote the group of 1-boundaries by $B_1$, this homology class is the coset given by all chains of the form $c + b$ where $b \in B_1$. Let us now consider the vector
+$$
+\pi(c) = \sum_{b \in B_1} | c + b \rangle 
+$$
+This is just the sum over all states in the computational basis corresponding to one-cycles in the coset. In particular, it depends only on the coset, i.e. on the homology class of $z$ in $H_1(L;\Z_2)$, i.e.
+$$
+\pi(z + \partial f) = \pi(z)
+$$
+When $c$ ranges over all homology classes in $H_1(L\Z_2)$, the vectors $\pi(c)$ are clearly linearly independent sums of different elements of the computational basis. Therefore the vectors space spanned by all vectors $\pi(c), c \in H_1(L;\Z_2)$ has dimension $\# H_1(L;\Z_2) = 2^{b_1()} = 4$. We now claim that this vector space is identical to $T_S$. 
+
+To see this, let us first argue why all generators of $S$ act trivially on the vectors $\pi(c)$. First, let $f$ be a face with boundary $\partial f$. Let us calculate the action of $X_{\partial f}$ on $\pi(c)$. 
+$$
+X_{\partial f} \pi(c) = X_{\partial f} \sum_{b \in B_1} |b + c \rangle 
+= \sum_{b \in B_1} | b + c + \partial f \rangle = \sum_{b \in B_1} | b + c \rangle = \pi(c)
+$$
+Here we have used that $\partial f$ is itself a boundary, i.e. in the group $B_1$ of boundaries, and therefore letting $X_{\partial f}$ act just shifts the elements of the sum and does not change its value.
+
+
+Let us now see how the operators $Z_{\partial v}$ act on these states. In general, for a one-chain $c$, we claim that 
+$$
+Z_v |c \rangle = \begin{cases} - |c \rangle & \, \text{if} \, v \in \partial c \\
+|c \rangle & \, \text{if} \, v \notin \partial c 
+\end{cases}
+$$
+This is obviously true for individual edges instead of entire one-chains, and as a vertex $v$ is in the boundary of a 1-chain $c$ if and only if it is in the boundary of an even number of edges appearing in $c$, the same relation holds for general one-chains. 
+
+This relation implies in particular that if $c$ is a cycle, i.e. if $\partial c = 0$, all the operators $Z_v$ operate trivially on the state $\pi(c)$. Therefore we see that the vector space spanned by all vectors $\pi(c)$ where $c$ runs over a set of one-cycles representing all elements in $H_1(L;\Z_2)$ is left invariant by all the $X_f$ and $Z_v$ and therefore by $S$. But we already know that the cardinality of $H_1(L;\Z_2)$ is equal to the dimension of $T_S$. Thus we have proved 
+
+\begin{lem}
+The code space $T_S$ associated with the group $S$ can be described as the subspace spanned by all elements of the computational basis of the form
+$$
+\sum_{b \in B_1} | b + c \rangle
+$$
+where $c$ ranges over a set of one-cycles representing all elements of $H_1(L;\Z_2)$ and $B_1 \subset C_1(L;\Z_2)$ is the group of boundaries. 
+\end{lem}
+
+Let us now study the stabilizer $N(S)$ and try to find a geometric interpretation for it. We have seen that we can, to any one-cycle $c$, associate operators $X_c$ and $Z_c$. To further emphasize the duality between $X$ and $Z$, let us consider the set of operators obtained as
+$$
+X_c \, , \, Z_{c^*} \quad \text{for} \quad c \in C_1(L;\Z_2) , c^* \in C_1(L^*\Z_2)
+$$
+i.e. we associate X-operators with chains and Z-operators with chains in the dual lattice (we resist to use the term cochain here, even though the reader more familiar with algebraic topology will recognize the chains of the dual lattice as the co-chains, identified using the intersection product). It is clear that, up to a phase, every Pauli generator can be obtained in this way, i.e. these operators plus $i$ generate the entire Pauli group acting on the $E$ qubits.
+
+There is one more property of these operators that we will need - they allow us to represent commutation relations geometrically in terms of the so-called intersection product. Given a chain $c$ in $L$ and a chain $c^*$ in the dual lattice, we can form the intersection number $c \cdot c^*$, which is a number in $\Z_2$ and counting the number of intersection points modulo two. This number is called the intersection number or intersection product and denoted by $c \cdot c^*$. If $i$ is a qubit on which both $X_c$ and $Z_{c^*}$ act, then this qubit is sitting at an intersection of $c$ and $c^*$. This implies that $X_c$ and $Z_{c^*}$ commute if and only if the intersection number $c \cdot c^*$ is zero.
+
+What does it mean for those operators to be in the normalizer $N(S)$? By the general theory, we know that the normalizer consists of all those operators that commute with all elements in $S$, so we have to express commutation relations between the $X_c$ and $Z_{c^*}$ with the elements in $S$. Clearly, and two X-operators and any two Z-operators commute. The remaining commutation relation turn out to be given as follows.
+
+\begin{lem}
+Given a vertex $v$, a chain $c$ and a face $f$, we have the following commutation relations.
+\begin{align*}
+[ X_c, Z_v  ] = 0 & \Leftrightarrow v \notin \partial c \\
+[ X_f, Z_{c^*}  ] = 0 & \Leftrightarrow \partial f  \cdot c^* = 0
+\end{align*}
+\end{lem}
+
+\begin{proof}
+Let us first analyze the commutators between vertex operators $Z_v$ and the operators $X_c$. For a chain $c$, we have
+$$
+Z_v X_c |b \rangle = Z_v |c + b \rangle = \pm | c + b \rangle 
+$$ 
+where the sign is plus one if and only if $v \notin \partial (c + b)$. We also have
+$$
+X_c Z_v |b \rangle = \pm X_c |b \rangle  = \pm X_c |c + b \rangle 
+$$
+but here the sign is one if and only if $v \in \partial b$. Thus we find that the commutator is zero if and only if $v \notin \partial c$. 
+
+To prove the second line, observe that $X_f = X{\partial f}$ and $Z_{c^*}$ commute if and only if the boundary $\partial f$ intersects $c^*$ an even number of times, which is exactly our claim.
+\end{proof} 
+
+This lemma seems to break the symmetry between $X$ and $Z$, but it does not - observe that the intersection number between $\partial f$ and $c^*$ is one if and only if the vertex of the dual lattice centered in $f$ is in the boundary of $c^*$. Thus both conditions are in fact dual to each other.
+
+We are now in a position to give a geometrical description of the normalizer $N(S)$. First, note that if $c$ is a cycle and $c^*$ a dual cycle, then $X_c$ and $Z_{c^*}$ commute with all the $Z_v$ and $X_f$ (note that $\partial f \cdot c^* = f \cdot \partial c^*$ and therefore zero if $c^*$ is a co-cycle). Hence every element of $Z_1(L;\Z_2) \times Z_1(L^*;\Z_2)$ gives us an element in the normalizer, where $Z_1$ denotes the group of cycles. It is also clear that if $c = \partial f$ is a boundary, then $X_c = X_{\partial f} = X_f$ is in $S$. Similarly, if $c^*$ is a co-boundary, then $c^*$ is dual to $\partial^* v$ for some vertex $v$, and hence $Z_{c^*} = Z_v \in S$. So under this mapping, elements in the group of boundaries go to $S$. Therefore only non-trivial elements in the product
+$$
+H_1(L;\Z_2) \times H_1(L^*;\Z_2) 
+$$
+will give us non-trivial elements of $N(S) / S$. Geometrically speaking, every closed loop on the lattice will give us an X-operator in the normalizer and every closed loop in the dual lattice will give us a Z-operator. Moreover, homologically equivalent loops describe the same elements in the normalizer. 
+
+
+Let us now identify four operators in $N(S)$ that are not in $S$ and intuitively speaking span $N(S) / S$ up to a phase. In figure \ref{fig:ToricCodeLogicalPauliMatrices}, we have indicated two cycles $c_1, c_2$ and two cycles $c^*_1, c^*_2$ in the dual lattice. Both $c_1$ and $c_2$ wind around the torus once and are homologically non-trivial. Their mutual intersection number is one, so they generate the group $H_1(L;\Z_2)$. The same holds for the two dual cycles on the dual lattice. Note that $c_1 \cdot c_1^* = 0 = c_2 \cdot c_2^*$ while $c_1 \cdot c_2^* = 1 = c_1^* \cdot c_2$. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ToricCodeLogicalPauliMatrices}
+\caption[Logical Pauli operators in the toric code]{Logical Pauli operators in the toric code}
+\label{fig:ToricCodeLogicalPauliMatrices}
+\end{figure}
+
+We can now associate operators with these cycles and dual cycles as before. Specifically, let
+\begin{align*}
+\bar{X}_i = X_{c_i} \\
+\bar{Z}_i = Z_{c^*_i} 
+\end{align*}
+for $i = 1,2$. By what we have seen above, these four operators are all in $N(S)$ (since the are constructed from cycles). Their mutual commutation relations are
+\begin{align*}
+[\bar{X}_i, \bar{X}_j] &= 0 \\
+[\bar{Z}_i, \bar{Z}_j] &= 0 \\
+[\bar{X}_i, \bar{Z}_j] &= 0 \, \text{if} \, i \neq j  \\
+\{ \bar{X}_i, \bar{Z}_i \} &= 0 
+\end{align*}
+Thus, these operators act as \emph{logical Pauli operators} on the code space $T_S$. As for any stabilizer code, we can use the commutation relations again to build up the entire code space from a ground state $|0 \rangle_L$ by repeatedly applying the logical Pauli $X$ operators. This will give us three additional, linearly independent state which, together with the ground state, span the entire code space. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Toric codes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Error correction in toric codes}
+
+Having described toric codes as special cases of the more general formalism of stabilizer codes, let us now see how we can detect and correct errors. The stabilizer of our code space is given by all operators $X_f$ and $Z_v$. Both for error detection as well as for state preparation, we need to be able to measure these operators. 
+
+To understand how this can be done, let us first recall a general trick to measure eigenvalues of unitary operators. So suppose that $U$ is an operator that is unitary as well as hermitian, so that its eigenvalues can only be $\pm 1$. Consider the circuit shown in figure \ref{fig:ControlledUMeasurement}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ControlledUMeasurement}
+\caption[Measurement as a controlled-U operation]{Measurement as a controlled-U operation}
+\label{fig:ControlledUMeasurement}
+\end{figure}
+
+Let us see how this circuit acts on a state $|\psi_+ \rangle$ which is an eigenstate of $U$ for the eigenvalue $+1$. In the first time step, the state is mapped to
+$$
+H|0 \rangle \otimes | \psi_+ \rangle = \frac{1}{\sqrt{2}} \big[ |0 \rangle \otimes | \psi_+ \rangle + | 1 \rangle \otimes | \psi_+ \rangle \big]
+$$
+In the second step, we apply the controlled U-operation, and get
+$$
+\frac{1}{\sqrt{2}} \big[ |0 \rangle \otimes | \psi_+ \rangle + | 1 \rangle \otimes | \psi_+ \rangle \big]
+$$
+as the U-operation acts trivially in this case. So the result is again
+$$
+H|0 \rangle \otimes | \psi_+ \rangle
+$$
+so that the final Hadamard returns the state to its original state. So the gate acts trivially on $|\psi_+ \rangle$, as expected. If, however, we apply the gate to an eigenstate $|\psi_- \rangle$ for the eigenvalue minus one, the same calculation shows that the result of the controlled U-operation is
+$$
+\frac{1}{\sqrt{2}} \big[ |0 \rangle \otimes | \psi_- \rangle - | 1 \rangle \otimes | \psi_- \rangle \big] = H|1 \rangle \otimes |\psi_- \rangle
+$$
+so that the final Hadamard results in $|1 \rangle \otimes |\psi_- \rangle$. Therefore a general state
+$$
+|\psi \rangle = \alpha |\psi_+ \rangle + \beta |\psi_- \rangle
+$$
+is mapped to
+$$
+\alpha |0 \rangle \otimes |\psi_+\rangle + \beta |1 \rangle \otimes |\psi_- \rangle
+$$
+If we now apply a measurement to the control qubit, which serves as an ancilla here, the state is projected onto either $|1 \rangle \otimes |\psi_- \rangle$ or $|0 \rangle \otimes |\psi_+ \rangle$, with probabilities $|\beta|^2$ and $|\alpha|^2$. The remaining qubits end up in the state $|\psi_-\rangle$ or $|\psi_+ \rangle$, i.e. in an eigenstate. Thus applying this circuitry and measuring the ancilla has the same implications as measuring the operator $U$.
+
+Let us now apply this idea to the problem of measuring one of the operators $X_f$. This operator is a tensor product of four $\sigma_x$ operators, i.e. inversion operators. Therefore a controlled-$X_f$ circuit is nothing but a sequence of controlled inversions, i.e. CNOT gates. Thus we can measure a face operator using the following circuit.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/MeasuringXfI}
+\caption{Measuring a face operator $X_f$}
+\label{fig:MeasuringXfI}
+\end{figure}
+
+Here the four qubits at the bottom correspond to the four edges bounding the face $f$. So we need one ancilla qubit for doing the measurement, and we need to be able to combine it in gates with all the four qubits sitting on the edges bounding $f$. For the physical implementation, the easiest approach is to place this additional qubit called \emph{measurement} qubit in the middle of the face $f$, in contrast to the \emph{data qubits} sitting on the edges.
+
+A circuit along the same lines can be constructed to measure $Z_v$ for a vertex $v$. Using that $H \sigma_x H = \sigma_z$, we can construct such a circuit as follows. In the first time step, apply a Hadamard to both the ancilla and all target qubits. Then apply CNOT operators to all target qubits, controlled by the ancilla, and then apply Hadamard operators again. Now, it is well known that conjugating the CNOT with Hadamard gates switches the roles of target qubits and control qubits. This gives us the circuit displayed in figure \ref{fig:MeasuringZv}.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/MeasuringZv}
+\caption[Measuring a vertex operator $Z_v$]{Measuring a vertex operator $Z_v$}
+\label{fig:MeasuringZv}
+\end{figure}
+
+Again, for each vertex, we need an ancilla qubit to measure $Z_v$. This qubit will have to interact with all data qubits touching this vertex, so it is easiest to position it on that vertex. 
+
+Overall, we have now added $F + V$ measurement qubits to our original $E$ data qubits. How the Euler characteristic of the torus is zero, and therefore $F + V = E$, showing that this procedure actually doubles the number of physical qubits. We have now arrived at a description of the toric codes (and its cousin the surface code) that one can often find in the literature but which somehow hides the relation to the surface topology a bit.
+\begin{enumerate}
+	\item We start with a lattice $L$ with $E$ edges and identify opposite borders
+	\item On each vertex, we place a data qubit
+	\item On each face, we place a measurement qubit called an X-qubit
+	\item On each vertex, we place a measurement qubit called a Z-qubit
+	\item To each X-qubit, we associate the operator that acts as a bit flip on the four data qubits next to the measurement qubit
+	\item To each Z-qubit, we associate the operator that acts a a phase flip on the four data qubits  next to the measurement qubit
+\end{enumerate}
+
+Thus every data qubit is acted on by four operators, the two Z-operators corresponding to the adjacent vertices and the two X-operators corresponding to the adjacent faces. The additional measurement qubits - indicated by white circles in contrast to the dark circles being the data qubits - are shown in figure \ref{fig:ToricCodeMeasurementQubits}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ToricCodeMeasurementQubits}
+\caption[Data and measurement qubits]{Data and measurement qubits}
+\label{fig:ToricCodeMeasurementQubits}
+\end{figure}
+
+For one face and one vertex, we have indicated the associated operators $X_f$ and $Z_v$ by adding letters $X$ and $Z$ to show how these operators act on the nearby data qubits. This is the graphical representation typically used in the literature (like \cite{SurfaceCodes}). Note that some authors use different conventions and associate Z-operators with faces and X-operators with vertices, but this is of course completely equivalent due to the duality relations that we have already used several times.
+
+
+Which errors can we correct using this code? First, each Pauli operator of weight one (i.e. acting on a single qubit) anti-commutes with one of the $X_f$ and $Z_v$. Take, for instance, the operator $\sigma_z$ acting on a qubit sitting on the edge $e$. Then this operator anti-commutes with all the operators $X_f$ for a face $f$ adjacent to $e$. Similarly, an operator $\sigma_x$ acting on this edge anti-commutes with $Z_v$ if $v$ is a vertex in the boundary of that edge. Thus our code is able to protect against single bit flip and phase flip errors.
+
+To discuss more general errors, recall the operators $X_c$ and $Z_{c^*}$. It is obvious that up to a phase, every Pauli operator can be expressed as a product of such operators (in fact, for an edge $e$, $X_e$ is simply the $\sigma_x$ operator for the corresponding qubit, and if $e^\sharp$ denotes the dual edge, $Z_{e^\sharp}$ is the $\sigma_z$ operator for this qubit). Thus every Pauli operator $g \in \mathcal{G}_E$ can be written as
+$$
+g = i^a  X_c Z_{c^*}
+$$
+for a cycle $c$ and a cocycle $c^*$. The weight of that operator is at least the minimum length of $c$ and $c^*$. Geometrically, we can think of the cycles as strings (or collections of strings) running on the lattice itself ($c$) or on the dual lattice ($c^*$).
+
+By our previous discussion on commutators, the element $g$ will be in $S$ if and only if $c$ and $c^*$ are both boundaries, and it will not be in $N(S)$ if one of the strings is open, i.e. has a boundary. In both cases, the general theory of stabilizer codes tells us that the error can be corrected. So the problematic operators that correspond to products of non-correctable errors are those given by closed strings that are no boundaries, i.e. homologically non-trivial. If $l$ is the minimum length of such a string, then, consequently, the distance of the code is the size of the smallest non-trivial loop in $L$ or $L^*$. Of course, in our toroidal geometry, $l$ is just the smaller of height and weight of the lattice. Therefore the larger the lattice, the higher the ability of the code to correct errors, but of course the overhead increases as well with the size of the lattice. 
+
+There is also a nice geometric interpretation of the error syndrome. Suppose that an error $X_c Z^{c^*}$ occurs. As usual with stabilizer codes, we can then determine the error syndrome by measuring all the generators of the stabilizer. If we measure the $X_f$, the result will be minus one for exactly those faces $f$ for which $\partial f \cdot c^* = 1$, i.e. for those faces in which the string $c^*$ starts or ends. Similarly, if we measure the eigenvalue of a $Z_v$, then the result will be minus one for those vertices $v$ that are in the boundary of the string $c$. Thus the syndrome measurement will allow us to reproduce the \emph{boundaries} of the strings $c$ and $c^*$. To correct, for instance, a Z-error given by a string $c^*$, we need to choose a string connecting the two vertices for which the error syndrome is not one. In practice, we might want to choose a path between these two vertices of smallest weight. This choice is not unique, but if the vertices are sufficiently close to another, then a different choice will give a homologically equivalent path, and the difference will be a closed, homologically trivial loop, corresponding to an element of $S$, so that both choices give the same correction. Only if the length of the error string exceed a certain value, corresponding to halve of the minimum length of a non-trivial loop, will this procedure be at risk to give a wrong answer. 
+
+Finally let us see how state preparation works on that lattice. By the general theory of stabilizer codes, one approach is as follows. We first bring the system into an arbitrary state and measure all the $X_f$ and $Z_v$. This gives us an error syndrome, describing the outcomes of these $F + V = E$ measurements. For these positions in the error syndrome that are not one, we then apply a bit flip or phase flip. This will put the system into a state in the code space. We can now apply the logical X-operators to flip logical qubits if needed to arrive at the state $|0 0\rangle_L$. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Particle interpretation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \section{The particle interpretation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Planar codes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \section{Planar codes}
+
+
 \appendix
 
 
@@ -930,7 +1286,7 @@ $$
 which is a contradiction. 
 \end{proof}
 
-\section{The check matrix formalism}
+\section{The check matrix formalism}\label{sec:checkmatrixformalism}
 
 In this section, we will shortly describe the check matrix formalism and show for a few examples how it can be applied to stabilizer codes. Again, our setup will be as follows. We are given n physical qubits and $k < n$ indepenent elements $S_1, \dots, S_k$ of the n-dimensional Pauli group $\mathcal{G}_n$ which commute. We consider the abelian subgroup $S = \langle S_1, \dots, S_k \rangle$ generated by these elements and assume that $-1 \notin S$. By what we have seen in the previous section, we therefore know that the code space $T_S$ is non-trivial and has dimension $2^{n-k}$. 
 
@@ -1283,6 +1639,10 @@ E.~Knill, R.~Laflamme, W.H.~Zurek, \emph{Threshold accuracy for quantum computat
 
 \bibitem{AliferisGottesmanPreskill},
 P.~Aliferis, D.~Gottesman, J.~Preskill, \emph{Quantum accuracy threshold for concatenated distance-3 codes}, arXiv:quant-ph/0504218v3
+
+\bibitem{Bombin}
+H.~Bombin, 
+\emph{An introduction to topological quantum codes}, in \emph{Quantum error correction}, edited by D.A.~Lidar and T.A.~Brun, Cambridge University Press, New York, 2013, available as arXiv:1311.0277 [quant-ph]
 
 \end{thebibliography}
 

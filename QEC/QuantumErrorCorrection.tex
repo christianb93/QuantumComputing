@@ -1247,14 +1247,255 @@ Similarly, we need measurement qubits for the vertex operators. This time, the e
 \label{fig:PlanarCodeIII}
 \end{figure}
 
-With that understanding, we can now use the surface code as an error correction code. We can measure the stabilizers and perform individual bit flips and phase flips to create an initial state, apply logical Pauli operators and perform measurements to detect and correct errors.
+With that understanding, we can now use the surface code as an error correction code. We can measure the stabilizers and perform individual bit flips and phase flips to create an initial state, apply logical Pauli operators and perform measurements to detect and correct errors. Thus we could apply toric codes as any other codes, maybe as part of a concatenated code. However, one reason why surface codes have become so popular is that there is in fact a different approach to performing quantum computation with surface codes that avoids the use of concatenation and that we will describe in the next section.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Creating and manipulation logical qubits
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Creating and manipulating logical qubits}
+\section{Creating and manipulating logical qubits}
+
+So far, we have been able to construct a planar code for one logical qubit. If we wanted to combine more than one of these logical qubits, we could start to stack the surfaces on which our qubits are located, so that nearby qubits on different surfaces can interact. However, there is a different approach which allows us to stick to a two-dimensional geometry - creating additional qubits in the surface code.
+
+The code space of our code is the intersection of the plus one eigenspaces of all the stabilizers. Each stabilizer cuts down the original space by a factor two. The idea to creating additional logical qubits is now to simply drop some of the stabilizers in order to enlarge the code space.
+
+To understand how this works, we first have to understand how the surface code is usually used in practice (see \cite{SurfaceCodes}). We first put the system into an initial, potentially unknown state. We then perform a series of measurements of all stabilizers. This will force the state into a simultaneous eigenstate of all the stabilizer operators.
+
+Now, the eigenvalues will typically not all be one. We would now have to apply corrections to move our state into the code space. However, instead of doing this, we could as well keep track of the error syndrome and perform the corrections in software when we measure. 
+
+We now start our quantum algorithm. After each step of the algorithm, we perform another round of measurements of the stabilizer to detect any errors that might have occurred. Again, we could now correct the errors, but alternatively keep track of them as well and correct the final measurements if needed. In this way, a computation with a surface code is essentially a periodic measurement of all stabilizers in repeating cycles, and logical operations executed between any two subsequent cycles.
+
+Now let us see what happens when we modify our code by removing a face operator $Z_f$ from the set of stabilizers. Thus we perform some initial cycles to put the system into a ground state $|g \rangle$ (here and in the sequel, we assume that errors are actually corrected and not just detected to simplify our caclulations) on which all stabiilizers act trivially, and starting with the next round of measurements, we exclude a $Z_f$ operator from the measurements. Of course, this will enlarge the code space. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/Holes}
+\caption[Generating logical qubits with holes]{Generating logical qubits with holes}
+\label{fig:Holes}
+\end{figure}
 
 
+Specifically, let us take a look at the upper left corner of figure \ref{fig:Holes}. Here we have marked a face $f$ and an operator $X_{c^*}$ coming from a string connecting this face with the rough boundary. Then the boundary of $c^*$ consists of one point in the dual lattice, and hence every face operator commutes with $X_{c^*}$, except $Z_f$ which anti-commutes. If we now define our code space to be the space fixed by all the $X_v$ and all face operators except $Z_f$, then $X_{c^*}$ and $Z_f$ map that code space to itself. As $c^*$ intersects the boundary of $f$ in one point, $Z_f$ and $X_{c^*}$ anti-commute and therefore define a set of logical Pauli operators, acting on the code space. Thus we have constructed a logical qubit!
+
+There are two things that should be noted. First, we have not changed in any way the physical layout of the surface or added or removed any physical qubits - we have only changed the code (this approach is sometimes called \emph{code deformation}). Second, the global Pauli operators shown in figure \ref{fig:PlanarCodeII} still exist and act on our new code space. In fact, our new code space is four-dimensional, but we ignore half of the dimensions and use it only to represent one logical qubit, operated on by the two logical Pauli matrices
+$$
+\hat{X} = X_{c^*} 
+$$
+and
+$$
+\hat{Z} = Z_f
+$$
+The logical zero state $|0 \rangle_L$ is equal to the original state before turning off that stabilizer, i.e. to the logical zero state of the full surface code. The logical one state $|1\rangle_L$ is then equal to $X_{c^*} |0 \rangle_L$. 
+
+Note that this construction has a nice physical interpretation. Suppose we create a pair of quasi-particles as before, supported on $Z_f$ and a second face close to the rough boundary. We have seen that we can move these particles by acting with edge operators $X_e$ on them. Thus, we can move the second face on which the particle lives across the rough boundary and now obtain a particle supported on face only. This is exactly the configuration which is obtained by acting with the logical Pauli X operator of our newly created logical qubit on the ground state, i.e. these logical qubits correspond to pairs of particles where one particle has left the surface.
+
+As usual, this construction has a counterpart in the dual lattice, as shown on the right of figure \ref{fig:Holes}. The configuration marked in blue consists of a vertex operator $X_v$ and a string $c$ connecting that vertex to the smooth boundary. We can now remove $X_v$ from the stabilizer, and obtain a pair of logical operators 
+$$
+\hat{X} = X_{v} 
+$$
+and
+$$
+\hat{Z} = Z_c
+$$
+which again anti-commute and operate on our new, enlarged code space. Note that now, the logical ground state can be obtained as
+$$
+|0 \rangle_L = \frac{1}{2}(1 + Z_c) |g \rangle
+$$
+where $|g\rangle$ is a ground state (i.e a logical zero) for the full surface code. This type of logical qubit is called a \emph{single X-cut} in \cite{SurfaceCodes}, whereas the first type of qubit considered is a \emph{single Z-cut}. 
+
+This technique allows us in theory to encode a large number of logical qubits in one surface. However, in practice, the restriction that we need to reach the boundary from each of the faces and vertices that we switch off is a bit cumbersome. Fortunately, it turns out that this is not even necessary.
+
+In fact, coming back to the analogy of the quasi-particles, nobody forces us to move the second particle off the surface. To see this, consider the configuration marked in green in the lower part of figure \ref{fig:Holes}. Here we have removed two stabilizers from the code, the face operator $Z_f$ corresponding to the face on the left hand side, and the face operator $Z_{f'}$ corresponding to the face on the right hand side. This will enlarge our code space by a space of dimension four. However, we now gracefully ignore half of that space and instead work with the space spanned by the Pauli operators
+$$
+\hat{Z} = Z_f 
+$$
+and
+$$
+\hat{X} = X_{c^*} 
+$$
+Because $Z_v$ commutes with every $X_v$ and $X_{c^*}$ commutes with every face operator except $Z_f$ and $Z_{f'}$ (i.e. those that we have removed from the stabilizer), those two operators map the stabilized subspace onto itself. They also anti-commute and thus span a two-dimensional subspace, i.e. a logical qubit. More precisely, we can choose as a basis the states
+$$
+|0 \rangle_L = |g \rangle
+$$
+and
+$$
+|1 \rangle_L = X_{c^*} |g \rangle
+$$
+where again $|g \rangle$ is a ground state of the original code, i.e. a state on which all face and vertex operators act trivially. Note that on the entire subspace describing the logical qubit, the relation $Z_f = Z_{f'}$ holds (this is expected, because $f + f'$ is the boundary of the area formed by the other faces which are by assumption stabilizers of our code, but also follows directly from our explicit description of the logical states, because $Z_{f+f'}$ commutes with $X_{c^*}$).
+
+A logical qubit obtained by this construction is called a \emph{double Z-cut}. Of course, we can again repeat this construction in the dual lattice and obtain a \emph{double X-cut}.
+
+Having described individual logical qubits, let us now see how we can manipulate them to perform actual calculations. The main ingredient to this is the ability to \emph{move} logical qubits along the surface.
+
+Let us describe this process for a single Z-cut logical qubit (the other cases are similar). Consider the situation shown in the upper part of figure \ref{fig:ElementaryMove}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ElementaryMove}
+\caption[Elementary logical qubit moves]{Elementary logical qubit moves}
+\label{fig:ElementaryMove}
+\end{figure}
+
+Here we consider a logical qubit described by the Pauli operators $X_{c^*}$ and $Z_f$, i.e the face operator $Z_f$ has been removed from the set of stabilizers. Adjacent to the face $f$, there is a face that we denote by $\bar{f}$. By removing $Z_{\bar{f}}$ (and adding $Z_f$ again to the set of stabilizers), we would obtain a different code space - we can again think of this different code space as a deformation of the code space given by removing $Z_f$. We want to describe a process that starts with a state in the code space given by $Z_f$ and ends with a state in the code space given by $Z_{\bar{f}}$. 
+
+To do this, we manipulate the original state in several steps. First, we measure the Pauli X operator $X_e$ for the physical qubit sitting on the edge $e$ of the dual lattice that connects the centre of $f$ with that of $\bar{f}$ - this is the qubit on which both $Z_{\bar{f}}$ and $Z_f$ act. Let us assume for a moment that the outcome of this measurement is one. When the system was initially in the state $|\psi\rangle$, the system is now in the state
+$$
+\frac{1}{2} (1 + X_e) |\psi \rangle
+$$
+up to a normalization factor. Next, we do another measurement - this time we measure $Z_f$. This will force the system into an eigenstate of $Z_f$. Let us assume again that the outcome of this measurement is plus one, so that the system is now in the new code space obtained by removing $Z_{\bar{f}}$ instead of $Z_f$ from the stabilizer. Then the entire process is described by a normalization factor times the operator
+$$
+P = \frac{1}{4}(1 + Z_f)(1 + X_e)
+$$
+Knowing that $X_e$ and $Z_f$ anti-commute, we can write this as
+$$
+P = \frac{1}{4} \big[ 1 + Z_f + X_e + Z_f X_e \big]
+= \frac{1}{4} \big[ (1 + Z_f) + X_e (1 - Z_f) \big]
+$$
+From this, we can easily read off how the operator acts on the eigenstates of $Z_f$. We find that, after normalization,
+\begin{align*}
+|0 \rangle_L &\mapsto |0 \rangle_L \\
+|1 \rangle_L &\mapsto X_e |1 \rangle_L = X_e X_{c^*} |0 \rangle_L = X_{c^* + e} |0 \rangle_L
+\end{align*}
+Thus we find that this process maps the logical state $|0 \rangle_L$ to the logical zero state of the new code, and the same is true for the logical one state. In other words, this operation is moving a particle from $f$ to $\bar{f}$ while preserving the logical information encoded in the state. This is what we mean when we say that we move a logical qubit around. Note that (because $\partial^* e = f + \bar{f}$) the logical Pauli operators for the old and the new code are related by
+\begin{align*}
+\hat{X} &\mapsto  X_e \hat{X} \\
+\hat{Z} &\mapsto Z_{\partial^* e} \hat{Z}
+\end{align*}
+In in this case, it is obvious what the new logical operators are, but we could as well determine them by the requirement that the logical X-operator followed by $P$ should be the same as first applying $P$ and then the logical X-operator, and the same for the logical Z-operator. From this requirement, we could then derive the correct logical states, identified as eigenvalues of the logical Z-operators (and determined up to a phase by this).
+
+Let us quickly see how this calculation changes when the measurements have different outcomes. First, let us assume that the first measurement - the measurement of $X_e$ - yields a minus one, whereas the second one still yields a one. Then 
+$$
+P = \frac{1}{4} \big[ 1 + Z_f - X_e - Z_f X_e \big]
+= \frac{1}{4} \big[ (1 + Z_f) - X_e (1 -   Z_f) \big]
+$$
+from which we can again read off that
+\begin{align*}
+|0 \rangle_L &\mapsto |0 \rangle_L \\
+|1 \rangle_L &\mapsto X_e |1 \rangle_L = - X_e X_{c^*} |0 \rangle_L = - X_{c^* + e} |0 \rangle_L
+\end{align*}
+This is again in the code space, but to make sure that our requirements above hold, we need to redefine the logical X-operator by adding a minus sign:
+\begin{align*}
+\hat{X} &\mapsto  - X_e \hat{X} \\
+\hat{Z} &\mapsto Z_{\partial^* e} \hat{Z}
+\end{align*}
+Things are a bit more complicated if the outcome of the second measurement (that of $Z_f$ is minus one). Let us consider the example that this is combined with a first measurement with outcome one. Then
+$$
+P = \frac{1}{4} (1 - Z_f)(1 + X_e) = \frac{1}{4} \big[ 1 - Z_f + X_e +  X_e Z_f \big]
+= \frac{1}{4} \big[ (1 - Z_f) + X_e (1 + Z_f) \big]
+$$
+so that
+\begin{align*}
+|0 \rangle_L &\mapsto X_e |0 \rangle_L \\
+|1 \rangle_L &\mapsto |1  \rangle_L
+\end{align*}
+The problem with this is that this it not even in the new code space - which we expect, because we know that after the last measurement, our state is in a $-1$ eigenspace of $Z_f$, not a $+1$ eigenspace. So we need to adjust our procedure a bit and act once with $X_e$ after the second measurement to get into a $+1$-eigenspace again - effectively, this is an error correction to get into the new code space. Thus our new version of $P$ is
+$$
+P = \frac{1}{4} X_e \big[ (1 - Z_f) + X_e (1 + Z_f) \big]
+= \frac{1}{4}  \big[ (1 + Z_f) +  X_e (1 - Z_f) \big]
+$$
+which is the same as in the case considered (both measurements plus one). Thus our procedure to move a logical qubit in the direction of an edge $e$ in the dual lattice is now
+\begin{enumerate}
+	\item Measure $X_e$ and let $\epsilon$ denote the result
+	\item Measure $Z_f$
+	\item If the result of this measurement is $-1$, then apply $X_e$
+	\item Replace the Pauli operators $\hat{X}$ and $\hat{Z}$ by $\epsilon X_e \hat{Z}$ and $Z_{\partial^*e} \hat{Z}$. 
+\end{enumerate}
+Note that in \cite{SurfaceCodes}, this correction is not done physically by applying a bit flip, but done in software, i.e. by keeping track of the sign changes in the control software. 
+
+Of course this procedure can be iterated to move a Z-type logical qubit along a string $c$. If $c$ is a closed loop, we eventually return to our original location and our original code space, but have transformed the set of Pauli operators, corresponding to a transformation of the logical qubit. This is especially interesting if two qubits are involved. In this case, we can obtain a transformation by braiding the qubits, i.e. moving one qubit around another, and eventually returning to the original locations. This is very similar to the idea of encoding quantum information by braiding anyons. 
+
+We will not go into all the details, but briefly describe one example and refer the reader to \cite{SurfaceCodes} for the details. We consider two logical qubits, one obtained as a Z-cut, the other obtained as an X-cut (it does not matter whether these qubits are single cut or double cut qubits). 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/BraidingZXCut}
+\caption[Moving a Z-cut around an X-cut]{Moving a Z-cut around an X-cut}
+\label{fig:BraidingZXCut}
+\end{figure}
+
+
+The process is illustrated on the left hand side of \ref{fig:BraidingZXCut}. We start with a pair of logical qubits given by an X-cut and a Z-cut. We then move the face corresponding to the Z-cut around the vertex corresponding to the X-cut using elementary moves as described above. The loop along which we move - $X_{loop}$ is winding once around the vertex at which the X-cut has been carried out. 
+
+Let us now see how the 2-qubit system spanned by the Pauli operators $Z_i$ and $X_i$ transforms if we carry out the move. We start with a ground state $|g \rangle$ of the full code (and therefore of $Z_1$ which is a face operator), so that the state
+$$
+|\zeta \rangle = \frac{1}{2}(1 + Z_2) |g \rangle
+$$
+is the logical state $|00 \rangle$ of our 2-qubit system, i.e. a simultaneous $+1$-eigenstate of $Z_1$ and $Z_2$. We can then form the states
+\begin{align*}
+|01 \rangle &= X_2 |00 \rangle \\
+|11 \rangle &= X_1 X_2 |00 \rangle \\
+|10 \rangle &= X_1 |00 \rangle
+\end{align*}
+which together with $|00 \rangle$ span the entire code space. Let us now see how these states transform under the move.
+
+As long as we operate sufficiently far away from the string defining $Z_2$, the action on the two logical qubits is completely decoupled, so we know from what we have discussed how the states and logical operators transform. However, the situation is a bit more subtle when we reach the string defining $Z_2$. The critical point is displayed on the right hand side of figure \ref{fig:BraidingZXCut}. So we have reached the vertex $f$, i.e. removed the face operator $Z_f$ from the set of stabilizers, and now want to move on to the face $\bar{f}$. 
+
+Thus as before, we first measure the X-operator of the qubit located on the edge where those two faces meet, i.e. the operator $X_e$. For simplicity, let us assume that the outcome of this measurement is one. We then measure $Z_{\bar{f}}$, and again let us assume that the outcome is one. Thus we apply the projection
+$$
+P = \frac{1}{4} \big[ (1 + Z_f)(1 + X_e) \big] 
+= \frac{1}{4} \big[ (1 + Z_f) + X_e(1 - Z_f) \big] 
+$$
+It is again easy to calculate how this operator maps (up to a normalization) the eigenstates of the current code space.
+\begin{align*}
+|00 \rangle_L = |\zeta \rangle &\mapsto |\zeta \rangle = |00 \rangle \\
+|01 \rangle_L = X_2 |\zeta \rangle &\mapsto X_2 |\zeta \rangle = |01 \rangle_L \\
+|10 \rangle_L = X_1 X_c |\zeta \rangle &\mapsto X_1 X_{c+e} |\zeta \rangle  \\
+|11 \rangle_L = X_1 X_c X_2 |\zeta \rangle &\mapsto X_1 X_{c+e} X_2 |\zeta \rangle
+\end{align*}
+from which we can immediately read off the new logical states.
+\begin{align*}
+|00\rangle_{L'} &= |00 \rangle_L \\
+|10\rangle_{L'} &= X_e |10 \rangle_L \\
+|11\rangle_{L'} &= X_e |11 \rangle_L \\
+|01\rangle_{L'} &= | 01 \rangle_L 
+\end{align*}
+This is still what we expect. However, there is a twist with the new logical operators of our code. In fact, $Z_2$ is no longer the correct Pauli operator for the second qubit. The reason is that $Z_2$ and $X_e$ anti-commute, so that
+$$
+Z_2 |10 \rangle_{L'} = Z_2 X_e |10 \rangle_L = - X_e Z_2 |10 \rangle_L = - X_e |10 \rangle_L = - |10 \rangle_{L'}
+$$
+Thus there is a minus one which should not be there! Alternatively, the problem can also be seen from the fact that $Z_2$ and our tentative new X-Pauli operator $X_1 X_{c+e}$ for the first qubit anti-commute, but should commute. It is not difficult, though, to guess what the correct Pauli operator is - $Z_2 Z_{\bar{f}}$. In fact, this is an operator acting on the code space. It commutes with our new logical X-Pauli operator (because both factors anti-commute with it), and we can check explicitly that this operator acts correctly on the basis states described above. So we find that the move will transform our logical Pauli operators as follows.
+\begin{align*}
+\hat{X}_1 &\mapsto  X_e \hat{X}_1 \\
+\hat{Z}_1 &\mapsto Z_{\partial^* e} \hat{Z}_1 \\
+\hat{X}_2 &\mapsto   \hat{X}_2 \\
+\hat{Z}_2 &\mapsto   Z_{\bar{f}} \hat{Z}_2 
+\end{align*}
+Geometrically, we have replace $Z_2$ by the operator given by the string which is obtained from the $Z_2$ string by going around the critical qubit on the right hand side of the face $\bar{f}$. In figure \ref{fig:BraidingZXCut}, this amounts to replacing the red line by the dotted red line, i.e. we push the string defining the Pauli operator for the second qubit to the right. 
+
+Let us see what happens if we do the next move. Let $f'$ denote the face on the right of $\bar{[f}$ which we would visit next. Overall, the move from $f$ to $\bar{f}$ and the move from $\bar{f}$ to $f'$ would multiply the logical Z-operator for the second qubit by $Z_{\bar{f}} Z_{f'}$. But on the new code space, $Z_{\bar{f}}$ acts as a stabilizer (we have removed $Z_{f'}$ and added $Z_{\bar{f}}$ again to the set of stabilizers). Therefore, on the code space, this is the same as multiplying by $Z_{f'}$ only. Thus we pick up a copy of the face operator at the head of the chain of faces once we have crossed $Z_2$. When we complete the loop and reach the face on which $Z_1$ lives again, we will therefore overall pick up a factor $Z_1$. Therefore after closing the loop, the Pauli operators transform as follows (ignoring potential signs from $X$-measurements for a moment)
+\begin{align*}
+X_1 &\mapsto  X_{loop} X_1 \\
+Z_1 &\mapsto Z_1 \\
+X_2 &\mapsto   X_2 \\
+Z_2 &\mapsto   Z_1 Z_2 \\
+\end{align*}
+Now there is one more observation we can make. The loop around which we have moved the qubit is a loop in the dual lattice that can be contracted to $X_v$ without intersecting any other parts of the configuration. Therefore the operator $X_{loop}$ act identically to $X_2$ on the code space. This gives us our final transformation rule for the braid move.
+\begin{align*}
+X_1 &\mapsto  X_1 X_2 \\
+Z_1 &\mapsto Z_1 \\
+X_2 &\mapsto   X_2 \\
+Z_2 &\mapsto   Z_1 Z_2 \\
+\end{align*}
+Let us now try to understand what all this means. As our loop comes back to the code space, the process of moving the logical qubit around the loop gives raise to a unitary transformation $U$ on the code space. From our previous calculations for each individual step in the move, we know that a state vector of the form $|0 \rangle \otimes |x \rangle$ remains unchanged, whereas states of the form $|1 \rangle \otimes |x \rangle$ receive a factor $X_e$ during each move, which combines to an overall factor $X_{loop}$. As $X_{loop}$ is identical to $X_2$ on the code space, we find that
+\begin{align*}
+U(|0 \rangle \otimes |x \rangle) &= |0 \rangle \otimes |x \rangle \\
+U(|1 \rangle \otimes |x \rangle) &= |1 \rangle \otimes X_2 |x \rangle 
+\end{align*}
+In other words, the transformation obtained by moving the qubit around acts a a conditional $X_2$, i.e. a CNOT gate!
+
+We could - at least up to a phase factor- derive the same result from the transformation rules for the operators. Suppose, for instance, we wanted to understand what $U$ does to $|10\rangle$. During each move, an old state is mapped to a new state and an old set of logical Pauli operators is mapped to a new set, but the defining relations between states and operators remain unchanged. In other words, if a state is an eigenstate of one of the Pauli operators, the transformed state is an eigenstate of the transformed Pauli operator for the same eigenvalue. Therefore $U|10 \rangle$ is an eigenstate of the transformed operator $Z_1' = Z_1$ with eigenvalue minus one and an eigenstate of the transformed operator $Z_2' = Z_1 Z_2$ with eigenvalue one. This is only possible if it is an eigenvalue of $Z_2$ alone with eigenvalue minus one. These properties determine the state up to a phase, and we can conclude that $U|10 \rangle = |11 \rangle$ up to a phase, giving the same result as our direct argument working with states below. Essentially, this line of arguments employs the Heisenberg picture of quantum mechanics, whereas our argument based on the evolution of the states utilizes the (equivalent) Schr\"odinger picture.
+
+
+To summarize, we have fond that the operation of moving a logical Z-qubit around a logical X-qubit creates a logical CNOT operation on the code space. This process can be represented by a two-strand braid, where the two strands wrap around each other twice so that their ends return to their original position, as indicated in figure \ref{fig:Braids}.
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/Braids}
+\caption[Moving qubits as a braiding operation]{Moving qubits as a braiding operation}
+\label{fig:Braids}
+\end{figure}
+
+We have also seen that the transformation given by such a braiding operation is of a topological nature, i.e. a slightly deformed braid or path gives the same result. Therefore this operation has a certain natural protection againsts faults, it is \emph{topologically protected}. Unfortunately, as remarked already in \cite{Kitaev}, the toric code does not allow a representation of a universal set of quantum gates by braids - doing this requires the use of a more sophisticated physical equivalent called \emph{non-abelian anyons}. Still, most operations on a surface code are topologically protected, and it turns out that even without concatenation, a surface code has an accuracy threshold which is somewhere in range of one percent (see \cite{DKLP} or \cite{SurfaceCodes}). Therefore surface codes remain a promising technology to implement universal fault-tolerant quantum computation, and are one of the most active areas of current research. 
 
 \appendix
 
@@ -1776,6 +2017,10 @@ H.~Bombin,
 \bibitem{Kitaev}
 A.Yu.~Kitaev, \emph{Fault-tolerant quantum computation by anyons}, 
 arXiv:quant-ph/9707021
+
+\bibitem{DKLP}
+E.~Dennis, A.~Kitaev, A.~Landahl, J.~Preskill,
+\emph{Topological quantum memory}, arXiv:quant-ph/0110143
 
 \end{thebibliography}
 

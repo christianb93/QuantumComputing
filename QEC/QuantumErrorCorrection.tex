@@ -130,32 +130,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-In the theoretical model of a universal quantum computer, quantum states are manipulated by quantum gates, i.e. unitary transformations, and eventually measurements are done to obtain the results of a quantum algorithm. In this model, the evolution of the quantum states over time is subject only to the quantum gates that make up this algorithm, and a quantum computer is usually described as a closed quantum system.
+In one of the standard models of a universal quantum computer, quantum states are initially prepared to reflect some input, than manipulated by quantum gates, i.e. unitary transformations, to execute a quantum algorithm and eventually measured to obtain the results. In this model, the evolution of the quantum states over time is subject only to the quantum gates and measurements that make up this procedure, and a quantum computer is usually described as a closed quantum system.
 
 In reality, the situation is more challenging. The state of a quantum computer is constantly interacting with the environment, an interaction which we can try to minimize, but not fully suppress. This will imply changes to the state of the system that are beyond our control. In addition, as every measurement, also the measurements in a quantum computer will be subject to errors, and our realization of the quantum gates will not be perfect, but will be approximations to the ideal gate.
 
-All these factors introduce errors into a quantum computer. For an individual gate, this error might still be small, but if want to build an universal quantum computer that executes algorithms consistings of thousands or millions of gates, the errors are going to propagate and wil soon render the result unusable. So we will have to detect and control these errors.
+All these factors introduce {\bf errors} into a quantum computation. For an individual gate, this error might still be small, but if we want to build an universal quantum computer that executes algorithms consisting of thousands or millions of gates, the errors are going to propagate and will soon render the result unusable. So we will have to detect and control these errors.
 
 This situation is not entirely new. Also in classical computers, bits in memory or an a hard drive can flip due to some unwanted interaction with the environment, and computer scientists have developed error correction methods to suppress these errors. Typically, these mechanisms create one or more copies of the state and, after some time, compare the copies. If a bit in one of the copies has flipped, chances are that the other bits remain intact, and we can detect the error by comparing the bits.
 
-However, in the world of quantum mechanics, the situation is more complicated. In fact, it is not possible to create a copy of a quantum state, a fact that is known as the {\bf No-cloning theorem} (see \cite{Dieks} and \cite{WootersZurek}). 
+However, in the world of quantum mechanics, the situation is more complicated. One obstacle is that it is not possible to create a copy of a quantum state, a fact that is known as the {\bf No-cloning theorem} (see \cite{Dieks} and \cite{WootersZurek}). 
 
-Let us see - following the argument given in chapter 12 of \cite{NC} why this is true. Suppose we had a device that is able to create a copy of a quantum state $|\psi \langle $. More formally, this device would act on a system consisting of two subsystems. We would initialize the first subsystem in the state $|\psi\langle$ and the the second subsystem in some initial state $|e \langle$. Then the device would operate and leave us with a system in which the second subsystem is in the state $|\psi \langle$ as well.
+Let us see - following the argument given in chapter 12 of \cite{NC} -  why this is true. Suppose we had a device that is able to create a copy of a quantum state $|\psi \rangle $. More formally, this device would act on a system consisting of two subsystems. We would initialize the first subsystem in the state $|\psi\rangle$ and the the second subsystem in some initial state $|e \rangle$. Then the device would operate and leave us with a system in which the second subsystem is in the state $|\psi \rangle$ as well.
 
 As any time evolution of a quantum system allowed by the laws of quantum mechanics, this device would be described by a unitary operator, acting on the combined system. This operator, let us call it $U$, would therefore act on the states according to the rule
-
 $$
 U(|\psi \rangle |e \rangle) = |\psi \rangle |\psi \rangle
 $$
-
 where we use the usual notation for a tensor product. This should be true for any state $|\psi \rangle$. Therefore, given any two states $|\psi \rangle$ and $|\Phi \rangle$, we would have the relations
-
 \begin{align*}
 U(|\psi \rangle |e \rangle) &= |\psi \rangle |\psi \rangle \\
 U(|\Phi \rangle |e \rangle) &= |\Phi \rangle |\Phi \rangle
 \end{align*}
 
-Let us now compute the scalar product of the two states on the right hand side. First, we can do this directly and obtain
+Let us now compute the scalar product of the two states on the right hand side. First, we can do this directly using the definition of the scalar product in a tensor product space and obtain
 
 $$
 \langle |\psi \rangle |\psi \rangle , |\Phi \rangle |\Phi \rangle \rangle 
@@ -166,7 +163,7 @@ $$
 On the other hand, we could use the fact that the operator U is unitary to equate the tensor product with the tensor product of the states on the left hand side of our equation, and obtain 
 
 $$
-\langle |\psi \rangle |\psi \rangle , |\Phi \rangle |\psi \rangle \rangle 
+\langle |\psi \rangle |\psi \rangle , |\Phi \rangle |\Phi \rangle \rangle 
 =
 \langle |\psi \rangle |e \rangle , |\Phi \rangle |e \rangle \rangle 
 = 
@@ -181,19 +178,23 @@ $$
 
 This is only possible if either the two states $|\psi \rangle$ and $|\Phi \rangle$ are orthogonal or if $\langle \psi, \Phi \rangle = 1$. But of course we can easily find examples of states for which neither of these relations hold and the equality is violated. Thus our device will never be able to clone an arbitrary state. 
 
-There is a second reason why simple error correction mechanisms as they are known from the world of classical computing will in general fail in the quantum world - these mechanisms perform measurements, However, in a quantum computer, a measurement will typically destroy our superposition and therefore affect the outcome of a quantum algorithm. So we need a smarter approach. 
+There is a second reason why simple error correction mechanisms as they are known from the world of classical computing will in general fail in the quantum world - these mechanisms perform measurements, However, in a quantum computer, a measurement will typically destroy our superposition and therefore affect the outcome of a quantum algorithm. 
+
+So we need a smarter approach. Fortunately, over time, several potentials solutions have been developed. Since the nineties of the last centuries, we know a few {\bf quantum codes} that despite these obstacles are able to encode quantum information into a larger number of qubits. This allows us to detect and correct errors. A large class of these codes can be described using a formalism known as the {\bf stabilizer formalism} which describes these codes in terms of groups and their normalizers. Further, codes can be {\bf concatenated}, i.e. we apply another coding procedure to the encoded state to further increase the error protection. This might introduce additional errors, but the {\bf threshold theorem} states that we will correct more errors than we introduce and can therefore reduce the error probability to any desired level provided that the physical error rate is below some threshold.
+
+In addition to codes that are the equivalent of classical codes, interesting codes arise as {\bf topological codes}. These codes can be described in terms of strings and cycles on a surface like a torus or a planar surface, and are related to the homology groups of the surface. These codes do not only have an interesting interpretation in terms of solid state physics, but acting on the encoded states can, in some cases, be seen as purely topological operations, leading us into the field of {\bf topological quantum computation}. And there are other approaches to quantum error correction like measurement based approaches that we will not even be able to touch in these notes.
+
+After this overview, let us now dive straight into the first and most straightforward - though incomplete - example of a quantum code. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% The three bit code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The three bit code}
 
-Let us now investigate a simple example that demonstrates that it is still possible to account for errors in a quantum setup. Suppose that we are looking at a communication channel over which we are somehow able to transmit individual qubits. Suppose further that the only error that can occur during this transmission is a bit flip, i.e. that with a probability p, the states $|0 \rangle$ and $|1 \rangle$ are switched during the transmission (this is of course not realistic, and we will investigate other sources of errors below). Using the standard notation
-
+The three bit code provides a simple example that demonstrates that it is still possible to account for errors in a quantum setup. Suppose that we are looking at a communication channel over which we are somehow able to transmit individual qubits. Suppose further that the only error that can occur during this transmission is a bit flip, i.e. that with a probability p, the states $|0 \rangle$ and $|1 \rangle$ are switched during the transmission (this is of course not realistic, and we will investigate other sources of errors below). Using the standard notation
 $$
 X = \begin{pmatrix} 0 & 1 \\ 1 & 0\end{pmatrix}
 $$
-
 for the bit-flip operator, a state $| \psi \rangle$ will therefore be converted into the state $X |\psi \rangle$ with probability p. 
 
 Now suppose that we encode every single qubit state in a three-qubit state before transmitting it. Thus we use the following encoding
@@ -205,7 +206,7 @@ Now suppose that we encode every single qubit state in a three-qubit state befor
 
 It is not difficult to see that this encoding can in fact be realized by a unitary circuit - the circuit in figure \ref{fig:ThreeBitCode} will do the trick.
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
 \includegraphics[width=1.0\linewidth]{images/ThreeBitCode}
 \caption[Three qubit encoding]{Three qubit encoding}
@@ -213,7 +214,7 @@ It is not difficult to see that this encoding can in fact be realized by a unita
 \end{figure}
 
 
-Let us see why this works. If $|\psi > = |0 \rangle$, the two CNOT gates do nothing, so the outcome is $|000 \rangle$. If $|\psi \rangle = |1\rangle$, both CNOT gates will flip the respective qubit, so the outcome is $|111\rangle$. Thus a general state $|\psi \rangle = a|0 \rangle + b|1\rangle$ will be encoded as
+Let us see why this works. If $|\psi \rangle = |0 \rangle$, the two CNOT gates do nothing, so the outcome is $|000 \rangle$. If $|\psi \rangle = |1\rangle$, both CNOT gates will flip the respective qubit, so the outcome is $|111\rangle$. Thus a general state $|\psi \rangle = a|0 \rangle + b|1\rangle$ will be encoded as
 
 $$
 a |000 \rangle + b |111 \rangle
@@ -221,16 +222,16 @@ $$
 
 Note that this not equal to the tensor product $|\psi \rangle  |\psi \rangle |\psi \rangle$ and therefore this circuit does not violate the no-cloning theorem. 
 
-We now send each of the three qubits through our channel independently. We then perform an operation called a {\em syndrome measurement}. Specifically, we apply the circuit displayed in figure \ref{fig:SyndromeMeasurement}.
+We now send each of the three qubits through our channel independently. We then perform an operation called a {\bf syndrome measurement}. Specifically, we apply the circuit displayed in figure \ref{fig:SyndromeMeasurement}.
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\linewidth]{images/SyndromeMeasurement}
 \caption[Syndrome measurement]{Syndrome measurement}
 \label{fig:SyndromeMeasurement}
 \end{figure}
 
-This circuit uses two ancilla qubits to effectively compare the parity of the individual qubits transmitted by the channel. To see this, note that the combination of the first two CNOT gates act on the same ancilla qubit. If the first two transmitted qubits are both $|0 \rangle$, the ancilla is unchanged. But this is also true if both qubits are $|1 \rangle$, as then the ancilla is inverted twice. So the first ancilla qubit will compares the first and second transmitted qubit, and the second ancilla qubit compares the second and third qubit.
+This circuit uses two ancilla qubits to effectively compare the parity of the individual qubits transmitted by the channel. To see this, note that the combination of the first two CNOT gates act on the same ancilla qubit. If the first two transmitted qubits are both $|0 \rangle$, the ancilla is unchanged. But this is also true if both qubits are $|1 \rangle$, as then the ancilla is inverted twice. So the first ancilla qubit will compares the first and second transmitted qubit. Similarly, the second ancilla qubit compares the first and third qubit.
 
 Now suppose that at most one qubit has been flipped during the transmission, i.e. during the transmission, one of the following four unitary operators has been applied to our initial state $|\psi \rangle = a |000 \rangle + b |111 \rangle$. 
 
@@ -253,12 +254,10 @@ Let us now write down the state of the overall system after performing the syndr
 We can now measure the two ancilla bits. This measurement will not change the state of the three transmitted qubits, but tell us which of the four cases we are in! Also note that if we measure the ancilla qubits, we will obtain the result with probability one in each of the four cases. Thus after performing the measurement, we know with certainty which of the four operators has been applied during the transmission and can perform a correction by flipping the respective bit once more. Of course this breaks down if more than one qubit is flipped, but as the probability for this to happen is smaller than p, we have been able to reduce the error rate.
 
 So what we have learned so far is that it is possible, also in the quantum world, to detect and protect against pure bit flip errors without destroying the superposition. But there is more we can learn from that example. In fact, let us revisit our original assumption that the only thing that can go wrong is that the operator X is applied to some of the qubits and allow a more general operator. Suppose, for instance, that our error is represented by applying to at most one of our qubits the operator
-
 $$
 E = (1-\epsilon) 1 + \epsilon X
 $$
-
-for a small $\epsilon$. This operator is of course in general not unitary, and thus the operator represents the impact of decoherence, i.e. an interaction with the environment (see section 5.1 of \cite{Steane} for a discussion of the most general type of errors that we have to deal with). Suppose we apply this operator to the first qubit during the transmission. Then our state after the transmission will be
+for a small $\epsilon$. This operator is in general not unitary, and thus the operator represents the impact of decoherence, i.e. an interaction with the environment (see section 5.1 of \cite{Steane} for a discussion of the most general type of errors that we have to deal with). Suppose we apply this operator to the first qubit during the transmission. Then our state after the transmission will be
 
 $$
 (1-\epsilon)(\alpha |000 \rangle + \beta |111 \rangle) + \epsilon (\alpha |100 \rangle + \beta |011\rangle)
@@ -270,14 +269,12 @@ $$
 (1-\epsilon)(\alpha |000 \rangle + \beta |111 \rangle)|00\rangle + \epsilon (\alpha |100 \rangle + \beta |011\rangle) |11 \rangle
 $$
 
-Assuming that our original state was normalized, the norm of this state will be $(1-\epsilon)^2 + \epsilon^2 = 1 - 2\epsilon$. Now we measure the syndrome. As always in quantum mechanics, measurement corresponds to projection onto an eigenspace. Thus, after the measurement, the state will - up to normalization - be one of the states
-
+Assuming that our original state was normalized, the square of the norm of this state will be $(1-\epsilon)^2 + \epsilon^2 = 1 - 2\epsilon$. Now we measure the syndrome. As always in quantum mechanics, measurement corresponds to projection onto an eigenspace. Thus, after the measurement, the state will - up to normalization - be one of the states
 \begin{align*}
 (\alpha |000 \rangle + \beta |111 \rangle)|00\rangle \\
 (\alpha |100 \rangle + \beta |011\rangle) |11 \rangle
 \end{align*}
-
-and the probabilities to be in these states will be $\frac{1-\epsilon}{\sqrt{1-2\epsilon}}$ and $\frac{\epsilon}{\sqrt{1-2\epsilon}}$. Thus the measurement will collapse the state into one of two states, where one state corresponds to no error at all, and one state corresponds to a bit flip error. In other words, whereas the actual error that was applied was a linear combination of the identity and a bit flip error, the process of detecting and correcting the error somehow forces the system to make a decision: either there is a full bit-flip error, or there is no error at all. This fact is called the {\em digitization of errors} (see also \cite{Steane} for a more complete treatment). Thus instead having to prepare for a continuum of error operators, it suffices to fix a discrete set of errors - which obviously is of utmost importance for practical implementations.
+and the probabilities to be in these states will be $1-\epsilon$ and $\epsilon$. Thus the measurement will collapse the state into one of two states, where one state corresponds to no error at all, and one state corresponds to a bit flip error. In other words, whereas the actual error that was applied was a linear combination of the identity and a bit flip error, the process of detecting and correcting the error somehow forces the system to make a decision: either there is a full bit-flip error, or there is no error at all. This fact is called the {\bf digitization of errors} (see also \cite{Steane} for a more complete treatment). Thus instead having to prepare for a continuum of error operators, it suffices to fix a discrete set of errors - which obviously is of utmost importance for practical implementations.
 
 
 
@@ -286,19 +283,19 @@ and the probabilities to be in these states will be $\frac{1-\epsilon}{\sqrt{1-2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Complete error codes}
 
-So far we have worked with a code which is able to protect against a bit flip error. But of course this is not the only type of error that can occur. At the first glance, it looks like there is a vast universe of potential errors that we have to account for, as in theory, the error could be any unitary operator. However, using arguments similar to the discussion in the last section, one can show that it suffices to protect against two types of errors: the bit flip error discussed above and the \emph{phase flip error}, represented by the matrix
+So far we have worked with a code which is able to protect against a bit flip error. But of course this is not the only type of error that can occur. At the first glance, it looks like there is a vast universe of potential errors that we have to account for, as in theory, the error could be any unitary operator. However, using arguments similar to the discussion in the last section, one can show that it suffices to protect against two types of errors: the bit flip error discussed above and the {\bf phase flip error}, represented by the matrix
 
 $$
 Z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
 $$
 
-The first error correction code that was able to handle bit flip errors and phase flip errors (and combinations thereof) and therefore any possible type of error was invented in 1995 by P. Shor in \cite{Shor}. To understand this code, it is useful to first design a code that protects against phase flip errors alone. The idea for this code is based on the relations
+Note that the phase flip error has no classical equivalent, other than the bit flip error which can classically be interpreted as a bit flipping from one to zero or vice versa randomly. The first error correction code that was able to handle both, bit flip errors and phase flip errors (and combinations thereof), and therefore any possible type of error was described in 1995 by P. Shor in \cite{Shor}. 
 
+To understand Shor's code, it is useful to first design a code that protects against phase flip errors alone. The idea for this code is based on the relations
 \begin{align*}
 Z|+\rangle = |- \rangle \\
 Z|-\rangle  = |+ \rangle
 \end{align*}
-
 where we denote by $|+\rangle $ and $|- \rangle$ the alternative basis of a one-qubit Hilbert space given by 
 
 \begin{align*}
@@ -318,7 +315,7 @@ $$
 H X H = Z
 $$
 
-This implies that a phase flip and a bit flip are two different views of the same thing and therefore that a code that is able to detect and correct bit flip errors is also able to correct phase flip errors if we apply the Hadamard matrix to convert back between these two views. Specifically, we can encode a state by applying the three bit code followed by the Hadamard operator on each qubit. Thus
+This implies that a phase flip and a bit flip are two different views of the same thing and therefore that a code that is able to detect and correct bit flip errors is also able to correct phase flip errors if we apply the Hadamard matrix to convert back between these two views. Specifically, we can encode a state by applying the three bit code followed by the Hadamard operator on each qubit. Thus our code would be
 
 \begin{align*}
 |0 \rangle & \mapsto |+++ \rangle \\
@@ -364,7 +361,7 @@ Specifically, we encode our states as follows. We first encode once using the ph
 
 Now suppose a bit flip error occurs on this encoded state, say on the first qubit. The second and third block of three qubits each are then unaffected, and the error to the first block corresponds to an error that occurs after applying a bit flip error correction code to the three bits in this block. It can therefore be detected and corrected as before.
 
-Now let us see what happens if a phase flip occurs. First, let us introduce a shorthand notation. We abbreviate the three qubit states that appear in the nine bit encoding as
+Now let us see what happens if a phase flip occurs. First, let us introduce a shorthand notation. We abbreviate the three-qubit states that appear in the nine bit encoding as
 
 \begin{align*}
 |A \rangle &= |000 \rangle + |111 \rangle \\
@@ -386,7 +383,7 @@ H|A \rangle & = H(|000 \rangle + |111 \rangle) = \frac{1}{\sqrt{2}} (|000 \rangl
 H |B \rangle &= H(|000 \rangle - |111 \rangle) = \frac{1}{\sqrt{2}} (|111 \rangle + |001 \rangle + |100 \rangle + |010 \rangle) 
 \end{align*}
 
-In the first line, each state contains an even numbers of ones, in the second line each state contains an odd number of ones. Thus if we take an ancillary qubit with initial value $|0 \rangle$ and apply a sequence of three CNOT gates to it, controlled by the three qubits, the result will be $|0 \rangle$ for the first line and $|1 \rangle$ for the second line. Thus this circuit will allow us to tell the state $|A \rangle $ and $|B \rangle $ apart.
+In the first line, each state contains an even numbers of ones, in the second line each, state contains an odd number of ones. Thus if we take an ancillary qubit with initial value $|0 \rangle$ and apply a sequence of three CNOT gates to it, controlled by the three qubits, the result will be $|0 \rangle$ for the first line and $|1 \rangle$ for the second line. Thus this circuit will allow us to tell the state $|A \rangle $ and $|B \rangle $ apart.
 
 Now let us take a look at the circuit in figure \ref{fig:NineQubitSyndromeMeasurement} that combines six of these detection circuits.
 
@@ -401,42 +398,36 @@ Repeating the arguments above for each of the blocks, we see that if we apply th
 
 Similarly, one can show that also a combination of phase flip and bit flip errors, i.e. the result of applying $XZ$, can be detected. Thus this code is able to detect all discrete errors and therefore - by the principle of the digitalization of errors - all errors as long as only one qubit is affected.
 
-Let us now summarize some of the formal properties that this code has. First, the encoding can be described as carving out a 2-dimensional subspace C, called the {\em code space}, in the larger space spanned by all (in this case nine) qubits. More generally, the space C can have dimension $2^n$ and the full Hilbert space can have dimension $2^k$, in which case we can encode n qubits in a larger set of k qubits (in the nine qubit code example, k = 9 and n = 1). 
+Let us now summarize some of the formal properties that this code has. First, the encoding can be described as identifying a 2-dimensional subspace C, called the {\bf code space}, in the larger space spanned by all (in this case nine) qubits. More generally, the space C can have dimension $2^n$ and the full Hilbert space can have dimension $2^k$, in which case we can encode n qubits in a larger set of k qubits (in the nine qubit code example, k = 9 and n = 1). 
 
-Hence the code space is spanned by a set of $2^n$ basis vectors $|\psi_i \rangle$ that we call \emph{code words}. In the case n = 1, it is common practice to denote the codewords by $|0 \rangle_L$ and $|1 \rangle_L$ to indicate that they represent a \emph{logical qubit} encoded using k \emph{physical qubits}. 
+Hence the code space is spanned by a set of $2^n$ basis vectors $|\psi_i \rangle$ that we call {\bf code words}. In the case n = 1, it is common practice to denote the codewords by $|0 \rangle_L$ and $|1 \rangle_L$ to indicate that they represent a {\bf logical qubit} encoded using k {\bf physical qubits}. 
 
-In addition, there is a set of \emph{error operators}, i.e. a finite set of operators $\{ E_\alpha\}$ acting on the larger Hilbert space. These operators represent the impact of discretized noise.
+In addition, there is a set of {\bf error operators}, i.e. a finite set of operators $\{ E_\alpha\}$ acting on the larger Hilbert space. These operators represent the impact of discretized noise.
 
 Now what are the conditions on C and the $E_\alpha$ that allow us to perform error correction? A first condition is that no matter which errors occur, we can still tell the code words apart. This is guaranteed if the various error operators map different code words onto mutually orthogonal subspaces, in other words if 
-
 $$
 \langle \psi_i | E_\alpha^{+} E_\beta | \psi_j \rangle = 0 
 $$
-
 whenever $i \neq j$ and for all $\alpha, \beta$. Thus, even in the presence of errors, the different code words will never overlap. 
 
 What about the case that both code words are the same? It is tempting to ask for the condition
-
 $$
 \langle \psi_i | E_\alpha^{+} E_\beta | \psi_i \rangle = \delta_{\alpha \beta}
 $$
-
 i.e. to require that different errors map the same codeword to orthogonal subspaces. This would make recovery very easy. We could perform the measurements that correspond to projections onto these subspaces to detect the error and correct them by applying the inverse of the error operator. However, this condition is too restrictive. In the case of the nine qubit code, for example, a phase flip $Z_1$ and a phase flip $Z_2$ in the second qubit both map the state $|AAA \rangle$ to the same state, namely $|BAA\rangle$. However, the same applies for the correction, i.e. we do not have to distinguish between these two errors as the act similarly on the code space. In \cite{KL}, a more general condition is presented which captures this case (see also \cite{G1}):
-
 \begin{align}\label{eq:errorcorrection}
 \langle \psi_i | E_\alpha^{+}E_\beta | \psi_j \rangle = C_{\alpha\beta} \delta_{ij}
 \end{align}
+for a hermitian matrix $C_{\alpha \beta}$. If the matrix has full rank, the code is called {\bf non-degenerate}, otherwise - as in the case of the nine qubit code - the code is called {\bf degenerate}. 
 
-for a hermitian matrix $C_{\alpha \beta}$. If the matrix has full rank, the code is called \emph{non-degenerate}, otherwise - as in the case of the nine qubit code - the code is called \emph{degenerate}. 
-
-For the Shor code, we have to use nine physical qubits to encode one logical qubit. n 1996, Steane discovered a code (\cite{SteaneCode}) that  requires only seven physical qubits. In the same year, a code that requires only five qubits was presented (\cite{LMPZ96}) and it was shown that this is a lower bound, i.e. there is no error correction code that requires less than five qubits.
+Of course this encoding generates some overhead. To represent one logical qubit, we need more than one physical qubit. For the Shor code, we have to use nine physical qubits to encode one logical qubit. It is natural to ask what the minimum overhead is that we need. In 1996, Steane discovered a code (\cite{SteaneCode}) that  requires only seven physical qubits. In the same year, a code that requires only five qubits was presented (\cite{LMPZ96}) and it was shown that this is a lower bound, i.e. there is no error correction code that requires less than five qubits.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% The stabilizer formalism
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The stabilizer formalism}
 
-The formalism of stabilizer codes has been introduced by D.~Gottesman in his thesis (\cite{GThesis}) and is very useful to identify and describe a large class of quantum error correction codes. To get the idea, let us first consider the action of products of Pauli matrices on n-qubit systems. In what follows, we will use an upper index to indicate the qubit on which an operator acts in a multi-qubit system. First, let us calculate
+The formalism of stabilizer codes has been introduced by D.~Gottesman in his thesis (\cite{GThesis}) and is very useful to identify and describe a large class of quantum error correction codes. To get the idea, let us first consider the action of products of Pauli matrices on n-qubit systems. In what follows, we will use an upper index to indicate the qubit on which an operator acts in a multi-qubit system. First, let us do a short calculation and determine the action of the product of two Pauli Z-operators on a two-qubit Hilbert space.
 
 \begin{align*}
 \sigma_z^1 \sigma_z^2 |00 \rangle &= |00 \rangle \\
@@ -447,7 +438,7 @@ The formalism of stabilizer codes has been introduced by D.~Gottesman in his the
 
 Thus the hermitian operator $\sigma_z^1 \sigma_z^2$ is able to compare the signs of the two qubits. A state in which these two qubits have the same sign is in the eigenspace with eigenvalue one, a state in which the signs differ is in the eigenspace with eigenvalue minus one. 
 
-Looking again at the Shor nine qubit code, this implies that the process of detecting a bit flip error can be implemented using measurements corresponding to these operators. In order to detect a bit flip error in the first block of three qubits, we can measure $\sigma_z^1 \sigma_z^2$ and $\sigma_z^1 \sigma_z^3$. The outcomes of these two measurements than correspond to the values of the ancillary qubits used in our syndrome measurement circuits and tell us whether a bit flip occurred and where - the same is true for the other blocks. 
+Looking again at the Shor nine qubit code, this implies that the process of detecting a bit flip error can be implemented using measurements corresponding to these operators. In order to detect a bit flip error in the first block of three qubits, we can measure $\sigma_z^1 \sigma_z^2$ and $\sigma_z^1 \sigma_z^3$. The outcomes of these two measurements then correspond to the values of the ancillary qubits used in our syndrome measurement circuits and tell us whether a bit flip occurred and where - the same is true for the other blocks. 
 
 A similar observation holds for phase flip errors. In fact, it is obvious that - using the same notation as before - we have
 
@@ -458,67 +449,56 @@ A similar observation holds for phase flip errors. In fact, it is obvious that -
 
 Thus a measurement corresponding to the operator $\sigma_x^1 \sigma_x^2 \sigma_x^3$ can be used to distinguish between the states $|A \rangle $ and $|B \rangle$. Consequently, the syndrome measurement circuit for the phase flip error corresponds to measurements of the operators $\sigma_x^1\sigma_x^2 \sigma_x^3 \sigma_x^4 \sigma_x^5 \sigma_x^6$ and $\sigma_x^1\sigma_x^2 \sigma_x^3 \sigma_x^7 \sigma_x^8 \sigma_x^9$
 
-As described in \cite{GThesis}, there is a total of eight operators $M_1, \dots, M_8$ of this type that we have to measure to be able to detect any possible one qubit phase flip or bit flip error. Each of these operator stabilizes the two logical one-qubit states $|0 \rangle_L$ and $|1\rangle_L$ of the Shor code, i.e. these states are eigenstates with eigenvalue one. Also note that the matrices $M_1, \dots, M_8$ all commute and therefore span an abelian group.
+As described in \cite{GThesis}, there is a total of eight operators $M_1, \dots, M_8$ of this type that we have to measure to be able to detect any possible one qubit phase flip or bit flip error. Each of these operator stabilizes the two logical one-qubit states $|0 \rangle_L$ and $|1\rangle_L$ of the Shor code, i.e. these states are eigenstates with eigenvalue one. Also note that the matrices $M_1, \dots, M_8$ all commute and therefore span an abelian group. This is essential, as the fact that they commute means that we can perform measurements that do not conflict with each other. So we have found that in the case of the Shor code, we can detect errors by applying a set of eight compatible measurements. 
 
-Let us now try to formalize and generalize this observation. We consider a system with k qubits and the Pauli group $\mathcal G = \mathcal{G}_k$. Within the Pauli group, we consider an abelian subgroup S called the \emph{stabilizer}. We can then look at the linear subspace $T_S$ which is the intersection of all +1 eigenspaces of the elements in S, i.e.
+Let us now try to formalize and generalize this observation. We consider a system with k qubits and the Pauli group $\mathcal G = \mathcal{G}_k$. Within the Pauli group, we consider an abelian subgroup S called the {\bf stabilizer}. We can then look at the linear subspace $T_S$ which is the intersection of all +1 eigenspaces of the elements in S, i.e.
 
 $$
 T_S = \{ |\psi \rangle \, \text{such that} \, s|\psi \rangle = |\psi \rangle 
 \forall s \in S \}
 $$
 
-To avoid confusion, let us stress that we do not assume that S is the full stabilizer, i.e. there might be elements of $\mathcal{G}$ that also keep all elements of $T$ fixed but are not in S. 
+The idea of stabilizer codes is now to use a subspace of the form $T_S$ as code space for a quantum error correction code. In general, the stabilizer S is described in terms of l independent generators, i.e. $S = \langle g_1, \dots, g_l \rangle$. One can then show (see \ref{lem:stabilizerdimension}) that the dimension of the subspace $T_S$ is equal to $2^{k-l}$. Intuitively, each additional stabilizer adds one more constraint, namely being in the $+1$-eigenspace of that stabilizer, that divides the dimension of the code space by two. In the example of the nine qubit code, we are considering the subgroup S generated by the elements $M_1, \dots, M_8$ which turn out to be independent. The overall Hilbert space has dimension $2^k = 512$ as $k = 9$. Therefore the subspace $T_S$ has dimension $2^{9 - 8} = 2$ and therefore describes one logical qubit. 
 
-The idea of stabilizer codes is now to use a subspace of the form $T_S$ as code space for a quantum error correction code. In general, the stabilizer S is described in terms of l independent generators, i.e. $S = \langle g_1, \dots, g_l \rangle$. One can then show (see \ref{lem:stabilizerdimension}) that the dimension of the subspace $T_S$ is equal to $2^{k-l}$. In the example of the nine qubit code, we are considering the subgroup S generated by the elements $M_1, \dots, M_8$ which turn out to be independent. The overall Hilbert space has dimension $2^k = 512$ as $k = 9$. Therefore the subspace $T_S$ has dimension $2^{9 - 8} = 2$ and therefore describes one logical qubit. 
-
-Now let us turn to the question which errors a code provided in this way by a stabilizer. Assume that we are given a set of error operators $\{ E_\alpha \} \subset \mathcal{G}$ as before. For any two indices, we can then consider the operator $E_{\alpha \beta} = E_\alpha^+ E_\beta$. Given any $E_{\alpha \beta}$ and any operator $M \in S$, these two operators either commute or anti-commute, as they are in $\mathcal{G}$. 
+Now let us turn to the question which errors a code provided in this way can correct. Assume that we are given a set of error operators $\{ E_\alpha \} \subset \mathcal{G}$ as before. For any two indices, we can then consider the operator $E_{\alpha \beta} = E_\alpha^+ E_\beta$. Given any $E_{\alpha \beta}$ and any operator $M \in S$, these two operators either commute or anti-commute, as they are in $\mathcal{G}$. 
 
 Let us first suppose that $M$ and $E_{\alpha \beta}$ anti-commute. Then, given any two code words $|\psi_i \rangle$ and $|\psi_j \rangle$, we can calculate
-
 $$
 \langle \psi_i | E_\alpha^+ E_\beta | \psi_j \rangle =
 \langle \psi_i | M E_{\alpha\beta} | \psi_j \rangle =
 - \langle \psi_i | E_{\alpha\beta} M | \psi_j \rangle =
 \langle \psi_i | E_\alpha^+ E_\beta | \psi_j \rangle
 $$
-
 where we have used that $M |\psi_i \rangle = M^+ |\psi_i \rangle = |\psi_i \rangle$ as $M$ is either plus or minus $M^+$. This is only possible if
-
 $$
 \langle \psi_i | E_\alpha^+ E_\beta | \psi_j \rangle = 0
 $$
 
 This is in line with our earlier condition \eqref{eq:errorcorrection}! Similarly, if $E_{\alpha \beta}$ itself is in $S$, we obtain that
-
 $$
 \langle \psi_i | E_\alpha^+ E_\beta | \psi_j \rangle =
 \langle \psi_i | E_{\alpha\beta} | \psi_j \rangle =  \langle \psi_i |  \psi_j \rangle
 \delta_{ij}
 $$
-
 which again matches condition \eqref{eq:errorcorrection}. Also note that due to the fact that $E_\alpha$ is either hermitian or anti-hermitian, we have $E_\alpha^+ E_\beta = \pm E_\alpha E_\beta$. Thus we have shown
 
 \begin{thm}[see \cite{GThesis}]\label{stabilizercondition}
-Suppose that $S$ is an abelian subgroup of the Pauli group $\mathcal{G}$ with a non-trivial invariant subspace $T_S$. If $\{E\alpha \}$ is a set of error operators in $\mathcal{G}$ such that for any two indices $\alpha, \beta$, the operator $E_\alpha E_\beta$ either anti-commutes with some element of $S$ or is itself in $S$, then $T_S$ defines an error correction code that is able to correct the errors $\{E\alpha \}$.
+Suppose that $S$ is an abelian subgroup of the Pauli group $\mathcal{G}$ with a non-trivial invariant subspace $T_S$. If $\{E_\alpha \}$ is a set of error operators in $\mathcal{G}$ such that for any two indices $\alpha, \beta$, the operator $E_\alpha E_\beta$ either anti-commutes with some element of $S$ or is itself in $S$, then $T_S$ defines an error correction code that is able to correct the errors $\{E_\alpha \}$.
 \end{thm}
 	
 Let us again consider the nine qubit Shor code as an example, and let $E_1 = \sigma^1_x$ and $E_2 = 1$. Then $E_{12} = \sigma_x^1$ which clearly anticommutes with $M_1 = \sigma_z^1 \sigma_z^2$. Thus we can detect and correct single bit flip errors in the first qubit (and similarly in all other qubits). Similarly, if $E_1 = \sigma_z^1$, the operator $E_{12}$ will anti-commute with the operator $M_7 = \sigma_x^1 \sigma_x^2 \sigma_x^3 \sigma_x^4 \sigma_x^5 \sigma_x^6$. Thus we are also able to correct phase flip errors in the first qubit. A similar reasoning applies to all other one qubit errors, thus we again find that the Shor code can correct them all (see \cite{GThesis}). 
 
-To find the possible set of error operators, we therefore need to take a look at the centralizer $C(S)$ which - as common in group theory - is defined to be the set of group elements in $\mathcal{G}$ that commute with every element of $S$. Now, in our case, the centralizer is in fact equal to the normalizer $N(S)$, i.e. the set of all group elements that fix S under conjugation. 
+To find the possible set of error operators, we therefore need to take a look at the {\bf centralizer} $C(S)$ which is defined to be the set of group elements in $\mathcal{G}$ that commute with every element of $S$. Now, in our case, the centralizer is in fact equal to the {\bf normalizer} $N(S)$, i.e. the set of all group elements that fix S under conjugation. 
 
 To see this, let us first assume that we are given some element $A$ of the Pauli group such that $A \in N(S)$. Then, for any $s \in S$, we have
-
 $$
 A^+ s A \in S
 $$
-
 by definition of the normalizer. But being elements of the Pauli group, $s$ and $A$ either commute or anti-commute. We claim that they commute, which would prove that $A \in S$. In fact, if $A$ and $s$ anti-commute, then
-
 $$
 A^+ s A = - A^+ A s = - s
 $$
-
-so $-s$ would be in $S$. But $s \in S$, so that this would imply that $-1 \in S$, which we have excluded. This proves that $N(s) \subset C(S)$. Conversely, it is clear that $C(S) \subset N(S)$.
+so $-s$ would be in $S$. But $s \in S$, so that this would imply that $-1 \in S$. But of course $-1$ only acts trivially on the zero vector, so that $T_S$ would be trivial which we have excluded. This proves that $N(s) \subset C(S)$. Conversely, it is clear that $C(S) \subset N(S)$.
 
 In light of this identity, we can now rephrase the condition expressed in theorem \ref{stabilizercondition}: the code given by the stabilizer S corrects the error operators $\{ E_\alpha \}$ if for any two indices E$\alpha, \beta$, we have 
 
@@ -527,11 +507,9 @@ E_\alpha E_\beta \in S \cup (\mathcal{G} - N(S))
 $$
 
 For the elements in the normalizer $N(S)$, there is a different story to tell. First, if $n \in N(S)$, the matrix $n$ maps $T_S$ to itself. In fact, if $|\psi\rangle  \in T_S$, we have
-
 $$
 n |\psi\rangle = n s |\psi \rangle = s n | \psi \rangle
 $$
-
 for every $s \in S$. This shows that $n |\psi \rangle$ is fixed by all $s \in S$ and therefore in $T_S$. Thus the elements of $N(S) / S$ define an automorphism of $T_S$. We can interpret these matrices as quantum gates that now act on the \emph{logical qubits} in the code space.
 
 Let us consider an example to see how this works in general. We consider the following four generators, acting on a quantum register with five qubits (and therefore providing a two-dimensional invariant subspace $T_S$, i.e. one logical qubit).
@@ -546,7 +524,6 @@ S_4 &= \sigma_z^1 \sigma_z^3 \sigma_x^4 \sigma_z^4 \sigma_x^5 \sigma_z^5
 It is a bit tedious, but not difficult, to verify that these generators commute. For instance, if we move $S_2$ past $S_1$, we pick up one minus one from the second qubit and one from the last qubit. When we commute $S_3$ past $S_3$, we pick up a sign from the second qubit and  a sign from the third qubit which is again an even number and so forth. 
 
 Let us now in addition introduce two additional operators that we call $\bar{X}$ and $\bar{Z}$ which are defined as follows.
-
 \begin{align*}
 \bar{X} &= \sigma_z^1 \sigma_z^4 \sigma_x^5 \\
 \bar{Z} &= \sigma_z^1 \sigma_z^2 \sigma_z^3 \sigma_z^4 \sigma_z^5
@@ -574,7 +551,7 @@ Similarly, if $S_i$ anti-commutes with $E$, then
 $$
 S_i E |c \rangle = - E S_i |c \rangle = - E |c \rangle 
 $$
-Thus the state $E |c \rangle$ is, in any case, in an eigenspace of $S_i$. Consequently, we can measure all the $S_i$ without changing the state! For each index $i$, the measurement either gives us $+1$ - this will be the case if and only if $E$ and $S_i$ commute - or $-1$ - this will be the case if $E$ and $S_i$ anti-commute. Combining the results of the measurements, we obtain a vector $e$ called the \emph{error syndrome}.
+Thus the state $E |c \rangle$ is, in any case, in an eigenspace of $S_i$. Consequently, we can measure all the $S_i$ without changing the state! For each index $i$, the measurement either gives us $+1$ - this will be the case if and only if $E$ and $S_i$ commute - or $-1$ - this will be the case if $E$ and $S_i$ anti-commute. Combining the results of the measurements, we obtain a vector $e$ called the {\bf error syndrome}.
 
 As the syndrome only depends on the commutation relation between $E$ and the $S_i$ (and not on the code word), the syndrome gives us a mapping from the set of correctable errors to the set of all possible error syndromes. If this mapping were one-to-one, the error syndrome would tell us exactly which error occured, and we could apply the inverse of the error operator to correct the state. 
 
@@ -590,13 +567,13 @@ moving $S_i$ to the right gives either two times minus one or no sign at all, th
 $$
 E_2^+ E_1 |c \rangle = E |c \rangle = |c \rangle
 $$
-as if we had applied $E_1^+$. The short summary is that even though the error syndrome does not tell us whether the error is $E_1$ or $E_2$, it does not matter - applying any of the inverses will still correct the error.
+as if we had applied $E_1^+$. The short summary is that even though the error syndrome does not tell us whether the error is $E_1$ or $E_2$, it does not matter - applying \emph {any} of the inverses will still correct the error.
 
-So once we have an encoded state, we can measure the error syndrome, i.e. measure the $S_i$ (which are Pauli operators and can therefore be measured easily) to obtai all the information that we need to correct the error. But how do we actually prepare an encoded state in the first place?
+So once we have an encoded state, we can measure the error syndrome, i.e. measure the $S_i$ (which are Pauli operators and can therefore be measured easily) to obtain all the information that we need to correct the error. But how do we actually prepare an encoded state in the first place?
 
 Again, this turns out to be comparatively easy. We start with some initial state, say the state $|0 \dots 0 \rangle$ of the computational basis. Then we measure each of the operators $S_i$ in turn. By the rules of quantum mechanics, the measurement will project the state into an eigenspace of $S_i$. 
 
-If all the eigenvalues are $+1$, we are done - our resulting state will then be in the code space $T_S$. If one of the eigenvalues is $-1$, we need to apply a correction. For that purpose, we treat the state as if an error with the respective error syndrome had occurred. Thus, we apply an error operator that anti-commutes with those $S_i$ for which the eigenvalue is one and commutes with all the others. This will force the state into a simultaneous $+1$-eigenstate of all the $S_i$ and therefore into the state $T_S$ (that such an error operator exists can again be shown using the check matrix formalism and linear algebra, see Lemma 1 in \cite{G1}). 
+If all the eigenvalues are $+1$, we are done - our resulting state will then be in the code space $T_S$. If one of the eigenvalues is $-1$, we need to apply a correction. For that purpose, we treat the state as if an error with the respective error syndrome had occurred. Thus, we apply an error operator that anti-commutes with those $S_i$ for which the eigenvalue is minus one and commutes with all the others. This will force the state into a simultaneous $+1$-eigenstate of all the $S_i$ and therefore into the state $T_S$ (that such an error operator exists can again be shown using the check matrix formalism and linear algebra, see Lemma 1 in \cite{G1}). 
 
 
 
@@ -609,13 +586,15 @@ Let us briefly recall what we have achieved so far. We have considered an error 
 
 First, we have not been able to protect against all errors. Instead, we have only been able to detect and correct single qubit errors. This can be generalized further, but in general we will only be able to protect against errors that affect only a small number of qubits. When we assume that errors on individual qubits occur independently, this is not yet a full protection, but as errors on more than one qubit are less likely in such a model we have been able to reduce the probability of an error. 
 
-Further, we have restricted ourselves to errors that occur while we store a state. Obviously, when we act on a state, i.e. when we apply quantum gates, errors can occurs as well. Even worse, these errors can propagate. Assume for instance that we have a bit flip in the control qubit of a CNOT gate. If the bit flips from $|0 \rangle$ to $|1 \rangle$, also the target qubit will flip, thus the error has been duplicated. 
+Further, we have restricted ourselves to errors that occur while we \emph{store} a state. Obviously, when we \emph{act} on a state, i.e. when we apply quantum gates, errors can occurs as well. Even worse, these errors can propagate. Assume for instance that we have a bit flip in the control qubit of a CNOT gate. If the bit flips from $|0 \rangle$ to $|1 \rangle$, also the target qubit will flip, thus the error has been duplicated. 
 
-\emph{Fault-tolerant quantum computing} refers to a set of techniques and theoretical results that address these shortcomings. Following \cite{Kempe}, the required capabilities can be described as follows.
+And finally, the additional circuitry that we need to detect and correct errors is itself prone to errors. Thus we could detect errors which are not there, oversee other errors or perform wrong corrections - another source of trouble that we need to control.
+
+{\bf Fault-tolerant quantum computing} refers to a set of techniques and theoretical results that address these shortcomings. Following \cite{Kempe}, the required capabilities can be described as follows.
 
 \begin{enumerate}
 	\item We need to be able to prepare our initial state, i.e. in most cases the logical state $|0 \rangle_L$, in a fault-tolerant manner
-	\item We need to find a way to apply quantum gates to encoded states. The obvious approach - decoding, applying a quantum gate directly and encoding again - could lead to uncontrollable error propagation, as an error in the quantum gate affects all qubits after encoding. Therefore, one typically applies \emph{logical gates} to the encoded states, and we need to be able to do this in a fault-tolerant way
+	\item We need to find a way to apply quantum gates to encoded states. The obvious approach - decoding, applying a quantum gate directly and encoding again - could lead to uncontrollable error propagation, as an error in the quantum gate affects all qubits after encoding. Therefore, one typically applies {\bf logical gates} to the encoded states, and we need to be able to do this in a fault-tolerant way
 	\item After applying a logical gates, we need to be able to detect and correct errors, and again this needs to be done in a fault-tolerant way, as the circuits used for error correction might themselves create errors
 	\item Finally, our measurements must not introduce an uncontrollable number of new errors and must reach a certain a certain precision
 \end{enumerate}
@@ -624,7 +603,7 @@ Fault-tolerant quantum computation is a highly non-trivial subject, and we can o
 
 As a first example, let us see how we might detect errors in fault-tolerant way. We again use the three-bit code as an example to keep things simple, even though this code does not protect against phase flip errors.
 
-Let us take a look at the circuit displayed in figure \ref{fig:SyndromeMeasurement} again, that we have used before to measure the error syndrome for the three-bit code. This circuit works, but it is not fault-tolerant. The reason is that the CNOT gate can propagate errors in an uncontrollted way.
+Let us take a look at the circuit displayed in figure \ref{fig:SyndromeMeasurement} again, that we have used before to measure the error syndrome for the three-bit code. This circuit works, but it is not fault-tolerant. The reason is that the CNOT gate can propagate errors in an uncontrolled way.
 
 To see this, suppose in general that we are given a unitary transformation $U$ and an error $E$. If the error occurs before applying the gate, the resulting state will be
 $$
@@ -639,7 +618,7 @@ U Z_2 U^+ =
 \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{pmatrix} 
 = Z_1 Z_2
 $$
-In other words, a phase flip error in the target qubit propagates through the CNOT gate as a phase flip error in both involved qubits, target and control. 
+In other words, a phase flip error in the target qubit propagates through the CNOT gate as a phase flip error in \emph{both} involved qubits, target and control. This is a typical example of unwanted error propagation - an error in one qubit spreads across other qubits and potentially the entire circuit.
 
 Returning to our syndrome measurement circuit, we see that an error in the ancillary qubits can propagate into the code qubits. Even worse, an error in one of the ancillary qubits can propagate into \emph{two} of the code qubits, destroying the encoded state beyond repair.
 
@@ -662,7 +641,7 @@ There is of course more that can go wrong. First, the state of the ancillary qub
 
 Having discussed error correction, let us now take a brief look at how we can compute with encoded states, i.e. how we can apply logical gates to the code words. Again, the main challenge will be to do this in a fault-tolerant way, and we will discuss only one example to illustrate the basic idea.
 
-Let us assume we wanted to implement a CNOT gate that operates on two logical qubits using the three qubit code, i.e. on six physical qubits. A straightforward implementation of such a gate could be as follows.
+Let us assume we wanted to implement a CNOT gate that operates on two logical qubits using the three-qubit code, i.e. on six physical qubits. A straightforward implementation of such a gate could be as in figure \ref{fig:EncodedCNOT_One}.
 
 \begin{figure}[ht]
 \centering
@@ -671,7 +650,7 @@ Let us assume we wanted to implement a CNOT gate that operates on two logical qu
 \label{fig:EncodedCNOT_One}
 \end{figure}
 
-It is rather obvious that this circuit works. If the control state is 
+Before discussing error propagation for this example, let us see why the circuit works. If the control state is 
 $$
 |1 \rangle_L = |111 \rangle
 $$
@@ -680,15 +659,13 @@ then each of the CNOT gates will flip a qubit in the target word, and the target
 Unfortunately, this circuit is again not fault tolerant - a bit flip error in the first qubit of the control word will propagate into all three qubits of the target word and create an unrecoverable error. The reason for this behaviour is that one qubit in the first code block is connected to more than one - in this case three - qubits in the second code word. 
 
 For a better approach, let us take a look at the circuit shown in figure \ref{fig:EncodedCNOT_Two}. 
-
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\linewidth]{images/EncodedCNOT_Two}
 \caption[Fault tolerant encoded CNOT]{Fault tolerant encoded CNOT}
 \label{fig:EncodedCNOT_Two}
 \end{figure}
-
-This circuit also realizes a CNOT on the level of logical states. However, for this circuit, an error in one of the qubits of the first block can only propagate into one qubit in the second block. So if we are able to fully recover from one qubit errors, this circuit works - again as long as only one error occurs. This connectivity property of a circuit is sometimes called \emph{transversality}.
+This circuit also realizes a CNOT on the level of logical states. However, for this circuit, an error in one of the qubits of the first block can only propagate into one qubit in the second block.  So if we are able to fully recover from one qubit errors, this circuit works - again as long as only one error occurs. This connectivity property of a circuit is sometimes called {\bf transversality}.
 
 Transversal gates are fault-tolerant, as an error in one qubit can only propagate into one qubit of any other code block, a situation from which we can recover. For many codes, many basic gates can be implemented qubit-wise and therefore transversally on the level of logical qubits. Unfortunately, a full set of universal quantum gates cannot be constructed in such a way - typically one gate remains for which no transversal implementation can be found. Fortunately, there are other (considerable more complicated) methods available to construct fault-tolerant logical gates. In \cite{Shor96}, Shor has given the first fully universal set of fault-tolerant logical gates for his nine qubit code. 
 
@@ -704,13 +681,11 @@ Transversal gates are fault-tolerant, as an error in one qubit can only propagat
 
 We have now discussed fault-tolerant error correction and fault-tolerant computation on encoded states. Let us now see how this fits into the overall picture of fault-tolerant quantum computation.
 
-Suppose we are given a circuit C that describes a quantum computation. We can think of the overall computation as being organized in individual \emph{time steps}. At each time step, every qubit in the circuit takes part in a basic set of possible \emph{
-operations} (or, to mention a different term that is sometimes used, \emph{locations}).
+Suppose we are given a circuit C that describes a quantum computation. We can think of the overall computation as being organized in individual time steps. At each time step, every qubit in the circuit takes part in a basic set of possible {\bf 
+operations} (or, to mention a different term that is sometimes used, {\bf locations}).
 This can be a gate, the preparation of a qubit in a initial state, a measurement or a "wait step", i.e. the identity operation leaving the involved qubits unchanged. At each time step, a qubit is involved in exactly one of these operations.
 
-Given such a circuit, we can now try to build a fault tolerant circuit performing the same computation as follows. We replace each qubit in the circuit C by a block of qubit encoding a logical qubit. Similarly, we replace each operation in C by the corresponding fault tolerant equivalent, i.e. we replace each gate by the corresponding logical gate, a measurement by a fault tolerant measurement, and a preparation by a fault tolerant state preparation. In addition, we place a (fault tolerant) error correction circuit in each block which is the output of a logical gate. The result is called a \emph{simulation} of the original circuit. 
-
-An example is displayed in figure \ref{fig:Simulation}, using the graphical language described in \cite{G1}. 
+Given such a circuit, we can now try to build a fault tolerant circuit performing the same computation as follows. We replace each qubit in the circuit C by a block of qubits encoding a logical qubit. Similarly, we replace each operation in C by the corresponding fault tolerant equivalent, i.e. we replace each gate by the corresponding logical gate, a measurement by a fault tolerant measurement, and a preparation by a fault tolerant state preparation. In addition, we place a (fault tolerant) error correction circuit in each block which is the output of a logical gate. The result is called a {\bf simulation} of the original circuit. An example is displayed in figure \ref{fig:Simulation}, using (roughly) the graphical language described in \cite{G1}. 
 
 
 \begin{figure}[ht]
@@ -722,13 +697,13 @@ An example is displayed in figure \ref{fig:Simulation}, using the graphical lang
 
 The upper part of this diagram shows an original circuit, in which we prepare two qubits in a known state, then apply the unitary transformation U and finally measure both qubits. The result of the replacement procedure described above is displayed in the lower part of the picture, using again the (unrealistic) example of a three qubit code. Here we have replaced each qubit by a corresponding block of three qubits holding the code word. The operation U has been replaced by its logical implementation, acting on the encoded states, and both after the preparation and after applying U, we add a circuit performing error correction.
 
-We have already seen that the circuits used for error correction, state preparation, logical gates and measurement need to be designed with care and in a fault-tolerant way, which essentially means that errors do not propagate in an uncontrolled manner. But even if we do this, it is not clear that the error rate in the simulation is really smaller. The reason is that even though we have added error correction, we have also added many additional operations acting the physical qubits, i.e. more things that can go wrong. Thus passing to the simulation will introduce additional errors, and it is not a priori clear - and in fact not true - that the error correction will be able to compensate for this so that the the net effect is actually an increased reliability. 
+We have already seen that the circuits used for error correction, state preparation, logical gates and measurement need to be designed with care and in a fault-tolerant way, which essentially means that errors do not propagate in an uncontrolled manner. But even if we do this, it is not clear that the error rate in the simulation is really smaller. The reason is that even though we have added error correction, we have also added many additional operations acting the physical qubits, i.e. more things that can go wrong. Thus passing to the simulation will introduce additional errors, and it is not a priori clear - and in fact not true - that the error correction will be able to compensate for this so that the net effect is actually an increased reliability. 
 
-However, it turns out that you win the race between additional errors that error correction circuitry introduce and the effect of the correction itself provided that the fidelity of the underlying physical operation is below a certain threshold. This is the content of the famous \emph{threshold theorem} (\cite{AharonovOr}, \cite{KnillLaflammeZurek}, \cite{AliferisGottesmanPreskill}).
+However, it turns out that you win the race between additional errors that error correction circuitry introduce and the effect of the correction itself provided that the fidelity of the underlying physical operation is below a certain threshold. This is the content of the famous {\bf threshold theorem} - you can correct errors more errors that you create (\cite{AharonovOr}, \cite{KnillLaflammeZurek}, \cite{AliferisGottesmanPreskill}).
 
 The proof of this theorem is long and complicated, so we restrict ourselves to an oversimplified example. Let us again look at the fault-tolerant implementation of a CNOT gate shown in figure \ref{fig:EncodedCNOT_Two}. To analyze the probability that this circuit fails, let us assume that the only error that can occur is a bit flip error in the target qubit of each physical CNOT gate and that this error occurs with probability $p$. Thus we assume that error correction, state preparation and measurement work in an idealized, error free way.
 
-Let us now look at the different combinations of faults that can occur during a specific run of the simulation circuit, i.e. a specific \emph{fault path}). A first fault path is given a single bit flip error in one of the target qubits after executing the CNOT operation. However, this affects only one qubit and can therefore be corrected by the error correction circuit. Thus, for this fault path, the simulation works correctly.
+Let us now look at the different combinations of faults that can occur during a specific run of the simulation circuit, i.e. a different {\bf fault paths}. A first fault path is given a single bit flip error in one of the target qubits after executing the CNOT operation. However, this affects only one qubit and can therefore be corrected by the error correction circuit. Thus, for this fault path, the simulation works correctly.
 
 Let us now assume a different fault path, given by a fault in target qubit one and target qubit two, whereas the CNOT acting on target qubit three operates correctly. Assuming that the individual faults are statistically independent, the probability for this fault path is
 $$
@@ -738,23 +713,25 @@ This would introduce an error from which we could not recover, as our code is on
 $$
 {{3} \choose {2}} = 3
 $$
-possibilities to choose two error locations out of the three target qubits. And finally, it might happen that faults occur in all three location. Thus the overal probability to have at least two faults is
+possibilities to choose two error locations out of the three target qubits. 
+
+And finally, it might happen that faults occur in all three locations. Thus the overall probability to have at least two faults is
 $$
 3 (p^2 - p^3) + p^3 = 3 p^2 - 2 p^3 \leq 3 p^2
 $$
 Thus the overall probability that the circuit does not operate correctly does not reduce from p - for the physical CNOT operation without error protection - to $p^2$, but to $3 p^2$, where the factor $3$ reflects the growth of the circuit when passing from the physical circuit to the simulation, i.e. the impact of the additional gates.
 
-Of course this is a very naive model, but it turns out that a similar result can be obtained with more realistic error models - this is the work done in  \cite{AharonovOr} and  \cite{KnillLaflammeZurek} and more recently in \cite{AliferisGottesmanPreskill} using a different formalism that is better suited to cover the case of a code that can correct only one error as well. The upshot of the discussion is that when passing from a physical circuit with error rate $p$ per operation to the simulation and applying the principles of fault-tolerant quantum computation explained in the previous section, the effective error rate is given by
+Of course this is a very naive model, but it turns out that a similar result can be obtained with more realistic error models - this is the work done in  \cite{AharonovOr} and  \cite{KnillLaflammeZurek} and more recently in \cite{AliferisGottesmanPreskill} using a different formalism that is better suited to cover the case of a code that can correct only one error. The upshot of the discussion is that when passing from a physical circuit with error rate $p$ per operation to the simulation and applying the principles of fault-tolerant quantum computation explained in the previous section, the effective error rate changes according to the rule
 $$
 p \mapsto c p^{t+1}
 $$
-where $t$ is the number of errors that the used code can correct and $A$ is a constant that takes the growth of the circuit when passing to the simulation into account and depends on the code and the used fault-tolerant implementations of gates, measurements and state preparations.
+where $t$ is the number of errors that the used code can correct and $A$ is a constant that reflects the growth of the circuit when passing to the simulation and depends on the code and the used fault-tolerant implementations of gates, measurements and state preparations.
 
-Of course this is not necessarily better than $p$, unless $c p^t < 1$, i.e. unless the fault probability $p$ of the physical operations is below a critical threshold given by 
+Of course this is not necessarily better than $p$, unless $c p^t < 1$, i.e. unless the error rate $p$ of the physical operations is below a critical threshold given by 
 $$
 p < p_{crit} = c^{-\frac{1}{t}}
 $$
-Now the point is that if we are below this threshold, we can improve further by repeating this procedure. Thus we start with a circuit $C_0$, pass to the simulation$C_1$ which is again made up of physical gates and qubits, and then replace each of these qubits and gates by their encoded equivalents to obtain another circuit $C_2$ which simulates $C_1$ and so forth. On the level of codes, this means that in each step, we encode each of the qubits that make up the code word further using the same code - a procedure known as \emph{concatenation}.
+Now the point is that if we are below this threshold, we can improve further by repeating this procedure. Thus we start with a circuit $C_0$, pass to the simulation $C_1$ which is again made up of physical gates and qubits, and then replace each of these qubits and gates by their encoded equivalents to obtain another circuit $C_2$ which simulates $C_1$ and so forth. On the level of codes, this means that in each step, we encode each of the qubits that make up the code word further using the same code - a procedure known as {\bf concatenation}.
 
 Let us see how the probability for a fault develops when we do this. For simplicity, let us consider the case $t = 1$. We have already seen that passing to the simulation amounts to replacing $p$ by 
 $$
@@ -764,7 +741,7 @@ where $\epsilon = p{p_{crit}}^{-1} = cp < 1$. If we now iterate this procedure, 
 $$
 \epsilon^{2^{k+1}-1} p 
 $$
-As $\epsilon < 1$, this quickly goes to zero, and we can therefore reach any desired precision, whereas if $\epsilon > 1$, the probability blows up exponentially when we iterate through this procedure. Thus we have shown that \emph{given physical operations with fault probability less than $p_{crit}$, we can implement each quantum circuit in a fault-tolerant way with arbitrary precision}. 
+As $\epsilon < 1$, this quickly goes to zero, and we can therefore reach any desired precision, whereas if $\epsilon > 1$, the probability blows up exponentially when we iterate through this procedure. Thus we have shown that \emph{given physical operations with error rate less than $p_{crit}$, we can implement each quantum circuit in a fault-tolerant way with arbitrary reliability}. 
 
 Unfortunately, the exact value of the threshold is not known. The initial estimate provided in \cite{AharonovOr} was in the range of $p_{crit} = 10^{-6}$. Later, this was improved by several authors, and is mostly assumed to be in the range between $10^{-4}$ and $10^{-2}$ (see \cite{Beginners} for an overview of some results in this direction and \cite{SurfaceCodes} for the error threshold for surface codes). 
 
@@ -776,15 +753,15 @@ As $c$ is in the order of $p_{crit}^{-1}$, this implies that we need as many as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Toric codes}
 
-So far we have studied stabilizer codes on abstract Hilbert spaces, assuming no additional relations between the involved qubits. However, in reality, qubits are typically organized on a surface or in a three-dimensional structure. In order to be able to apply a stabilizer code, qubits need to interact, and this is in general not possible between any two qubits in a real world quantum computer, but only between qubits which are direct neighbors. \emph{Topological codes} are quantum error correction codes that take this additional structure into account, and toric codes, which we describe in this section, have been the first example of topological codes.
+So far we have studied stabilizer codes on abstract Hilbert spaces, assuming no additional relations between the involved qubits. However, in reality, qubits are typically organized on a surface or in a three-dimensional structure. In order to be able to apply a stabilizer code, qubits need to interact, and this is in general not possible between any two qubits in a real world quantum computer, but only between qubits which are direct neighbors. Roughyl speaking, {\bf Topological codes} are quantum error correction codes that take this additional structure into account, and {\bf toric codes}, which we describe in this section, have been the first example of topological codes.
 
 To describe toric codes, let us first assume that we have organized our qubits on a two-dimensional lattice $L$. More precisely, we assume that each edge of a regular two-dimensional lattice carries exactly one qubit. We identify opposite edges of the lattice so that alternatively, we could think of the lattice as a cell decomposition of the 2-dimensional torus $T^2 = S^1 \times S^1$. 
 
 Recall that the group $C_1(L;\Z_2)$ of 1-chains for that cell decomposition is the set of all formal linear combinations
 $$
-c = \sum_{\text{edges} \, e} a(e) e
+c = \sum_{\text{edges} \, e} c(e) e
 $$
-of edges, where we choose the coefficients $c(e)$ to be in $\Z_2$. If $E$ denotes the number of edges, then we can clearly identify this group with the group $\Z_2^E$, i.e. with the set of binary vectors of length $E$. But the edges are also in one-to-one correspondence to the qubits, so that binary strings of length $E$ are also in one-to-one correspondence with elements of the computational basis. Thus we have
+of edges, where we choose the coefficients $(e)$ to be in $\Z_2$. If $E$ denotes the number of edges, then we can clearly identify this group with the group $\Z_2^E$, i.e. with the set of binary vectors of length $E$. But the edges are also in one-to-one correspondence to the qubits, so that binary strings of length $E$ are also in one-to-one correspondence with elements of the computational basis. Thus we have
 $$
 \Z_2^E \simeq C_1(L ; \Z_2) \simeq \text{computational basis}
 $$
@@ -816,14 +793,14 @@ The homomorphisms $X$ and $Z$ from the group $C_1(L;\Z_2)$ into the Pauli group 
 \end{lem}
 
 \begin{proof}
-Given a chain $c$ and a a binary vector $b$, $X_c$ acts on the computational basis element $|b \rangle$ by flipping those bits for which $c_i$ is not zero, i.e. the qubits at those edges contained in $c$. In terms of the computational basis, this corresponds to bitwise addition of $c$, proving our first claim. This implies immediately that $X_c = 1$ can only happen if $b \oplus c \rangle  = c$ for all $b$, which is only possible if $c=0$, so $X$ is one-to-one. The third property follows immediately from the fundamental relation $H \sigma_x H = \sigma_z$, and in turn implies that $Z$ is one-to-one. Finally, the statement about the $r$-homomorphism is clear from the definitions.
+Given a chain $c$ and a a binary vector $b$, $X_c$ acts on the computational basis element $|b \rangle$ by flipping those bits for which $c_i$ is not zero, i.e. the qubits at those edges contained in $c$. In terms of the computational basis, this corresponds to bitwise addition of $c$, proving our first claim. This implies immediately that $X_c = 1$ can only happen if $| b \oplus c \rangle  = c$ for all $b$, which is only possible if $c=0$, so $X$ is one-to-one. The third property follows immediately from the fundamental relation $H \sigma_x H = \sigma_z$, and in turn implies that $Z$ is one-to-one. Finally, the statement about the $r$-homomorphism is clear from the definitions.
 \end{proof}
 
 Our next goal is to define an abelian group $S$ that will act as the stabilizer of our code. First, suppose that $f$ is a face, so that $\partial f \in C_1(L;\Z_2)$. We can then apply the $Z$-homomorphism to $\partial f$ to obtain the operator 
 $$
-Z_f \colon = Z_{\partial f} = \prod_{e \in \partial f} Z_e
+Z_f = Z_{\partial f} = \prod_{e \in \partial f} Z_e
 $$
-where the second equality is obtained by simply unraveling the definition of $Z$. Geometrically, the operator $Z_f$ will apply the Pauli Z-operator $\sigma_z$ to all qubits that are located on an edge in the boundary of the face $f$. In figure \ref{fig:ToricCode}, we have marked a face in red, the operator $Z_f$ will flip the phases of the qubits on its boundary (marked in red as well) and leave all other qubits alone.
+where the second equality is obtained by simply unraveling the definition of $Z$. Geometrically, the operator $Z_f$ will apply the Pauli Z-operator $\sigma_z$ to all qubits that are located on an edge in the boundary of the face $f$. In figure \ref{fig:ToricCode}, we have marked a face in red, and the operator $Z_f$ will flip the phases of the qubits on its boundary (marked in red as well) and leave all other qubits alone.
 
 
 
@@ -1497,6 +1474,8 @@ To summarize, we have fond that the operation of moving a logical Z-qubit around
 
 We have also seen that the transformation given by such a braiding operation is of a topological nature, i.e. a slightly deformed braid or path gives the same result. Therefore this operation has a certain natural protection againsts faults, it is \emph{topologically protected}. Unfortunately, as remarked already in \cite{Kitaev}, the toric code does not allow a representation of a universal set of quantum gates by braids - doing this requires the use of a more sophisticated physical equivalent called \emph{non-abelian anyons}. Still, most operations on a surface code are topologically protected, and it turns out that even without concatenation, a surface code has an accuracy threshold which is somewhere in range of one percent (see \cite{DKLP} or \cite{SurfaceCodes}). Therefore surface codes remain a promising technology to implement universal fault-tolerant quantum computation, and are one of the most active areas of current research. 
 
+At the same time, a purely topological quantum computer in which all required gates can be implemented by braiding remains an aspirational but desirable goal. The fractional Quantum Hall effect seems to be a good candidate for a physical realization of non-abelian anyons, but other candidates like the so-called nanowires exist. We will not go further into this topic, but refer the reader to \cite{TQCSurvey2017}or \cite{Fibonacci} for recent surveys.
+
 \appendix
 
 
@@ -2007,7 +1986,7 @@ arXiv:quant-ph/9611025
 \bibitem{KnillLaflammeZurek}
 E.~Knill, R.~Laflamme, W.H.~Zurek, \emph{Threshold accuracy for quantum computation}, arXiv:quantph/9610011,
 
-\bibitem{AliferisGottesmanPreskill},
+\bibitem{AliferisGottesmanPreskill}
 P.~Aliferis, D.~Gottesman, J.~Preskill, \emph{Quantum accuracy threshold for concatenated distance-3 codes}, arXiv:quant-ph/0504218v3
 
 \bibitem{Bombin}
@@ -2021,6 +2000,15 @@ arXiv:quant-ph/9707021
 \bibitem{DKLP}
 E.~Dennis, A.~Kitaev, A.~Landahl, J.~Preskill,
 \emph{Topological quantum memory}, arXiv:quant-ph/0110143
+
+\bibitem{TQCSurvey2017}
+V.~Lahtinen, J.K.~Pachos,
+\emph{A Short Introduction to Topological Quantum Computation}, SciPost Phys. 3, 021 (2017) and arXiv:1705.04103
+
+\bibitem{Fibonacci}
+B.~Field, T.~Simula,
+\emph{Introduction to topological quantum computation with non-Abelian anyons},
+arXiv:1802.06176
 
 \end{thebibliography}
 

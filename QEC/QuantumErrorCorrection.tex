@@ -1,7 +1,7 @@
 \documentclass[a4paper, draft]{article}
 \pagestyle{headings}
 
-\title{Quantum error correction}
+\title{Quantum codes and quantum error correction}
 
 \usepackage{amsmath,amsthm, amsfonts,amscd, amssymb}
 %% Enable vertical lines in a matrix environment - http://texblog.net/latex-archive/maths/amsmath-matrix/
@@ -837,7 +837,7 @@ X_v = X_{\partial^* v}
 $$
 As we have identified the chains of the lattice $L$ with binary vectors, the same identification can be done for the chains of the lattice $L^*$, and similarly with elements of the computational basis, and we will do this in the sequel.
 
-\begin{lem}
+\begin{lem}\label{lem:toriccodedimension}
 The group $S$ as defined above has the following properties.
 \begin{enumerate}
 	\item $S$ is abelian
@@ -867,7 +867,7 @@ To find the number of independent generators, we can now apply the check matrix 
 $$
 r(X_v) = r(X_{\partial^* v}) = (\partial^* f; 0)
 $$
-where $v$ runs over all vertices. Similarly, the last $F$ rows are given by the vectors $(0 ; \partial f)$. In a slight abuse of notation, the check matrix is
+where $v$ runs over all vertices. Similarly, the last $F$ rows are given by the vectors $(0 ; \partial f)$. In a slight abuse of notation, the check matrix is therefore
 $$
 \mathcal{C}  = \begin{pmatrix} \partial^* & 0 \\ 0 & \partial \end{pmatrix}
 $$
@@ -894,11 +894,11 @@ as the Betti number of the torus is two.
 
 Let us now study the stabilizer $N(S)$ and try to find a geometric interpretation for it. We have seen that we can, to any one-cycle $c$, associate operators $X_c$ and $Z_c$. To further emphasize the duality between $X$ and $Z$, let us consider the set of operators obtained as
 $$
-Z_c \, , \, X_{c^*} \quad \text{for} \quad c \in C_1(L;\Z_2) , c^* \in C_1(L^*\Z_2)
+Z_c \, , \, X_{c^*} \quad \text{for} \quad c \in C_1(L;\Z_2) , \, c^* \in C_1(L^*\Z_2)
 $$
-i.e. we associate Z-operators with chains and X-operators with chains in the dual lattice (we resist to use the term cochain here, even though the reader more familiar with algebraic topology will recognize the chains of the dual lattice as the co-chains, identified using the intersection product). It is clear that, up to a phase, every Pauli generator can be obtained in this way, i.e. these operators plus $i$ generate the entire Pauli group acting on the $E$ qubits.
+i.e. we associate Z-operators with chains and X-operators with chains in the dual lattice (the reader more familiar with algebraic topology will recognize the chains of the dual lattice as the co-chains, identified using the intersection product). It is clear that, up to a phase, every Pauli generator can be obtained in this way, i.e. these operators plus $i$ generate the entire Pauli group acting on the $E$ qubits.
 
-There is one more property of these operators that we will need - they allow us to represent commutation relations geometrically in terms of the so-called intersection product. Given a chain $c$ in $L$ and a chain $c^*$ in the dual lattice, we can form the intersection number $c \cdot c^*$, which is a number in $\Z_2$ and counting the number of intersection points modulo two. This number is called the intersection number or intersection product and denoted by $c \cdot c^*$. If $i$ is a qubit on which both $Z_c$ and $X_{c^*}$ act, then this qubit is sitting at an intersection of $c$ and $c^*$. This implies that $Z_c$ and $X_{c^*}$ commute if and only if the intersection number $c \cdot c^*$ is zero.
+There is one more property of these operators that we will need - they allow us to represent commutation relations geometrically in terms of the so-called intersection product. Given a chain $c$ in $L$ and a chain $c^*$ in the dual lattice, we can form the intersection number $c \cdot c^*$, which is a number in $\Z_2$ and counting the number of intersection points modulo two. This number is called the intersection number or intersection product. If $i$ is a qubit on which both $Z_c$ and $X_{c^*}$ act, then this qubit is sitting at an intersection of $c$ and $c^*$. This implies that $Z_c$ and $X_{c^*}$ commute if and only if the intersection number $c \cdot c^*$ is zero.
 
 What does it mean for those operators to be in the normalizer $N(S)$? By the general theory, we know that the normalizer consists of all those operators that commute with all elements in $S$, so we have to express commutation relations between the $Z_c$ and $X_{c^*}$ with the elements in $S$. Clearly, and two X-operators and any two Z-operators commute. The remaining commutation relation turn out to be given as follows.
 
@@ -948,9 +948,9 @@ for $i = 1,2$. By what we have seen above, these four operators are all in $N(S)
 [\bar{X}_i, \bar{Z}_j] &= 0 \, \text{if} \, i \neq j  \\
 \{ \bar{X}_i, \bar{Z}_i \} &= 0 
 \end{align*}
-Thus, these operators act as \emph{logical Pauli operators} on the code space $T_S$. As for any stabilizer code, we can use the commutation relations again to build up the entire code space from a ground state $|0 \rangle_L$ by repeatedly applying the logical Pauli $X$ operators. This will give us three additional, linearly independent state which, together with the ground state, span the entire code space. 
+Thus, these operators act as {\bf logical Pauli operators} on the code space $T_S$. As for any stabilizer code, we can use the commutation relations again to build up the entire code space from a ground state $|0 \rangle_L$ by repeatedly applying the logical Pauli $X$ operators. This will give us three additional, linearly independent states which, together with the ground state, span the entire code space. 
 
-The commutator relations that we have derived can also be used to obtain prescription how to construct states in the code space $T_S$ explicitly. To see how this works, let us first start with a state $|\zeta \rangle$ that is left invariant by all Z-operators - this could for instance be the state $| 0 \dots 0 \rangle$. Now pick a cycle $c^*$ in the dual lattice and consider the state $X_{c^*} |\zeta \rangle$. Let us see how a face operator $Z_f$ acts on this state. As $c^*$ is a cycle, we have $\partial f \cdot c^* = 0$, and therefore
+The commutator relations that we have derived can also be used to obtain a prescription how to construct states in the code space $T_S$ explicitly. To see how this works, let us first start with a state $|\zeta \rangle$ that is left invariant by all Z-operators - this could for instance be the state $| 0 \dots 0 \rangle$. Now pick a cycle $c^*$ in the dual lattice and consider the state $X_{c^*} |\zeta \rangle$. Let us see how a face operator $Z_f$ acts on this state. As $c^*$ is a cycle, we have $\partial f \cdot c^* = 0$, and therefore
 $$
 Z_f X_{c^*} |\zeta \rangle = X_{c^*} Z_f |\zeta \rangle = X_{c^*} |\zeta \rangle
 $$
@@ -995,7 +995,7 @@ as the U-operation acts trivially in this case. So the result is again
 $$
 H|0 \rangle \otimes | \psi_+ \rangle
 $$
-so that the final Hadamard returns the state to its original state. So the gate acts trivially on $|\psi_+ \rangle$, as expected. If, however, we apply the gate to an eigenstate $|\psi_- \rangle$ for the eigenvalue minus one, the same calculation shows that the result of the controlled U-operation is
+so that the final Hadamard returns the state to its original state. Thus the gate acts trivially on $|\psi_+ \rangle$, as expected. If, however, we apply the gate to an eigenstate $|\psi_- \rangle$ for the eigenvalue minus one, the same calculation shows that the result of the controlled U-operation is
 $$
 \frac{1}{\sqrt{2}} \big[ |0 \rangle \otimes | \psi_- \rangle - | 1 \rangle \otimes | \psi_- \rangle \big] = H|1 \rangle \otimes |\psi_- \rangle
 $$
@@ -1018,7 +1018,7 @@ Let us now apply this idea to the problem of measuring one of the operators $X_v
 \label{fig:MeasuringXfI}
 \end{figure}
 
-Here the four qubits at the bottom correspond to the four edges meeting the vertex $f$. So we need one ancilla qubit for doing the measurement, and we need to be able to combine it in gates with all the four qubits sitting on the edges meeting $v$. For the physical implementation, the easiest approach is to place this additional qubit called \emph{measurement} qubit in the vertex itself, in contrast to the \emph{data qubits} sitting on the edges.
+Here the four qubits at the bottom correspond to the four edges meeting the vertex $f$. So we need one ancilla qubit for doing the measurement, and we need to be able to combine it in gates with all the four qubits sitting on the edges meeting $v$. For the physical implementation, the easiest approach is to place this additional qubit called {\bf measurement qubit} in the vertex itself, in contrast to the {\bf data qubits} sitting on the edges.
 
 A circuit along the same lines can be constructed to measure $Z_f$ for a face $f$. Using that $H \sigma_x H = \sigma_z$, we can construct such a circuit as follows. In the first time step, apply a Hadamard to both the ancilla and all target qubits. Then apply CNOT operators to all target qubits, controlled by the ancilla, and then apply Hadamard operators again. Now, it is well known that conjugating the CNOT with Hadamard gates switches the roles of target qubits and control qubits. This gives us the circuit displayed in figure \ref{fig:MeasuringZv}.
 
@@ -1032,7 +1032,9 @@ A circuit along the same lines can be constructed to measure $Z_f$ for a face $f
 
 Again, for each vertex, we need an ancilla qubit to measure $Z_f$. This qubit will have to interact with all data qubits on the edges bounding this face, so it is easiest to position it in the midle of that vertex. 
 
-Overall, we have now added $F + V$ measurement qubits to our original $E$ data qubits. How the Euler characteristic of the torus is zero, and therefore $F + V = E$, showing that this procedure actually doubles the number of physical qubits. We have now arrived at a description of the toric codes (and its cousin the surface code) that one can often find in the literature but which somehow hides the relation to the surface topology a bit.
+Overall, we have now added $F + V$ measurement qubits to our original $E$ data qubits. Now the Euler characteristic of the torus is zero, and therefore $F + V = E$, showing that this procedure actually doubles the number of physical qubits. 
+
+We have now arrived at a description of the toric code (and its cousin the surface code) that one can often find as a definition in the literature but which somehow obscures the relation to the surface topology a bit.
 \begin{enumerate}
 	\item We start with a lattice $L$ with $E$ edges and identify opposite borders
 	\item On each vertex, we place a data qubit
@@ -1060,13 +1062,13 @@ To discuss more general errors, recall the operators $Z_c$ and $X_{c^*}$. It is 
 $$
 g = i^a  Z_c X_{c^*}
 $$
-for a cycle $c$ and a cocycle $c^*$. The weight of that operator is at least the minimum length of $c$ and $c^*$. Geometrically, we can think of the cycles as strings (or collections of strings) running on the lattice itself ($c$) or on the dual lattice ($c^*$).
+for a chain $c$ and a co-chain $c^*$. The weight of that operator is at least the minimum length of $c$ and $c^*$. Geometrically, we can think of the cycles as strings (or collections of strings) running on the lattice itself ($c$) or on the dual lattice ($c^*$).
 
 By our previous discussion on commutators, the element $g$ will be in $S$ if and only if $c$ and $c^*$ are both boundaries, and it will not be in $N(S)$ if one of the strings is open, i.e. has a boundary. In both cases, the general theory of stabilizer codes tells us that the error can be corrected. So the problematic operators that correspond to products of non-correctable errors are those given by closed strings that are no boundaries, i.e. homologically non-trivial. If $l$ is the minimum length of such a string, then, consequently, the distance of the code is the size of the smallest non-trivial loop in $L$ or $L^*$. Of course, in our toroidal geometry, $l$ is just the smaller of height and weight of the lattice. Therefore the larger the lattice, the higher the ability of the code to correct errors, but of course the overhead increases as well with the size of the lattice. 
 
-There is also a nice geometric interpretation of the error syndrome. Suppose that an error $Z_c X_{c^*}$ occurs. As usual with stabilizer codes, we can then determine the error syndrome by measuring all the generators of the stabilizer. If we measure $Z_f$, the result will be minus one for exactly those faces $f$ for which $\partial f \cdot c^* = 1$, i.e. for those faces in which the string $c^*$ starts or ends. Similarly, if we measure the eigenvalue of an $X_v$, then the result will be minus one for those vertices $v$ that are in the boundary of the string $c$. Thus the syndrome measurement will allow us to reproduce the \emph{boundaries} of the strings $c$ and $c^*$. To correct, for instance, a Z-error given by a string $c$, we need to choose a string connecting the two vertices for which the error syndrome is not one. In practice, we might want to choose a path between these two vertices of smallest weight. This choice is not unique, but if the vertices are sufficiently close to another, then a different choice will give a homologically equivalent path, and the difference will be a closed, homologically trivial loop, corresponding to an element of $S$, so that both choices give the same correction. Only if the length of the error string exceed a certain value, corresponding to halve of the minimum length of a non-trivial loop, will this procedure be at risk to give a wrong answer. 
+There is also a nice geometric interpretation of the error syndrome. Suppose that an error $Z_c X_{c^*}$ occurs. As usual with stabilizer codes, we can then determine the error syndrome by measuring all the generators of the stabilizer. If we measure $Z_f$, the result will be minus one for exactly those faces $f$ for which $\partial f \cdot c^* = 1$, i.e. for those faces in which the string $c^*$ starts or ends. Similarly, if we measure the eigenvalue of an $X_v$, then the result will be minus one for those vertices $v$ that are in the boundary of the string $c$. Thus the syndrome measurement will allow us to reproduce the \emph{boundaries} of the strings $c$ and $c^*$. To correct, for instance, a Z-error given by a string $c$, we need to choose a string connecting the two vertices for which the error syndrome is not one. In practice, we might want to choose a path between these two vertices of smallest weight. This choice is not unique, but if the vertices are sufficiently close to another, then a different choice will give a homologically equivalent path, and the difference will be a closed, homologically trivial loop, corresponding to an element of $S$, so that both choices give the same correction. Only if the length of the error string exceed a certain value, corresponding to half of the minimum length of a non-trivial loop, will this procedure be at risk to give a wrong answer. 
 
-Finally let us see how state preparation works on that lattice. By the general theory of stabilizer codes, one approach is as follows. We first bring the system into an arbitrary state and measure all the $X_v$ and $Z_f$. This gives us an error syndrome, describing the outcomes of these $F + V = E$ measurements. For these positions in the error syndrome that are not one, we then apply a bit flip or phase flip. This will put the system into a state in the code space. We can now apply the logical X-operators to flip logical qubits if needed to arrive at the state $|0 0\rangle_L$. 
+Finally let us see how state preparation works on that lattice. By the general theory of stabilizer codes, one approach is as follows. We first bring the system into an arbitrary state and measure all the $X_v$ and $Z_f$. This gives us an error syndrome, describing the outcomes of these $F + V = E$ measurements. For these positions in the error syndrome that are not one, we then apply a bit flip or phase flip. This will put the system into a state in the code space. We can now apply the logical X-operators to flip logical qubits if needed to arrive at the state $|0 0\rangle_L$. In fact, as explained in \cite{SurfaceCodes}, we usually apply several rounds of stabilizer measurements to protect against measurement errors and, if we find an error, do not actually correct it but keep track of the correction factor in software and commute it through the remainder of the circuitry until we arrive at the measurement.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1080,7 +1082,7 @@ H = - \sum_v X_v - \sum_f Z_f
 $$
 which is simply the sum of all face and vertex operators. Clearly, this operator is hermitian, being a sum of hermitian operators. We can therefore interpret it as the Hamiltonian of a physical system.
 
-Let us try to determine the eigenstates of the Hamiltonian, i.e. the energy levels of our system. As the $X_v$ and the $Z_f$ all commute, we can find a simultaneous basis of eigenstates that will diagonalize the Hamiltonian. Let us call this basis $\{ |\psi_i \}$. Each of these vectors is an eigenstate of all $X_v$ and all $Z_f$, and we denote the corresponding eigenvalues by $x_{vi}$ and $z_{fi}$. Clearly, $|\psi_i \rangle$ is then an eigenvector of $H$ with eigenvalue
+Let us try to determine the eigenstates of the Hamiltonian, i.e. the energy levels of our system. As the $X_v$ and the $Z_f$ all commute, we can find a simultaneous basis of eigenstates that will diagonalize the Hamiltonian. Let us call this basis $\{ |\psi_i \rangle \}$. Each of these vectors is an eigenstate of all $X_v$ and all $Z_f$, and we denote the corresponding eigenvalues by $x_{vi}$ and $z_{fi}$. Clearly, $|\psi_i \rangle$ is then an eigenvector of $H$ with eigenvalue
 $$
 - \sum_f z_{fi} - \sum_v x_{vi}
 $$
@@ -1090,9 +1092,9 @@ $$
 $$
 and we see that the elements of the code space can be identified as the \emph{ground states} of our system. We also see that the ground state is degenerate, as the dimension of the code space is not one but four.
 
-Now let us introduce an error into our system. Thus, we start with a ground state $|g \rangle$ and, say, apply an operator $Z_c$ for some 1-chain $c$. We have already seen that the error syndrome will be localized on those two vertices which form the boundary of the chain $c$. The energy of that state is now no longer $E$. Instead, if we expand the state into a sum of eigenstates and calculate the expectation value of $H$, we see that two of the coefficients in the expansion have flipped, and this state will have energy $E + 4$. Thus, we have found an excitation which is localized on two locations on our lattice. Is is tempting to call this excitation a \emph{particle} (similar to, for instance, quantum field theory, where the elementary excitations of a field are considered as the particles described by the theory).
+Now let us introduce an error into our system. Thus, we start with a ground state $|g \rangle$ and, say, apply an operator $Z_c$ for some 1-chain $c$. We have already seen that the error syndrome will be localized on those two vertices which form the boundary of the chain $c$. The energy of that state is now no longer $E$. Instead, if we expand the state into a sum of eigenstates and calculate the expectation value of $H$, we see that two of the coefficients in the expansion have flipped, and this state will have energy $E + 4$. Thus, we have found an excitation which is localized on two locations on our lattice. Is is tempting to call this excitation a {\bf particle} (similar to, for instance, quantum field theory, where the elementary excitations of a field are considered as the particles described by the theory).
 
-In fact, our model contains two types of particles. We have particles created by applying the operator $Z_c$ for a string $c$, which correspond to excitations localized on two vertices of the lattice - these are called \emph{electric charges} or e-particles in \cite{Kitaev}. And there are particles created by an operator $X_{c^*}$ for some string $c^*$ in the dual lattice, which are called \emph{magnetic vortices} or m-particles. These particles live on the faces of the lattice, namely those faces at which $c^*$ starts and ends. Thus we can interpret errors are excitations or particles, located at the points of the lattice and dual lattice with a non-trivial error syndrome. 
+In fact, our model contains two types of particles. We have particles created by applying the operator $Z_c$ for a string $c$, which correspond to excitations localized on two vertices of the lattice - these are called {\bf electric charges} or e-particles in \cite{Kitaev}. And there are particles created by an operator $X_{c^*}$ for some string $c^*$ in the dual lattice, which are called {\bf magnetic vortices} or m-particles. These particles live on the faces of the lattice, namely those faces at which $c^*$ starts and ends. Thus we can interpret errors as excitations or particles, located at the points of the lattice and dual lattice with a non-trivial error syndrome. 
 
 \begin{figure}[ht]
 \centering
@@ -1103,13 +1105,13 @@ In fact, our model contains two types of particles. We have particles created by
  
 Figure \ref{fig:Anyons} shows an example of m- and e-particles. Here the solid red line is a chain $c$, and the endpoints of this line are two e-particles. Similarly, the solid blue line is a chain $c^*$ and its two endpoints are two m particles. 
 
-Note that if we apply an operator $X_{c'}$ to the state representing the two e-particles and $c'$ is a chain continuing $c$ (i.e. one of the boundary points of $c'$ is one of the boundary points of $c$, then the result of applying $X_{c'}$ will be the same as if we had applied $X_{c+c'}$ to the ground state - an e-particle located at the boundary points of $c + c'$. Thus we can interpret the process of applying $X_{c'}$ as moving the e-particle which is on the boundary of $c'$ along the chain $c'$. In particular, applying $X_c$ once more - which will of course give us the ground state as $X_c^2 = 1$ - can be interpreted as moving the two e-particles towards each other along the chain $c$ until they annihilate. 
+Note that if we apply an operator $X_{c'}$ to the state representing the two e-particles and $c'$ is a chain continuing $c$ (i.e. one of the boundary points of $c'$ is one of the boundary points of $c$), then the result of applying $X_{c'}$ will be the same as if we had applied $X_{c+c'}$ to the ground state - an e-particle located at the boundary points of $c + c'$. Thus we can interpret the process of applying $X_{c'}$ as {\bf moving} the e-particle which is on the boundary of $c'$ along the chain $c'$ (realized by a small perturbation of the type $\lambda X_{c'}$ of the Hamiltonian). In particular, applying $X_c$ once more - which will of course give us the ground state as $X_c^2 = 1$ - can be interpreted as moving the two e-particles towards each other along the chain $c$ until they annihilate. 
 
-The same process, of course, can be applied to m-particles - they move along chains in the dual lattice. Let us now look at a specific example of such a movement. In figure \ref{fig:Anyons}, the path marked with a dashed blue line is a chain $l^*$ in the dual lattice which is closed. Let us now consider the following process.
+The same process, of course, can be applied to m-particles - they move along chains in the dual lattice. Let us now look at a specific example of such a movement. In figure \ref{fig:Anyons}, the path marked with a dashed blue line is a chain $l^*$ in the dual lattice which is closed. We consider the following process.
 \begin{enumerate}
 	\item We start with a ground state $|g \rangle$
 	\item We apply the operators $Z_c$ and $X_{c^*}$ to create two e-particles and two m-particles - let us call this state $|\psi \rangle$
-	\item We then apply $X_{l^*}$ to move one of the m-particles one around one of the e-particles as indicated in figure \ref{fig:Anyons}
+	\item We then apply $X_{l^*}$ to move one of the m-particles once around one of the e-particles as indicated in figure \ref{fig:Anyons}
 \end{enumerate}
 Clearly, the state $|\psi \rangle$ after completing the first two steps of this procedure is given by
 $$
@@ -1123,7 +1125,7 @@ But $l^*$ is a cycle, and in fact it is a homologically trivial cycle, i.e. a bo
 $$
 X_{l^*} |\psi \rangle =  -   Z_c X_{c^*}  |g \rangle = - |\psi \rangle
 $$
-Thus moving one of the m-particles around one of the e-particles introduces a phase minus one. This is the reason why Kitaev calls these states \emph{anyons} in \cite{Kitaev} (which is not fully precise, as each individual particle is easily seen to be a boson, but their mutual statistics is that of an anyon, see \cite{Rao} for a detailed introduction into this field).
+Thus moving one of the m-particles around one of the e-particles introduces a phase factor minus one. This is the reason why Kitaev calls these states \emph{anyons} in \cite{Kitaev} (which is not fully precise, as each individual particle is easily seen to be a boson, but their mutual statistics is that of an anyon, see \cite{Rao} for a detailed introduction into this field).
 
 Exchanging these particles by moving them around each other can be described as an action of the pure braid group, i.e. as an action of the group of braids that return each particle to its original position (this subgroup, the kernel of the natural homomorphism from the braid group to the permutation group, is sometimes called the group of colored braids). If we perturb a braid slightly, the action will remain unchanged, so the unitary operators which are given by that action are by construction rather stable in the presence of noise. In \cite{Kitaev}, Kitaev developed the idea to use braid group representations to implement quantum gates. Unfortunately, the set of operators that we can obtain in this way is not sufficient to implement a universal quantum computer - we will get back to this point in a later section when we look at the actual procedures used to perform computations in a toric or surface code. In \cite{Kitaev}, certain hypothetical particles called non-abelian anyons are described which, if they can be physically realized, provide sufficiently rich unitary operations. This approach is called \emph{topological quantum computation}. We will not go into further details but refer to the original work \cite{Kitaev}. 
 
@@ -1133,7 +1135,7 @@ Exchanging these particles by moving them around each other can be described as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Planar codes}
 
-So far we have worked with qubits organized on a lattice with a toroidal geometry, i.e. a cellular decomposition of the torus. In practice, however, it would be much easier to produce such a lattice with a planar geometry, also because that makes it easier to combine several lattices by stacking them. In this section, we explain how the toric code can be modified to obtain a planar version called \emph{surface code}.
+So far we have worked with qubits organized on a lattice with a toroidal geometry, i.e. a cellular decomposition of the torus. In practice, however, it would be much easier to produce such a lattice with a planar geometry, also because that makes it easier to combine several lattices by stacking them. In this section, we explain how the toric code can be modified to obtain a planar version called {\bf surface code}.
 
 Our first attempt could be to start with a lattice $L$ as before, but without performing the identification of the boundaries that introduces the toroidal geometry. We could then still place qubits on the edges and define our operators $X_v$ and $Z_f$ as before. The dimension of the code space would then again be given by $2^{b_1(L)}$. Unfortunately, such a lattice is topologically equivalent to a disk and therefore has vanishing first homology, so that our code space would be one-dimensional and not be able to support a logical qubit. So we need to modify the formalism to obtain a non-trivial first homology group. The idea presented in \cite{KitaevBravyi} is to work in the homology group relative to a subset of the boundary. 
 
@@ -1147,13 +1149,13 @@ Our first attempt could be to start with a lattice $L$ as before, but without pe
 \end{figure}
 
 
-To illustrate this, let us take a look at the lattice in figure \ref{fig:PlanarCodeI}. The solid lines define a planar $4 \times 4$ lattice $L$. As before, we associate qubits with the edges of the lattice. However, there is one difference - we only place qubits on a subset of the edges. Specifically, we split the boundary of the lattice into two pieces. One part, called the "smooth boundary" (in our figure, this is the boundary at the top and bottom part of the lattice) carries qubits as usual. The other two boundary pieces on the left and the right of the lattice are called "rough boundary" and do not carry qubits.
+To illustrate this, let us take a look at the lattice in figure \ref{fig:PlanarCodeI}. The solid lines define a planar lattice $L$. As before, we associate qubits with the edges of the lattice. However, there is one difference - we only place qubits on a subset of the edges. Specifically, we split the boundary of the lattice into two pieces. One part, called the "smooth boundary" (in our figure, this is the boundary at the top and bottom part of the lattice) carries qubits as usual. The other two boundary pieces on the left and the right of the lattice are called "rough boundary" and do not carry qubits.
 
 Let us denote the rough boundary by $V$. We can then define a group of one chains $C_1(L)$ and a group of one chains $C_1(V)$, with a natural inclusion $C_1(V) \rightarrow C_1(L)$. The quotient 
 $$
 C_1(L,V;\Z_2) = C_1(L;\Z_2) / C_1(V;\Z_2)
 $$
-is called the group of \emph{relative one chains}. Similarly, we can consider the group $C_(L,V;\Z_2)$ - here it is important to note that we consider all vertices to be part of $V$ that are in the boundary of $V$. Thus, in our example, the four vertices located at the corners of the lattice are all in $V$. Finally, there is a group $C_2(L,V;\Z_2)$ which is of course equal to $C_2(L;\Z_2)$ as $V$ does not contain any faces.
+is called the group of \emph{relative one chains}. Similarly, we can consider the group $C0_(L,V;\Z_2)$ - here it is important to note that we consider all vertices to be part of $V$ that are in the boundary of $V$. Thus, in our example, the four vertices located at the corners of the lattice are all in $V$. Finally, there is a group $C_2(L,V;\Z_2)$ which is of course equal to $C_2(L;\Z_2)$ as $V$ does not contain any faces.
 
 As $C_1(L;\Z_2)$ is the vector space over $\Z_2$ generated by the edges of $L$ and $C_1(V;\Z_2)$ is the subspace generated by the edges in $V$, it is clear that the quotient is isomorphic to the subspace spanned by the edges not in $V$ alone, and we will switch forth and back between the description as a quotient and a subspace as needed. 
 
@@ -1163,7 +1165,7 @@ X, Z \colon C_1(L,V; \Z_2) = C_1(L;\Z_2) / C_1(V;\Z_2) \rightarrow \mathcal{G}
 $$
 where $\mathcal{G}$ again denotes the Pauli group acting on all the qubits. 
 
-We can again form a dual lattice $L^*$. Specifically, we place an edge of the dual lattice at each qubit, perpendicular to the edge support the qubit, and add edges at the top and the bottom to close the lattice, as shown in figure \ref{fig:PlanarCodeI}. The boundary of the dual lattice again contains a part which we call rough boundary which does not contain any qubits and which we denote by $V^*$. Note that the rough boundary of the original lattice gives raise to the smooth boundary of the dual lattice and vice versa. We again have relative chain groups $C_*(L^*,V^*;\Z_2)$, and our conventions make sure that there is still a duality between those chain groups and that of $L$. In fact, $C_1(L,V;\Z_2)$ is the vector space generated by all edges of $L$ that carry a qubit. These edges are in a one-to-one correspondence to those edges of $L^*$ that carry a qubit, and those in turn span the chain group $C_1(L^*,V^*;\Z_2)$ which gives raise to an isomorphism
+We can again form a dual lattice $L^*$. Specifically, we place an edge of the dual lattice at each qubit, perpendicular to the edge supporting the qubit, and add edges at the top and the bottom to close the lattice, as shown in figure \ref{fig:PlanarCodeI}. The boundary of the dual lattice again contains a part which we call rough boundary which does not contain any qubits and which we denote by $V^*$. Note that the rough boundary of the original lattice gives raise to the smooth boundary of the dual lattice and vice versa. We again have relative chain groups $C_*(L^*,V^*;\Z_2)$, and our conventions make sure that there is still a duality between those chain groups and that of $L$. In fact, $C_1(L,V;\Z_2)$ is the vector space generated by all edges of $L$ that carry a qubit. These edges are in a one-to-one correspondence to those edges of $L^*$ that carry a qubit, and those in turn span the chain group $C_1(L^*,V^*;\Z_2)$ which gives raise to an isomorphism
 $$
 C_1(L,V;\Z_2) \simeq C_1(L^*,V^*;\Z_2)
 $$
@@ -1195,7 +1197,7 @@ X_v = \prod_{e \in \partial^* v} X_e = \prod_{e \in \partial^* v \setminus V} X_
 $$
 Note that a vertex on the smooth boundary will give raise to a vertex operator $X_v$ that is a product of three Pauli X operators only. For a vertex in the rough boundary, the vertex operator is not defined, as the co-boundary operator $\partial^*$ is only defined on the relative chain group $C_0(L,V\Z_2)$. 
 
-Having defined face and vertex operators, it is again easy to see that all these operators commute and square to one. Thus they generate an abelian group $S$. Using arguments similar to the one used in the proof of lemma \ref{lem:stabilizerdimension}, it is not difficult to see (you will have to apply the general fact that the Euler characteristic of a chain complex over a field is equal to that of its homology) that the dimension of the code space is given by 
+Having defined face and vertex operators, it is again easy to see that all these operators commute and square to one. Thus they generate an abelian group $S$. Using arguments similar to the one used in the proof of lemma \ref{lem:toriccodedimension}, it is not difficult to see (you will have to apply the general fact that the Euler characteristic of a chain complex over a field is equal to that of its homology) that the dimension of the code space is given by 
 $$
 \dim T_S = 2^{b_1(L,V)}
 $$
@@ -1205,11 +1207,11 @@ The commutator relations between Z and X operators are also as in lemma \ref{lem
 
 In fact, consider the chains $c$ (in the lattice) and $c^*$ (in the dual lattice) marked in figure \ref{fig:PlanarCodeII}. The resulting operator $X_{c^*}$ and $Z_c$ anti-commute, as the intersection number between $c$ and $c^*$ is one. Clearly, $c$ is a cycle relative to $V$, and $c^*$ is a cycle relative to $V^*$. Hence these two operators act on the code space $T_S$ and therefore provide logical Pauli operators
 $$
-\hat{X} = X_{c^*}
+\bar{X} = X_{c^*}
 $$
 and
 $$
-\hat{Z} = Z_c
+\bar{Z} = Z_c
 $$
 This is very similar to the toric case, with the difference that we now have only one pair of logical Pauli operators, corresponding to the fact that our code only encodes one logical qubit.
 
@@ -1227,9 +1229,9 @@ Similarly, we need measurement qubits for the vertex operators. This time, the e
 With that understanding, we can now use the surface code as an error correction code. We can measure the stabilizers and perform individual bit flips and phase flips to create an initial state, apply logical Pauli operators and perform measurements to detect and correct errors. Thus we could apply toric codes as any other codes, maybe as part of a concatenated code. However, one reason why surface codes have become so popular is that there is in fact a different approach to performing quantum computation with surface codes that avoids the use of concatenation and that we will describe in the next section.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Creating and manipulation logical qubits
+%% Creating logical qubits
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Creating and manipulating logical qubits}
+\section{Creating logical qubits}
 
 So far, we have been able to construct a planar code for one logical qubit. If we wanted to combine more than one of these logical qubits, we could start to stack the surfaces on which our qubits are located, so that nearby qubits on different surfaces can interact. However, there is a different approach which allows us to stick to a two-dimensional geometry - creating additional qubits in the surface code.
 
@@ -1241,7 +1243,7 @@ Now, the eigenvalues will typically not all be one. We would now have to apply c
 
 We now start our quantum algorithm. After each step of the algorithm, we perform another round of measurements of the stabilizer to detect any errors that might have occurred. Again, we could now correct the errors, but alternatively keep track of them as well and correct the final measurements if needed. In this way, a computation with a surface code is essentially a periodic measurement of all stabilizers in repeating cycles, and logical operations executed between any two subsequent cycles.
 
-Now let us see what happens when we modify our code by removing a face operator $Z_f$ from the set of stabilizers. Thus we perform some initial cycles to put the system into a ground state $|g \rangle$ (here and in the sequel, we assume that errors are actually corrected and not just detected to simplify our caclulations) on which all stabiilizers act trivially, and starting with the next round of measurements, we exclude a $Z_f$ operator from the measurements. Of course, this will enlarge the code space. 
+Now let us see what happens when we modify our code by removing a face operator $Z_f$ from the set of stabilizers. Thus we perform some initial cycles to put the system into a ground state $|g \rangle$ (here and in the sequel, we assume that errors are actually corrected and not just detected to simplify our calculations) on which all stabilizers act trivially, and starting with the next round of measurements, we exclude a $Z_f$ operator from the measurements. Of course, this will enlarge the code space. 
 
 \begin{figure}[ht]
 \centering
@@ -1251,43 +1253,43 @@ Now let us see what happens when we modify our code by removing a face operator 
 \end{figure}
 
 
-Specifically, let us take a look at the upper left corner of figure \ref{fig:Holes}. Here we have marked a face $f$ and an operator $X_{c^*}$ coming from a string connecting this face with the rough boundary. Then the boundary of $c^*$ consists of one point in the dual lattice, and hence every face operator commutes with $X_{c^*}$, except $Z_f$ which anti-commutes. If we now define our code space to be the space fixed by all the $X_v$ and all face operators except $Z_f$, then $X_{c^*}$ and $Z_f$ map that code space to itself. As $c^*$ intersects the boundary of $f$ in one point, $Z_f$ and $X_{c^*}$ anti-commute and therefore define a set of logical Pauli operators, acting on the code space. Thus we have constructed a logical qubit!
+Specifically, let us take a look at the upper left corner of figure \ref{fig:Holes}. Here we have marked a face $f$ and an operator $X_{c^*}$ coming from a string connecting this face with the rough boundary. Then the boundary of $c^*$ consists of one point in the dual lattice, and hence every face operator commutes with $X_{c^*}$, except $Z_f$ which anti-commutes. If we now define our code space to be the space fixed by all the $X_v$ and all face operators \emph{except} $Z_f$, then $X_{c^*}$ and $Z_f$ map that code space to itself. As $c^*$ intersects the boundary of $f$ in one point, $Z_f$ and $X_{c^*}$ anti-commute and therefore define a set of logical Pauli operators, acting on the code space. Thus we have constructed a logical qubit! 
 
-There are two things that should be noted. First, we have not changed in any way the physical layout of the surface or added or removed any physical qubits - we have only changed the code (this approach is sometimes called \emph{code deformation}). Second, the global Pauli operators shown in figure \ref{fig:PlanarCodeII} still exist and act on our new code space. In fact, our new code space is four-dimensional, but we ignore half of the dimensions and use it only to represent one logical qubit, operated on by the two logical Pauli matrices
+There are two things that should be noted. First, we have not changed in any way the physical layout of the surface or added or removed any physical qubits - we have only changed the code (this approach is sometimes called {\bf code deformation}). Second, the global Pauli operators shown in figure \ref{fig:PlanarCodeII} still exist and act on our new code space. In fact, our new code space is four-dimensional, but we ignore half of the dimensions and use it only to represent one logical qubit, operated on by the two logical Pauli matrices
 $$
-\hat{X} = X_{c^*} 
+\bar{X} = X_{c^*} 
 $$
 and
 $$
-\hat{Z} = Z_f
+\bar{Z} = Z_f
 $$
 The logical zero state $|0 \rangle_L$ is equal to the original state before turning off that stabilizer, i.e. to the logical zero state of the full surface code. The logical one state $|1\rangle_L$ is then equal to $X_{c^*} |0 \rangle_L$. 
 
-Note that this construction has a nice physical interpretation. Suppose we create a pair of quasi-particles as before, supported on $Z_f$ and a second face close to the rough boundary. We have seen that we can move these particles by acting with edge operators $X_e$ on them. Thus, we can move the second face on which the particle lives across the rough boundary and now obtain a particle supported on face only. This is exactly the configuration which is obtained by acting with the logical Pauli X operator of our newly created logical qubit on the ground state, i.e. these logical qubits correspond to pairs of particles where one particle has left the surface.
+Note that this construction has a nice physical interpretation. Suppose we create a pair of quasi-particles as before, supported on $Z_f$ and a second face close to the rough boundary. We have seen that we can move these particles by acting with edge operators $X_e$ on them. Thus, we can move the second face on which the particle lives across the rough boundary and now obtain a particle supported on one face only. This is exactly the configuration which is obtained by acting with the logical Pauli X operator of our newly created logical qubit on the ground state, i.e. these logical qubits correspond to pairs of particles where one particle has left the surface.
 
 As usual, this construction has a counterpart in the dual lattice, as shown on the right of figure \ref{fig:Holes}. The configuration marked in blue consists of a vertex operator $X_v$ and a string $c$ connecting that vertex to the smooth boundary. We can now remove $X_v$ from the stabilizer, and obtain a pair of logical operators 
 $$
-\hat{X} = X_{v} 
+\bar{X} = X_{v} 
 $$
 and
 $$
-\hat{Z} = Z_c
+\bar{Z} = Z_c
 $$
 which again anti-commute and operate on our new, enlarged code space. Note that now, the logical ground state can be obtained as
 $$
 |0 \rangle_L = \frac{1}{2}(1 + Z_c) |g \rangle
 $$
-where $|g\rangle$ is a ground state (i.e a logical zero) for the full surface code. This type of logical qubit is called a \emph{single X-cut} in \cite{SurfaceCodes}, whereas the first type of qubit considered is a \emph{single Z-cut}. 
+where $|g\rangle$ is a ground state (i.e a logical zero) for the full surface code. This type of logical qubit is called a {\bf single X-cut} in \cite{SurfaceCodes}, whereas the first type of qubit considered is a {\bf single Z-cut} - other authors use the term {\bf defects} for these logical qubits. 
 
-This technique allows us in theory to encode a large number of logical qubits in one surface. However, in practice, the restriction that we need to reach the boundary from each of the faces and vertices that we switch off is a bit cumbersome. Fortunately, it turns out that this is not even necessary.
+This technique allows us in theory to encode a large number of logical qubits in one surface. However, in practice, the restriction that we need to reach the boundary from each of the faces and vertices that we switch off is restricting our layout options a bit. Fortunately, it turns out that this is not even necessary.
 
 In fact, coming back to the analogy of the quasi-particles, nobody forces us to move the second particle off the surface. To see this, consider the configuration marked in green in the lower part of figure \ref{fig:Holes}. Here we have removed two stabilizers from the code, the face operator $Z_f$ corresponding to the face on the left hand side, and the face operator $Z_{f'}$ corresponding to the face on the right hand side. This will enlarge our code space by a space of dimension four. However, we now gracefully ignore half of that space and instead work with the space spanned by the Pauli operators
 $$
-\hat{Z} = Z_f 
+\bar{Z} = Z_f 
 $$
 and
 $$
-\hat{X} = X_{c^*} 
+\bar{X} = X_{c^*} 
 $$
 Because $Z_v$ commutes with every $X_v$ and $X_{c^*}$ commutes with every face operator except $Z_f$ and $Z_{f'}$ (i.e. those that we have removed from the stabilizer), those two operators map the stabilized subspace onto itself. They also anti-commute and thus span a two-dimensional subspace, i.e. a logical qubit. More precisely, we can choose as a basis the states
 $$
@@ -1297,11 +1299,18 @@ and
 $$
 |1 \rangle_L = X_{c^*} |g \rangle
 $$
-where again $|g \rangle$ is a ground state of the original code, i.e. a state on which all face and vertex operators act trivially. Note that on the entire subspace describing the logical qubit, the relation $Z_f = Z_{f'}$ holds (this is expected, because $f + f'$ is the boundary of the area formed by the other faces which are by assumption stabilizers of our code, but also follows directly from our explicit description of the logical states, because $Z_{f+f'}$ commutes with $X_{c^*}$).
+where again $|g \rangle$ is a ground state of the original code, i.e. a state on which all face and vertex operators act trivially. 
 
-A logical qubit obtained by this construction is called a \emph{double Z-cut}. Of course, we can again repeat this construction in the dual lattice and obtain a \emph{double X-cut}.
+A logical qubit obtained by this construction is called a {\bf double Z-cut}. Of course, we can again repeat this construction in the dual lattice and obtain a {\bf double X-cut}.
 
-Having described individual logical qubits, let us now see how we can manipulate them to perform actual calculations. The main ingredient to this is the ability to \emph{move} logical qubits along the surface.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Moving and braiding logical qubits
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Moving and braiding logical qubits}
+
+
+
+Having described individual logical qubits, let us now see how we can manipulate them to perform actual calculations. The main ingredient to this is the ability to {\bf move} logical qubits along the surface.
 
 Let us describe this process for a single Z-cut logical qubit (the other cases are similar). Consider the situation shown in the upper part of figure \ref{fig:ElementaryMove}.
 
@@ -1312,7 +1321,7 @@ Let us describe this process for a single Z-cut logical qubit (the other cases a
 \label{fig:ElementaryMove}
 \end{figure}
 
-Here we consider a logical qubit described by the Pauli operators $X_{c^*}$ and $Z_f$, i.e the face operator $Z_f$ has been removed from the set of stabilizers. Adjacent to the face $f$, there is a face that we denote by $\bar{f}$. By removing $Z_{\bar{f}}$ (and adding $Z_f$ again to the set of stabilizers), we would obtain a different code space - we can again think of this different code space as a deformation of the code space given by removing $Z_f$. We want to describe a process that starts with a state in the code space given by $Z_f$ and ends with a state in the code space given by $Z_{\bar{f}}$. 
+Here we consider a logical qubit described by the Pauli operators $X_{c^*}$ and $Z_f$, i.e the face operator $Z_f$ has been removed from the set of stabilizers. Adjacent to the face $f$, there is a face that we denote by $\bar{f}$. By removing $Z_{\bar{f}}$ (and adding $Z_f$ again to the set of stabilizers), we would obtain a different code space - we can again think of this different code space as a deformation of the code space given by removing $Z_f$. We want to describe a process that starts with a state in the code space given by $Z_f$ and ends with a state in the code space given by $Z_{\bar{f}}$ (formally, we could define a deformation to be a chain of code spaces, connected by unitary maps that respect the logical Pauli operators, and we want to describe this map).
 
 To do this, we manipulate the original state in several steps. First, we measure the Pauli X operator $X_e$ for the physical qubit sitting on the edge $e$ of the dual lattice that connects the centre of $f$ with that of $\bar{f}$ - this is the qubit on which both $Z_{\bar{f}}$ and $Z_f$ act. Let us assume for a moment that the outcome of this measurement is one. When the system was initially in the state $|\psi\rangle$, the system is now in the state
 $$
@@ -1334,10 +1343,10 @@ From this, we can easily read off how the operator acts on the eigenstates of $Z
 \end{align*}
 Thus we find that this process maps the logical state $|0 \rangle_L$ to the logical zero state of the new code, and the same is true for the logical one state. In other words, this operation is moving a particle from $f$ to $\bar{f}$ while preserving the logical information encoded in the state. This is what we mean when we say that we move a logical qubit around. Note that (because $\partial^* e = f + \bar{f}$) the logical Pauli operators for the old and the new code are related by
 \begin{align*}
-\hat{X} &\mapsto  X_e \hat{X} \\
-\hat{Z} &\mapsto Z_{\partial^* e} \hat{Z}
+\bar{X} &\mapsto  X_e \bar{X} \\
+\bar{Z} &\mapsto Z_{\partial^* e} \bar{Z}
 \end{align*}
-In in this case, it is obvious what the new logical operators are, but we could as well determine them by the requirement that the logical X-operator followed by $P$ should be the same as first applying $P$ and then the logical X-operator, and the same for the logical Z-operator. From this requirement, we could then derive the correct logical states, identified as eigenvalues of the logical Z-operators (and determined up to a phase by this).
+In this case, it is obvious what the new logical operators are, but we could as well determine them by the requirement that the logical X-operator followed by $P$ should be the same as first applying $P$ and then the logical X-operator, and the same for the logical Z-operator. From this requirement, we could then derive the correct logical states, identified as eigenvalues of the logical Z-operators (and determined up to a phase by this).
 
 Let us quickly see how this calculation changes when the measurements have different outcomes. First, let us assume that the first measurement - the measurement of $X_e$ - yields a minus one, whereas the second one still yields a one. Then 
 $$
@@ -1351,10 +1360,10 @@ from which we can again read off that
 \end{align*}
 This is again in the code space, but to make sure that our requirements above hold, we need to redefine the logical X-operator by adding a minus sign:
 \begin{align*}
-\hat{X} &\mapsto  - X_e \hat{X} \\
-\hat{Z} &\mapsto Z_{\partial^* e} \hat{Z}
+\bar{X} &\mapsto  - X_e \bar{X} \\
+\bar{Z} &\mapsto Z_{\partial^* e} \bar{Z}
 \end{align*}
-Things are a bit more complicated if the outcome of the second measurement (that of $Z_f$ is minus one). Let us consider the example that this is combined with a first measurement with outcome one. Then
+Things are a bit more complicated if the outcome of the second measurement (that of $Z_f$) is minus one. Let us consider the example that this is combined with a first measurement with outcome one. Then
 $$
 P = \frac{1}{4} (1 - Z_f)(1 + X_e) = \frac{1}{4} \big[ 1 - Z_f + X_e +  X_e Z_f \big]
 = \frac{1}{4} \big[ (1 - Z_f) + X_e (1 + Z_f) \big]
@@ -1374,7 +1383,7 @@ which is the same as in the case considered (both measurements plus one). Thus o
 	\item Measure $X_e$ and let $\epsilon$ denote the result
 	\item Measure $Z_f$
 	\item If the result of this measurement is $-1$, then apply $X_e$
-	\item Replace the Pauli operators $\hat{X}$ and $\hat{Z}$ by $\epsilon X_e \hat{Z}$ and $Z_{\partial^*e} \hat{Z}$. 
+	\item Replace the logical Pauli operators $\bar{X}$ and $\bar{Z}$ by $\epsilon X_e \bar{Z}$ and $Z_{\partial^*e} \bar{Z}$. 
 \end{enumerate}
 Note that in \cite{SurfaceCodes}, this correction is not done physically by applying a bit flip, but done in software, i.e. by keeping track of the sign changes in the control software. 
 
@@ -1390,7 +1399,7 @@ We will not go into all the details, but briefly describe one example and refer 
 \end{figure}
 
 
-The process is illustrated on the left hand side of \ref{fig:BraidingZXCut}. We start with a pair of logical qubits given by an X-cut and a Z-cut. We then move the face corresponding to the Z-cut around the vertex corresponding to the X-cut using elementary moves as described above. The loop along which we move - $X_{loop}$ is winding once around the vertex at which the X-cut has been carried out. 
+The process is illustrated on the left hand side of figure \ref{fig:BraidingZXCut}. We start with a pair of logical qubits given by an X-cut and a Z-cut. We then move the face corresponding to the Z-cut around the vertex corresponding to the X-cut using elementary moves as described above. The loop along which we move - $X_{loop}$ - is winding once around the vertex at which the X-cut has been carried out. 
 
 Let us now see how the 2-qubit system spanned by the Pauli operators $Z_i$ and $X_i$ transforms if we carry out the move. We start with a ground state $|g \rangle$ of the full code (and therefore of $Z_1$ which is a face operator), so that the state
 $$
@@ -1431,14 +1440,16 @@ Z_2 |10 \rangle_{L'} = Z_2 X_e |10 \rangle_L = - X_e Z_2 |10 \rangle_L = - X_e |
 $$
 Thus there is a minus one which should not be there! Alternatively, the problem can also be seen from the fact that $Z_2$ and our tentative new X-Pauli operator $X_1 X_{c+e}$ for the first qubit anti-commute, but should commute. It is not difficult, though, to guess what the correct Pauli operator is - $Z_2 Z_{\bar{f}}$. In fact, this is an operator acting on the code space. It commutes with our new logical X-Pauli operator (because both factors anti-commute with it), and we can check explicitly that this operator acts correctly on the basis states described above. So we find that the move will transform our logical Pauli operators as follows.
 \begin{align*}
-\hat{X}_1 &\mapsto  X_e \hat{X}_1 \\
-\hat{Z}_1 &\mapsto Z_{\partial^* e} \hat{Z}_1 \\
-\hat{X}_2 &\mapsto   \hat{X}_2 \\
-\hat{Z}_2 &\mapsto   Z_{\bar{f}} \hat{Z}_2 
+\bar{X}_1 &\mapsto  X_e \bar{X}_1 \\
+\bar{Z}_1 &\mapsto Z_{\partial^* e} \bar{Z}_1 \\
+\bar{X}_2 &\mapsto   \bar{X}_2 \\
+\bar{Z}_2 &\mapsto   Z_{\bar{f}} \bar{Z}_2 
 \end{align*}
 Geometrically, we have replace $Z_2$ by the operator given by the string which is obtained from the $Z_2$ string by going around the critical qubit on the right hand side of the face $\bar{f}$. In figure \ref{fig:BraidingZXCut}, this amounts to replacing the red line by the dotted red line, i.e. we push the string defining the Pauli operator for the second qubit to the right. 
 
-Let us see what happens if we do the next move. Let $f'$ denote the face on the right of $\bar{[f}$ which we would visit next. Overall, the move from $f$ to $\bar{f}$ and the move from $\bar{f}$ to $f'$ would multiply the logical Z-operator for the second qubit by $Z_{\bar{f}} Z_{f'}$. But on the new code space, $Z_{\bar{f}}$ acts as a stabilizer (we have removed $Z_{f'}$ and added $Z_{\bar{f}}$ again to the set of stabilizers). Therefore, on the code space, this is the same as multiplying by $Z_{f'}$ only. Thus we pick up a copy of the face operator at the head of the chain of faces once we have crossed $Z_2$. When we complete the loop and reach the face on which $Z_1$ lives again, we will therefore overall pick up a factor $Z_1$. Therefore after closing the loop, the Pauli operators transform as follows (ignoring potential signs from $X$-measurements for a moment)
+Let us see what happens if we do the next move. Let $f'$ denote the face on the right of $\bar{[f}$ which we would visit next. Overall, the move from $f$ to $\bar{f}$ and the move from $\bar{f}$ to $f'$ would multiply the logical Z-operator for the second qubit by $Z_{\bar{f}} Z_{f'}$. But on the new code space, $Z_{\bar{f}}$ acts as a stabilizer (we have removed $Z_{f'}$ and added $Z_{\bar{f}}$ again to the set of stabilizers). Therefore, on the code space, this is the same as multiplying by $Z_{f'}$ only. Thus we pick up a copy of the face operator at the head of the chain of faces once we have crossed $Z_2$. 
+
+When we complete the loop and reach the face on which $Z_1$ lives again, we will therefore overall pick up a factor $Z_1$. Thus after closing the loop, the Pauli operators transform as follows (ignoring potential signs from $X$-measurements for a moment)
 \begin{align*}
 X_1 &\mapsto  X_{loop} X_1 \\
 Z_1 &\mapsto Z_1 \\
@@ -1452,6 +1463,7 @@ Z_1 &\mapsto Z_1 \\
 X_2 &\mapsto   X_2 \\
 Z_2 &\mapsto   Z_1 Z_2 \\
 \end{align*}
+
 Let us now try to understand what all this means. As our loop comes back to the code space, the process of moving the logical qubit around the loop gives raise to a unitary transformation $U$ on the code space. From our previous calculations for each individual step in the move, we know that a state vector of the form $|0 \rangle \otimes |x \rangle$ remains unchanged, whereas states of the form $|1 \rangle \otimes |x \rangle$ receive a factor $X_e$ during each move, which combines to an overall factor $X_{loop}$. As $X_{loop}$ is identical to $X_2$ on the code space, we find that
 \begin{align*}
 U(|0 \rangle \otimes |x \rangle) &= |0 \rangle \otimes |x \rangle \\
@@ -1462,7 +1474,7 @@ In other words, the transformation obtained by moving the qubit around acts a a 
 We could - at least up to a phase factor- derive the same result from the transformation rules for the operators. Suppose, for instance, we wanted to understand what $U$ does to $|10\rangle$. During each move, an old state is mapped to a new state and an old set of logical Pauli operators is mapped to a new set, but the defining relations between states and operators remain unchanged. In other words, if a state is an eigenstate of one of the Pauli operators, the transformed state is an eigenstate of the transformed Pauli operator for the same eigenvalue. Therefore $U|10 \rangle$ is an eigenstate of the transformed operator $Z_1' = Z_1$ with eigenvalue minus one and an eigenstate of the transformed operator $Z_2' = Z_1 Z_2$ with eigenvalue one. This is only possible if it is an eigenvalue of $Z_2$ alone with eigenvalue minus one. These properties determine the state up to a phase, and we can conclude that $U|10 \rangle = |11 \rangle$ up to a phase, giving the same result as our direct argument working with states below. Essentially, this line of arguments employs the Heisenberg picture of quantum mechanics, whereas our argument based on the evolution of the states utilizes the (equivalent) Schr\"odinger picture.
 
 
-To summarize, we have fond that the operation of moving a logical Z-qubit around a logical X-qubit creates a logical CNOT operation on the code space. This process can be represented by a two-strand braid, where the two strands wrap around each other twice so that their ends return to their original position, as indicated in figure \ref{fig:Braids}.
+To summarize, we have found that the operation of moving a logical Z-qubit around a logical X-qubit creates a logical CNOT operation on the code space. This process can be represented by a two-strand braid, where the two strands wrap around each other twice so that their ends return to their original position, as indicated in figure \ref{fig:Braids}.
 
 
 \begin{figure}[ht]
@@ -1472,7 +1484,7 @@ To summarize, we have fond that the operation of moving a logical Z-qubit around
 \label{fig:Braids}
 \end{figure}
 
-We have also seen that the transformation given by such a braiding operation is of a topological nature, i.e. a slightly deformed braid or path gives the same result. Therefore this operation has a certain natural protection againsts faults, it is \emph{topologically protected}. Unfortunately, as remarked already in \cite{Kitaev}, the toric code does not allow a representation of a universal set of quantum gates by braids - doing this requires the use of a more sophisticated physical equivalent called \emph{non-abelian anyons}. Still, most operations on a surface code are topologically protected, and it turns out that even without concatenation, a surface code has an accuracy threshold which is somewhere in range of one percent (see \cite{DKLP} or \cite{SurfaceCodes}). Therefore surface codes remain a promising technology to implement universal fault-tolerant quantum computation, and are one of the most active areas of current research. 
+We have also seen that the transformation given by such a braiding operation is of a topological nature, i.e. a slightly deformed braid or path gives the same result. Therefore this operation has a certain natural protection againsts faults, it is {\bf topologically protected}. Unfortunately, as remarked already in \cite{Kitaev}, the toric code does not allow a representation of a universal set of quantum gates by braids - doing this requires the use of a more sophisticated physical equivalent called {\bf non-abelian anyons}. Still, most operations on a surface code are topologically protected, and it turns out that even without concatenation, a surface code has an accuracy threshold which is somewhere in range of one percent (see \cite{DKLP} or \cite{SurfaceCodes}). Therefore surface codes remain a promising technology to implement universal fault-tolerant quantum computation, and are one of the most active areas of current research. 
 
 At the same time, a purely topological quantum computer in which all required gates can be implemented by braiding remains an aspirational but desirable goal. The fractional Quantum Hall effect seems to be a good candidate for a physical realization of non-abelian anyons, but other candidates like the so-called nanowires exist. We will not go further into this topic, but refer the reader to \cite{TQCSurvey2017}or \cite{Fibonacci} for recent surveys.
 
@@ -1485,23 +1497,17 @@ At the same time, a purely topological quantum computer in which all required ga
 \section{The Pauli matrices}
 
 In this section, we fix some notation and recall the most important properties of the Pauli matrices, for which different conventions are in place. We call the matrix
-
 $$
 X = \begin{pmatrix} 0 & 1 \\ 1 & 0\end{pmatrix}
 $$
-
 the bit-flip operator or inversion operator, as it switches the two basis vectors in the standard basis. Similarly, the matrix
-
 $$
 Z = \begin{pmatrix} 1 & 0 \\ 0 & -1\end{pmatrix}
 $$
-
 flips the relative phase of the vectors in the standard basis and is therefore called the phase flip operator. The product
-
 $$
 Y = ZX = \begin{pmatrix} 0 & 1 \\ -1 & 0\end{pmatrix}
 $$
-
 is denoted by Y (whereas other authors use the letter Y differently). The matrices X and Z are hermitian, whereas Y is anti-hermitian. To make contact with the notation usually used in quantum physics, we now introduce the notation
 
 $$
@@ -1513,21 +1519,19 @@ $$
 These matrices are usually called the \emph{Pauli matrices}. They are hermitian and unitary and have square 1. Looking at the linear combinations $\sigma_z \pm 1$ and $\sigma_x \pm i \sigma_y$, it is also not difficult to see that the three Pauli matrices together with the identity matrix form a complex basis for the set of complex 2x2 matrices, a fact that is exploited heavily in quantum error correction. 
 
 Let us now study the multiplicative subgroup generated by the Pauli matrices and the identity. We have the relations 
-
 $$
 \sigma_x \sigma_y = i \sigma_z \qquad \text{plus cyclic}
 $$
-
 and any two Pauli matrices anti-commute. Thus in order to form a group, we will have to add the scalars $\{\pm 1, \pm i\}$. The resulting group that consists of the sixteen matrices
-
 $$
 \mathcal{G} = \{
 \pm 1, \pm \sigma_x, \pm \sigma_y, \pm \sigma_z, 
 \pm i, \pm i \sigma_x, \pm i \sigma_y, \pm i \sigma_z 
 \}          
 $$
+is called the {\bf Pauli group}. This group is sometimes denoted by $\mathcal{G}_1$ to indicate that it consists of operators acting on one qubit. 
 
-is called the \emph{Pauli group}. This group is sometimes denoted by $\mathcal{G}_1$ to indicate that it consists of operators acting on one qubit. For n qubits, we can as well form the Pauli group $\mathcal{G}_n$ that is generated by tensor products of the Pauli matrices acting on one qubit only. In general, the order of the Pauli group is $2^{2n+2}$, where the factor $2^{2n} = 4^n$ is given by the pure products of Pauli matrices and the identity and the factor of $2^2 =4$ is added by $\{\pm 1, \pm i\}$. 
+For n qubits, we can as well form the Pauli group $\mathcal{G}_n$ that is generated by tensor products of the Pauli matrices acting on one qubit only. In general, the order of the Pauli group is $2^{2n+2}$, where the factor $2^{2n} = 4^n$ is given by the pure products of Pauli matrices and the identity and the factor of $2^2 =4$ is added by $\{\pm 1, \pm i\}$. 
 
 Let us now collect a free remarks on stabilizer subgroups of the Pauli group. The first observation is as follows.
 
@@ -1554,7 +1558,7 @@ abab = -1
 $$
 which is a contradiction as minus one is not in our subgroup.
 
-Let us study the structure of such subgroups of $\mathcal{G}_n$ in more detail. First, every element of $\mathcal{G}_n$ has square $\pm 1$. As we assume that -1 is not in S, each element of S therefore squares to one, i.e. each element of S has order two. Further, S is a finite abelian group. By the structure theory for finite abelian groups, we can therefore conclude that 
+Let us study the structure of such subgroups of $\mathcal{G}_n$ in more detail. First, every element of $\mathcal{G}_n$ has square $\pm 1$. As we assume that -1 is not in S, each element of S therefore squares to one, in other words each non-trivial element of S has order two. Further, S is a finite abelian group. By the structure theory for finite abelian groups, we can therefore conclude that 
 
 $$
 S = {\Z}_2  \oplus \Z_2 \dots \oplus \Z_2
@@ -1612,7 +1616,7 @@ $$
 S_{r+1} P_r = S_{r+1} (1 + S_r) (1 + S_{r-1}) \cdots (1 + S_1)
 $$
 
-This is a sum of terms each of which is a product of elements of $\mathcal{G}_n$ different from the identity. Each such product has trace zero, and therefore the trace of the sum is zero and our proof is complete.
+This is a sum of terms each of which is a product of elements of $\mathcal{G}_n$ different from the identity. Each such product has trace zero (to see this, use the fact that the trace of a tensor product is the product of the traces), and therefore the trace of the sum is zero and our proof is complete.
 \end{proof}
 
 \begin{lem}
@@ -1649,7 +1653,7 @@ r(g) = (a , b) \in \Z_2^n \times \Z_2^n = \Z_2^{2n}
 $$
 Thus the vector $a$ has a one at position $i$ if $\sigma_x$ occurs in the i-th qubit, and $b$ has a one at position $i$ if $\sigma_z$ occurs at the i-th qubit. The vector $a$ is sometimes called the x-vector and $b$ is sometimes called the z-vector of $g$, together they form the 2n-dimensional binary vector $r(g)$.
 
-The mapping from $\mathcal{G}_n$ to $\Z_2^{2n}$ is easily seen to a group homomorphism, i.e. $r(g g') = r(g) + r(g')$. Furthermore, the kernel is exactly the subgroup of order four generated by $i$. In particular the restriction of $r$ to $S$ is one-to-one, as $-1$ is not in $S$ and therefore $i$ and $-i$ are not in $S$ as well.
+The mapping from $\mathcal{G}_n$ to $\Z_2^{2n}$ is easily seen to be a group homomorphism, i.e. $r(g g') = r(g) + r(g')$. Furthermore, the kernel is exactly the subgroup of order four generated by $i$. In particular the restriction of $r$ to $S$ is one-to-one, as $-1$ is not in $S$ and therefore $i$ and $-i$ are not in $S$ as well.
 
 This homomorphism is extremely useful to relate statements about elements of the Pauli group to linear algebra over the field $\Z_2$. As an example, let us prove the following fact.
 
@@ -1681,7 +1685,6 @@ But as $-1$ is not in the group generated by the $S_i$, the only value that this
 
 
 Now let us try to find a condition on the $r(g)$ that tells us whether two elements commute or anti-commute. Suppose we are given two group elements $g$ and $g'$ and
-
 \begin{align*}
 r(g) &= (a , b) \\
 r(g') &= (c, d)
@@ -1695,7 +1698,7 @@ and anti-commute if and only if
 $$
 ad + bc = 1
 $$
-This formula defines a symplectic scalar product on the vector space $\Z_2^{2n}$, which is of course simply the standard symplectic product defined on any even-dimensional vector space. To write down this product, we can introduce the $2n \times 2n$ matrix
+This formula defines a {\bf symplectic product} on the vector space $\Z_2^{2n}$, which is of course simply the standard symplectic product defined on any even-dimensional vector space. To write down this product, we can introduce the $2n \times 2n$ matrix
 $$
 \Lambda = \begin{pmatrix} 
 1 & 0 \\
@@ -1724,7 +1727,7 @@ with a phase $\mu$, where the $\oplus$ denotes bitwise addition.
 
 After these preliminaries, we can now introduce check matrices. Suppose we are in the standard situation considered in this section, i.e. we have an abelian group $S$ with independent generates $S_1, \dots, S_k$ that stabilizes a non-trivial subspace $T_S$. 
 
-For each of the generators $S_i$, we can again consider the 2n-dimensional binary vector $r(S_i)$. Let us combine these vectors into a matrix $\mathcal{C}$ called the \emph{check matrix}. Thus if
+For each of the generators $S_i$, we can again consider the 2n-dimensional binary vector $r(S_i)$. Let us combine these vectors into a matrix $\mathcal{C}$ called the {\bf check matrix}. Thus if
 $$
 r(S_i)  = (a_i, b_i)
 $$
@@ -1763,7 +1766,6 @@ But we can do even more when we bring the check matrix into a standard form. In 
 First, we can of course re-label the qubits at will. This will simply exchange two columns of the left side (and the corresponding columns on the right side as well). Next, we can re-label the generators. This simply corresponds to a permutation of the rows. And finally, we can pick an index $i$ and multiply all generators except $S_i$ by $S_i$, i.e. pass to the set $\{ S_1 S_i, S_2 S_i \dots, S_i , \dots, S_k S_i\}$. This corresponds to adding row $i$ to all other rows of the matrix. Thus all operations in the Gauss-Jordan algorithm (over $\Z_2$) are reflected by operations on the group level that do not change the stabilizer group $S$. 
 
 Thus, starting with any check matrix, we can apply Gauss-Jordan elimination steps, i.e. change the set of generators by the operations explained above, to the left hand side of the matrix and end up with a check matrix in the following structure.
-
 \begin{align}\label{eq:checkmatrixstandard}
 \mathcal{C} = 
 \begin{pmatrix}[cc|cc]
@@ -1926,7 +1928,7 @@ M.A.~Nielsen, I.L.~Chuang, \emph{Quantum Computation and Quantum Information},
 Cambridge University Press, Cambridge, 2010
 
 \bibitem{Shor96}
-P.~Shor, \emph{Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer}, SIAM J.Sci.Statist.Comput. Vol. 26 Issue 5 (1997), pp 1484--1509, available as arXiv:quant-ph/9508027v2
+P.~Shor, \emph{Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer}, SIAM J.Sci.Statist.Comput. Vol. 26 Issue 5 (1997), pp. 1484--1509, available as arXiv:quant-ph/9508027v2
 
 
 \bibitem{G1}
@@ -1991,7 +1993,7 @@ P.~Aliferis, D.~Gottesman, J.~Preskill, \emph{Quantum accuracy threshold for con
 
 \bibitem{Bombin}
 H.~Bombin, 
-\emph{An introduction to topological quantum codes}, in \emph{Quantum error correction}, edited by D.A.~Lidar and T.A.~Brun, Cambridge University Press, New York, 2013, available as arXiv:1311.0277 [quant-ph]
+\emph{An introduction to topological quantum codes}, in \emph{Quantum error correction}, edited by D.A.~Lidar and T.A.~Brun, Cambridge University Press, New York, 2013, available as arXiv:quant-ph/1311.0277 
 
 \bibitem{Kitaev}
 A.Yu.~Kitaev, \emph{Fault-tolerant quantum computation by anyons}, 
@@ -2009,6 +2011,15 @@ V.~Lahtinen, J.K.~Pachos,
 B.~Field, T.~Simula,
 \emph{Introduction to topological quantum computation with non-Abelian anyons},
 arXiv:1802.06176
+
+\bibitem{Rao}
+S.~Rao, \emph{Introduction to abelian and non-abelian anyons}, 	arXiv:1610.09260 
+
+\bibitem{KitaevBravyi}
+S.B.~Bravyi, A.Yu.~Kitaev, 
+\emph{Quantum codes on a lattice with boundary}, arXiv:quant-ph/9811052
+
+
 
 \end{thebibliography}
 

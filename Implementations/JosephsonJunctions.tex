@@ -1,0 +1,914 @@
+\documentclass[a4paper, draft]{article}
+\pagestyle{headings}
+
+\title{Josephson junctions}
+
+\usepackage{amsmath,amsthm, amsfonts,amscd, amssymb}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{url}
+\usepackage[final]{graphicx}
+
+
+
+% Numbering
+
+%\numberwithin{section}{chapter}
+%\numberwithin{equation}{chapter}
+
+% Theorem environments
+
+%% \theoremstyle{plain} %% This is the default
+\newtheoremstyle{own}
+    {3pt}                    % Space above
+    {3pt}                    % Space below
+    {\itshape}                   % Body font
+    {}                           % Indent amount
+    {\scshape}                   % Theorem head font
+    {.}                          % Punctuation after theorem head
+    {.5em}                       % Space after theorem head
+    {}  % Theorem head spec (can be left empty, meaning ‘normal’)
+    
+\theoremstyle{own}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{ax}{Axiom}[section]
+
+%% \theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+
+%% \theoremstyle{remark}
+\newtheorem{rem}{Remark}[section]
+\newtheorem*{notation}{Notation}
+\theoremstyle{remark}
+\newtheorem*{example}{Example}
+
+% Fix alignments
+
+% \setlength{\parindent}{0.5cm}
+
+
+%  Math definitions
+
+% Fields
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\quat}{\mathbb{H}}
+
+%Groups 
+\newcommand{\Lo}{\mathbf{O}(3,1)}
+\newcommand{\SL}{\mathbf{SL}}
+\newcommand{\SU}{\mathbf{SU}}
+\newcommand{\Spin}{\mathbf{Spin}}
+\newcommand{\Pin}{\mathbf{Pin}}
+\newcommand{\SO}{\mathbf{SO}}
+\newcommand{\Poincare}{\mathcal{P}}
+\newcommand{\Poincarecov}{\widetilde{\mathcal{P}}}
+\newcommand{\Poincareprop}{\widetilde{\mathcal{P}}_+^{\uparrow}}
+\newcommand{\Aut}{\mathrm{Aut}}
+
+% Rings
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\CCl}{\mathbb{C}\mathrm{l}}
+\newcommand{\Cl}{\mathrm{Cl}}
+\newcommand{\Mat}{\mathrm{Mat}}
+
+% Lie algebras
+
+\newcommand{\spin}{\mathfrak{spin}}
+\newcommand{\so}{\mathfrak{so}}
+\newcommand{\su}{\mathfrak{su}}
+\newcommand{\slc}{\mathfrak{sl}}
+
+%Three-vectors
+\newcommand{\xt}{\mathbf{x}}
+\newcommand{\yt}{\mathbf{y}}
+\newcommand{\pt}{\mathbf{p}}
+\newcommand{\nt}{\mathbf{n}}
+\newcommand{\sigmat}{\mathbf{\sigma}}
+
+% Vector spaces
+\newcommand{\Hil}{\mathcal{H}}
+
+% Other
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Fock}{\mathcal{F}}
+\newcommand{\Op}{\mathrm{Op}}
+\newcommand{\equalsoalpha}{\stackrel{\mathcal{O}(\alpha)}{=}}
+\newcommand\smallO{
+  \mathchoice
+    {{\scriptstyle\mathcal{O}}}% \displaystyle
+    {{\scriptstyle\mathcal{O}}}% \textstyle
+    {{\scriptscriptstyle\mathcal{O}}}% \scriptstyle
+    {\scalebox{.7}{$\scriptscriptstyle\mathcal{O}$}}%\scriptscriptstyle
+  }
+
+\DeclareMathOperator{\per}{per}
+\DeclareMathOperator{\sign}{sgn}
+
+\begin{document}
+\maketitle
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction to superconductivity
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction to superconductivity}
+
+
+In this section, we recall some basic facts about the theory of superconductivity. We refer the reader to section 12 of \cite{Kittel}, \cite{GrossMarxLectureNotes} or section 21 of \cite{FeynmanIII}.
+
+In an ordinary metal, charge is carried by electrons, i.e. by Fermions. According to the Pauli exclusion principle, no two electrons can be in the exact same quantum state. However, according to the so-called {\bf BCS theory of superconductivity}, the movement of the electrons in the solid creates waves, so-called phonons, which in turn lead to an interaction between electrons. This introduces an attractive force between electrons. At low temperatures, this force will result in the formation of pairs of electrons called {\bf Cooper pairs}. The spins of the electrons that form a Cooper pair cancel, so that the Cooper pairs obey Bose-Einstein statistics. Hence the Cooper pairs tend to move into the same quantum state, which is then described by a single wave function $\psi$. As this wave function describes the simultaneous state of a large number of particles, it becomes visible on the macroscopic level and is therefore called the {\bf macroscopic wave function}. 
+
+To interpret this function, let us quickly recall the notion of a {\bf probability current}. We start with the Schr\"odinger equation
+\begin{align}\label{eq:schroedinger}
+i \hbar \frac{\partial}{\partial t} \psi = H \psi
+\end{align}
+with
+$$
+H = - \frac{\hbar^2}{2m} \nabla^2 + V
+$$
+Let us first multiply equation \eqref{eq:schroedinger} by $\psi^*$ from the left. We obtain
+$$
+i \hbar \psi^*\frac{\partial}{\partial t} \psi = \psi^* H \psi
+$$
+Taking the complex conjugate of equation \eqref{eq:schroedinger} and multiplying by $\psi$ from the left gives
+$$
+-i \hbar \psi\frac{\partial}{\partial t} \psi^* = \psi H \psi^*
+$$
+Subtracting these two equations then yields
+$$
+i \hbar \frac{\partial}{\partial t} (\psi \psi^*) = \psi^* H \psi - \psi H \psi^* 
+$$
+Let us now take a closer look at the right hand side of this equation. The potential energy clearly cancels out, and we are left with the contribution of the kinetic energy, i.e.
+$$
+\psi^* H \psi - \psi H \psi^*  = \frac{\hbar^2}{2m} (\psi \nabla^2 \psi^* - \psi^* \nabla^2 \psi)
+$$
+Combining this with our previous result and dividing by $i \hbar$ gives
+$$
+\frac{\partial}{\partial t} (\psi \psi^*) +
+\frac{\hbar}{2mi} (\psi^* \nabla^2 \psi - \psi \nabla^2 \psi^*) = 0
+$$
+Finally, we can write the right hand side equally well as
+$$
+\frac{\hbar}{2mi} \nabla (\psi^* \nabla \psi - \psi \nabla \psi^*)
+$$
+so that we obtain our final result
+$$
+\frac{\partial}{\partial t} (\psi \psi^*) + \nabla 
+\frac{\hbar}{2mi} (\psi^* \nabla \psi - \psi \nabla \psi^*) = 0
+$$
+Let us now make the following definitions. We call the quantity
+$$
+\rho = \psi^* \psi
+$$
+the probability density. From elementary quantum mechanics, we know that for a single particle wave function, this quantity represents the probability of finding the particle in a certain region of space at a certain time. In our setting, applied to the macroscopic wave function, this number is the macroscopic particle density, i.e. it will describe the density of Cooper pairs and is therefore proportional to the charge density. The quantity
+$$
+J = \frac{\hbar}{2mi} (\psi^* \nabla \psi - \psi \nabla \psi^*)
+$$
+is a vector called the {\bf probability current}. With these definitions, our equation reads
+$$
+\frac{\partial}{\partial t} \rho + \nabla J =0
+$$
+This has the form of a continuity equation. It describes the change of the density at one point over time in terms of the divergence of a vector quantity, which can therefore be interpreted as the flow of particles and - in this case - charge.  Note that if we make the usual identification
+$$
+P = \frac{\hbar}{i} \nabla
+$$
+to define the momentum operator, a short calculation splitting $\psi$ into real and imaginary part shows that we can write the current as
+$$
+J = \frac{1}{2m} (\psi^* P \psi - \psi P \psi^*) = \Re \big[ 
+\psi^* \frac{P}{m}  \psi \big]
+$$
+which suggests the interpretation of the current as a sort of velocity with which the particles are moving (and shows that the current is a real quantity).
+
+
+
+So far, we have considered the situation without the presence of an electromagnetic field. Now suppose that we are adding a field, described by the scalar potential $\Phi$ and the vector potential $A$. Then, following \cite{FeynmanIII}, taking the electromagnetic field into account amounts to replacing the momentum operator by the expression
+$$
+-i \hbar \nabla - qA
+$$
+where $q$ is the charge of the particle in question (in our case, $q = -2e$). The expression for the current is then 
+$$
+J =  \Re \big[ 
+\psi^* (  \frac{\hbar}{im} \nabla - \frac{q}{m} A )  \psi \big]
+$$
+
+
+Let us now adapt our notation to this interpretation. We know that the density $\rho$ is non-negative, and we can therefore write
+$$
+\psi = \sqrt{\rho} e^{i\Theta}
+$$
+with a phase $\Theta$ depending on space and time. We can now apply the chain rule to calculate the gradient of $\psi$ and obtain
+$$
+\nabla \psi =  \psi \big[ i \nabla \Theta + \frac{1}{2\rho} \nabla \rho \big]
+$$
+This implies in particular that the imaginary part of $\psi^* \nabla \psi$ only depends on the phase $\Theta$. Plugging this into our expression for the current $J$, we see that the derivative of $\rho$ cancels out when we take the real part, and we end up with
+$$
+J = \frac{\hbar\rho}{m}  \big[  \nabla \Theta - \frac{q}{\hbar} A \big]
+$$
+The term in the parentheses is often called the {\bf gauge invariant phase gradient} $\gamma$:
+$$
+\gamma = \nabla \Theta - \frac{q}{\hbar} A
+$$
+so that the current can be written as
+$$
+J = \frac{\hbar\rho}{m} \gamma
+$$
+
+
+Let us now make the additional assumption that the state is {\bf stationary}, i.e. that the density $\rho$ is constant. This corresponds to a state where the distribution of the charge carried by the Cooper pairs is constant across the superconductor and does not change over time (see \cite{FeynmanIII} section 21.6 for a physical argument why this is a reasonable assumption). To make contact with the standard terminology in this field, let us introduce the London coefficient
+$$
+\Lambda = \frac{m}{q^2 \rho}
+$$
+which is now a constant, and the supercurrent, which is simply our current multiplied by the charge $q$ of a Cooper pair
+$$
+J_s = q J
+$$
+Then we find that
+\begin{align}\label{eq:londonformula}
+\Lambda J_s = \frac{\hbar}{q} \nabla \Theta - A
+\end{align}
+Now let us apply the curl to both sides. The curl of a gradient vanishes, and, by definition, the curl of the vector potential $A$ gives the magnetic field $B$. We therefore find that
+$$
+B = - \nabla \times (\Lambda J_s) 
+$$
+which is known as the {\bf London equation}. It describes the magnetic field inside the superconductor as the curl of the supercurrent. The London equation implies by combining it with the Maxwell equation (that tells us that the curl of B is proportional to the current) that $\nabla^2 B$ is proportional to $B$ in a superconductor. Thus no non-zero homogeneous magnetic field can exist in a superconductor, a fact that relates to the so-called {\bf Meissner effect}, see \cite{Kittel}, chapter 12.
+
+To close this section, let us use our equations to derive the so-called {\bf flux quantization}. Suppose we are given a superconductor that forms a ring. We assume that we apply a magnetic field and use induction to initiate a supercurrent in the ring. We then wait until the current has stabilized so that our assumption of a constant charge density applies. In that situation, let us see what happens if we integrate equation \eqref{eq:londonformula} along a closed circle $C$ in the ring. From Maxwell's equations, we know that
+$$
+\int_C A dl = \int_S B ds
+$$
+where $S$ is the surface enclosed by the line $C$. Thus equation \eqref{eq:londonformula} implies that
+$$
+\int_C (\Lambda J_s) dl + \int_S B ds = \frac{\hbar}{q} \int_C (\nabla \Theta) dl
+$$
+At the first glance, it seems that the right hand side is the integral of a gradient along a closed line and therefore zero. However, we are cheating a bit. In fact, the phase $\Theta$ is not well defined, but only defined up to a constant multiple of $2 \pi$, or, mathematically speaking, it is defined on the universal covering space of the superconducting ring. The integral is therefore not zero, but a multiple of $2\pi$. Thus we obtain
+$$
+\int_C (\Lambda J_s) dl + \int_S B ds = n \frac{h}{q}   
+$$
+To interpret this, let us assume that our material is thick enough and we are integrating along a path deep inside the superconductor. In this case, the Meissner effect will tell us that $J_s$ is zero (the supercurrent will be concentrated close to the surface of the ring, see ¢cite{Kittel}, chapter 12, or 21.6 in \cite{FeynmanIII}). What remains is the {\bf magnetic flux} through the curve $C$. We therefore obtain that the total magnetic flux through a superconducting ring is {\bf quantized}. Thus we have found a quantization condition for a macroscopic quantity. We refer to section 21.6 of \cite{FeynmanIII} for a description of how that flux can be created and measured.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The Josephson effect
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Josephson effect}
+
+Let us now apply the machinery developed in the previous section to study the Josephson effect. We again follow the derivation in \cite{Kittel} and \cite{FeynmanIII} closely. 
+
+We consider two superconducting solids that are separated by a thin insulator - this setup is called a {\bf Josephson junction}. Let us denote the wave functions describing the state on the left and right hand side of the junction by $\psi_1$ and $\psi_2$, with densities $\rho_i$ and phases $\Theta_i$. 
+
+If we consider one of the superconductors alone, the wave function would obey the Schr\"odinger equation. If we assume that the state is stationary with sharp energy $E_i$, we would have
+$$
+i \hbar \frac{\partial }{\partial t} \psi_i = E_i \psi_i
+$$
+The energies in both superconductors need not be the same. Let us assume that there is a potential difference $qV$ across the junction. By adjusting the zero energy, we can then assume that
+$$
+E_1 = -\frac{1}{2} qV
+$$
+and
+$$
+E_2 = \frac{1}{2} qV
+$$
+so that our equations are (taking $q = -2e$ into account)
+\begin{align*}
+i \hbar \frac{\partial }{\partial t} \psi_1 &= eV \psi_1 \\
+i \hbar \frac{\partial }{\partial t} \psi_2 &= -eV  \psi_2
+\end{align*}
+These equations describe two fully decoupled quantum systems. Now let us modify our model a bit - we assume that there is an interaction between the two systems through the insulator. Thus, the Hamiltonian of each system receives an additional term which is coupling each system to the other side of the junction. Calling the coupling constant $T$, this leads to the following modified equations.
+\begin{align*}
+i \hbar \frac{\partial }{\partial t} \psi_1 &= eV \psi_1 + \hbar T \psi_2 \\
+i \hbar \frac{\partial }{\partial t} \psi_2 &= -eV  \psi_2 + \hbar T \psi_1
+\end{align*}
+This is to be interpreted as being evaluated close to the insulator, i.e. $\psi_i$ is the wave function close to the boundary of the respective superconductor. Now we again write our wave function as the product of the square root of the density times the phase factor. We can use this to express the time derivative and find that
+$$
+\frac{\partial }{\partial t} \psi_i = \frac{1}{2 \sqrt{\rho_i}} e^{i\Theta_i} \frac{\partial \rho_i}{\partial t} 
++
+i \psi_i \frac{\partial \Theta_i}{\partial t}
+$$
+Let us first assume that $V = 0$, i.e. there is no voltage difference across the junction. We start with the first equation and combine this with our expression for the partial derivative to obtain
+$$
+ \frac{i }{2 \sqrt{\rho_1}} e^{i\Theta_1} \frac{\partial \rho_1}{\partial t} 
+- 
+\psi_1 \frac{\partial \Theta_1}{\partial t} =  T \psi_2
+$$
+Multiplying this by $\sqrt{\rho_1} e^{-i \Theta_1}$ and introducing the phase difference $\delta = \Theta_2 - \Theta_1$, we find that
+$$
+ \frac{i }{2} \frac{\partial \rho_1}{\partial t} 
+ - 
+ \rho_1 \frac{\partial \Theta_1}{\partial t}
+ =
+ T \sqrt{\rho_1 \rho_2} e^{i\delta} = T \sqrt{\rho_1 \rho_2} (\cos \delta + i \sin \delta)
+$$
+Comparing the imaginary parts on both sides, we find that
+$$
+\frac{\partial \rho_1}{\partial t} = 2 T \sqrt{\rho_1 \rho_2} \sin \delta
+$$
+The same steps for the second equation give
+$$
+\frac{i }{2} \frac{\partial \rho_2}{\partial t} 
+- 
+\rho_2 \frac{\partial \Theta_2}{\partial t}
+=
+T \sqrt{\rho_1 \rho_2} e^{-i\delta}
+$$
+and
+$$
+\frac{\partial \rho_2}{\partial t} = - \frac{\partial \rho_1}{\partial t}
+$$
+Thus we find that there is a current flowing from one side of the junction to the other side. The current is given by the time derivative of the density $\rho$ and is 
+$$
+I_S = q \frac{\partial \rho_1}{\partial t} = 2 q T \sqrt{\rho_1 \rho_2} \sin \delta
+$$
+The existence of this current is called the {\bf Josephson effect}.  The Josephson current is proportional to the sine of the phase difference across the junction, and its maximum value is proportional to coupling constant $T$. The current is interpreted as a tunneling of Cooper pairs across the junction. Note that with our definitions, $q = -2e < 0$ and therefore a positive value of $I_S$ describes a decrease of Cooper pairs in region 1, i.e. a flow of Cooper pairs from region 1 to region 2, i.e. a flow of current from region 2 to region 1. 
+
+Let us now evaluate the real parts of our equations. again, we start with the first equation. We find that
+$$
+- \rho_1 \frac{\partial \Theta_1}{\partial t} = T \sqrt{\rho_1 \rho_2 } \cos \delta
+$$
+and
+$$
+- \rho_2 \frac{\partial \Theta_2}{\partial t} = T \sqrt{\rho_1 \rho_2 } \cos \delta
+$$
+Let us now make the simplifying assumption that the densities on both sides of the junction are approximately the same (this is of course not exactly true, as the current flowing through the junction will increase the charge density in one of the electrodes and decrease it in the other electrodes, but if we connect the junction to an external power supply that compensates for this, it is approximately true). This implies that the time derivatives of the phase are identical, i.e. that the phase difference $\delta$ is constant over time. Thus the current is constant over time and only depends on the phase difference. This is called the {\bf DC Josephson effect}.
+
+Let us now see how the situation changes if we drop the assumption $V = 0$. This time, our first equation becomes
+$$
+\frac{i }{2} \frac{\partial \rho_1}{\partial t} 
+- 
+\rho_1 \frac{\partial \Theta_1}{\partial t}
+=
+ T \sqrt{\rho_1 \rho_2} (\cos \delta + i \sin \delta) + \frac{eV}{\hbar} \rho_1
+$$
+and the second equation turns into
+$$
+\frac{i }{2} \frac{\partial \rho_2}{\partial t} 
+- 
+\rho_2 \frac{\partial \Theta_2}{\partial t}
+=
+T \sqrt{\rho_1 \rho_2} (\cos \delta - i \sin \delta) - \frac{eV}{\hbar} \rho_2
+$$
+The imaginary parts have not changed compared to the situation $V = 0$, so we still find that there is a current proportional to $\sin \delta$. However, this time the phase difference across the junction changes over time. In fact, taking the real parts of our equations and assuming again that $\rho_1 = \rho_2$, we find that
+$$
+\frac{\partial}{\partial t} \delta = \frac{\partial (\Theta_2 - \Theta_1)}{\partial t} =   \frac{2eV}{\hbar}
+$$
+Thus, the phase difference varies over time, with a frequency determined by the voltage difference across the junction. Specifically, 
+$$
+\delta(t) = \delta(t_0) + \frac{2eV}{\hbar} t
+$$
+and therefore the current is given by
+$$
+I_S = I_0 \sin (\delta(0) + \frac{2eV}{\hbar} t)
+$$
+which is an oscillating current with frequency 
+$$
+\omega = \frac{2eV}{\hbar}
+$$
+This is called the {\bf AC Josephson effect}.
+
+Let us now summarize what we have found. A Josephson junction which is part of a superconducting circuit acts like a lumped element described by the {\bf Josephson equations}
+\begin{align}\label{eq:josephson}
+I_S &= I_0 \sin (\delta(t)) \\
+\dot{\delta}(t) &=  \frac{2eV}{\hbar} 
+\end{align}
+We can now ignore the quantum mechanical details of the derivation and simply treat the junction as a circuit element that behaves according to these equations. We note that a full treatment would have to take other types of currents into accounts, for instance the current that results out of the flow of electrons not being part of a Cooper pair). Let us now study some of the consequences of these equations, following mainly \cite{Likharev} and \cite{GrossMarxLectureNotes}. 
+
+First, we note that we can associate a potential energy with a Josephson junction. In fact, suppose that we are given a junction with a certain phase difference. We can image that the state of the junction was obtained by starting with a phase difference $\delta=0$ and slowly changing the phase to its current value. As we do this, a current flows through the junction, which means that an external power source needs to do some work on the junction. We can calculate this work as follows.
+\begin{align*}
+W &= \int_0^t I_S(s) V(s) ds 
+\\ &= 
+ \int_0^t I_0 \sin(\delta(s)) \frac{\hbar}{2e} \dot{\delta}(s) ds
+\\ & =
+ I_0\frac{\hbar}{2e} \int_0^t \sin(\delta) d\delta 
+ = \frac{\hbar I_0}{2e} (1 - \cos \delta)  
+\end{align*}
+This does only depend on the final value of the phase and is therefore given by a potential energy
+$$
+E = E_0 (1 - \cos \delta)
+$$
+where
+$$
+E_0 = \frac{\hbar I_0}{2e}
+$$
+
+Next, let us try to relate the change of the current that flows through the junction to the voltage across the junction. The time derivative of the current is
+$$
+\frac{d}{dt} I_S = \frac{d}{dt} \big[ I_0 \sin \delta \big] 
+=
+\dot{\delta} I_0 \cos \delta
+$$
+Combining this with the current-phase relation (the second Josephson equation), we find that
+$$
+\frac{d}{dt} I = \big[ \frac{2eI_0}{\hbar} \cos \delta \big] V
+$$
+Thus, the Josephson junction behaves as an {\bf inductance} with value
+$$
+L_S = \frac{\hbar}{2e I_0 \cos \delta}
+$$
+Note that this inductance can have either sign and can in fact be infinite if $\cos \delta = 0$.
+
+So far we have only considered the Cooper pairs as charge carrying particles. In reality, however, there is a certain probability that Cooper pairs break up, creating a certain supply of single electrons (which, in this situation, are often called quasiparticles in the literature). In the presence of a voltage difference across the junction, this will lead to an ordinary current flowing through the junction which is called the {\bf normal current} $I_N$. Usually, the {\bf conductance} $G_N$ given by the equation
+$$
+I_N = G_N V
+$$
+will not be constant but depend on the voltage $V$. 
+
+Finally, a Josephson junction typically also represents an ordinary {\bf capacity} $C$, provided by the two electrodes of the junction. As with any capacity, this capacity results in a {\bf displacement current} $I_D$ given by
+$$
+I_D = C \frac{d}{dt} V
+$$
+
+Putting all this together, we now see that the total current flowing through a Josephson junction is a function of the phase difference and given by
+\begin{align}
+\label{eq:totalcurrent}
+I = I_S + I_N + I_D = I_0 \sin \delta + \frac{\hbar}{2e} G_N \dot{\delta} + \frac{C \hbar}{2e} \ddot{\delta}
+\end{align}
+The circuit model that describes a Josephson junctions according to this interpretation is shown in figure \ref{fig:JosephsonJunction}. 
+
+Let us now try to understand what the potential energy of this circuit is. We have already seen that, up to a constant, the Josephson junction itself stores an energy proportional to $\cos \delta$. An additional energy contribution is made by the capacity. As in every capacitor, there is an electric field between the two pieces of the capacitor. This energy has a field whose energy is given by
+$$
+K = \frac{1}{2} \frac{Q^2}{C} = \frac{1}{2} C U^2
+$$
+Now we can again utilize the second Josephson equation to express the voltage by the phase and obtain
+$$
+K = \frac{\hbar^2}{8e^2} C \dot{\delta}^2
+$$
+Now let us write this in a slightly different way. First, we introduce a characteristic frequency of the junction called the {\bf plasma frequency} given by
+$$
+\omega_p^2 = \frac{2e I_0}{\hbar C}
+$$
+Using the previous expression for the characteristic energy $E_0$ of the junction, we see that
+$$
+E_0 \omega_p^{-2} = \frac{\hbar^2}{4e^2} C
+$$
+so that the energy stored in the capacitor can be written as
+$$
+K = \frac{1}{2} E_0 \omega_p^{-2} \dot{\delta}^2
+$$
+Combining this with the potential energy of the junction, we now obtain a nice expression for the total energy stored in the circuit as a function of the phase difference $\delta$.
+\begin{align}
+\label{eq:junctionenergy}
+E(\delta) = E_0(1 - \cos \delta +\frac{1}{2} \omega_p^{-2} \dot{\delta}^2)
+\end{align}
+Of course this can only reasonably be interpreted as a total energy if the resistance $1 / G$ is sufficiently small so that almost no energy gets lost as heat. 
+
+To sharpen our intuition, let us now briefly relate the behaviour of a Josephson junction for a special case to a mechanical model. Let us make the simplifying assumption that the resistance of the junction is constant, i.e. 
+$$
+G_N = \frac{1}{R}
+$$
+with a constant resistance $R$. Let us further assume that the junction is connected to an external current supply that keeps the total current $I$ approximately constant. Equation \eqref{eq:totalcurrent} can then be written as
+$$
+\frac{C \hbar}{2eI_0} \ddot{\delta} + \frac{\hbar}{2eI_0R} \dot{\delta}  + (\sin \delta - i) = 0
+$$
+where
+$$
+i = \frac{I}{I_0}
+$$
+is the normalized (dimensionless) current. Now let us multiply this equation by $E_0$. We obtain
+$$
+\big( \frac{\hbar}{2e} \big)^2  C \ddot{\delta}
++
+\big( \frac{\hbar}{2e} \big)^2 \frac{1}{R} \dot{\delta} 
++ \frac{d}{d \delta} \big[ E_0 (1 - \cos \delta - i \delta) \big] = 0
+$$
+But this equation is familiar from classical mechanics. In fact, this equation is completely equivalent to the classical equation of motion for a particle with mass $m$ and damping $\eta$ moving in a potential $U$ if we set
+\begin{align*}
+U &= E_0 (1 - \cos \delta - i \delta) \\
+m&= \big( \frac{\hbar}{2e} \big)^2  C \\
+\eta &= \big( \frac{\hbar}{2e} \big)^2 R^{-1}
+\end{align*}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{images/JosephsonJunction}
+\caption[Josephen junction]{Josephson junction model circuit}
+\label{fig:JosephsonJunction}
+\end{figure}
+
+A concrete example for a mechanical system described by such a potential is a pendulum with an additional unwinding mass, as shown in figure \ref{fig:Pendulum}. The additional mass $M$ contributes with a term proportional to $M \delta$ to the potential energy and corresponds to the dimensionless current $i$, and the pendulum itself provides the dependency on $\cos \delta$. We see that for $0 < i < 1$, there is a stationary solution, given by
+$$
+\sin \delta = i
+$$
+in which the masses $M$ and $m$ are in equilibrium. For $M = 0$ and small values of $\delta$, the system will oscillate around the equilibrium state with a frequency that is easily seen to be the plasma frequency $\omega_p$ introduced earlier.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/Pendulum}
+\caption[Pendulum with a torque]{Pendulum with a torque}
+\label{fig:Pendulum}
+\end{figure}
+
+Let us also briefly discuss the role of the term $E_0 i \delta$ that has appeared in our expression for the potential. The time derivative of this term is
+$$
+\frac{d}{dt} E_0 i \delta = E_0 i \frac{d}{dt} \delta + E_0 \delta \frac{d}{dt} i
+$$
+Suppose again that our current supply is perfect, i.e. that the current $I$ is essentially constant. Then we can ignore the second term. The first term is then, using again the second Josephson equation and the definition of $E_0$
+$$
+\frac{\hbar I_0}{2e} \frac{I}{I_0} \frac{2e}{\hbar} V = IV
+$$
+i.e. it is the electrical power that is delivered by the current source. Thus 
+$$
+E_0 i \delta = \text{const} + \int_0^t \frac{d}{dt} E_0 i \delta dt
+= \text{const} + \int_0^t IV dt 
+$$
+which implies that $E_0 i \delta$ is minus the change of potential energy of the current source. Therefore adding $-E_0 i \delta$ to the potential and kinetic energy of the junction gives us the total energy of the combined system, consisting of the junction and the power supply:
+\begin{align}
+\label{eq:totalenergy}
+E_{tot} = E_0(1 - \cos \delta  - \frac{I}{I_0} \delta)  +\frac{1}{2} E_0 \omega_p^{-2} \dot{\delta}^2
+\end{align}
+where the first term is the potential energy and the last term is the kinetic energy.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Quantum circuits
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The quantum LC circuit}
+
+Let us briefly recall what we have done so far. First, we have used a quantum mechanical argument to derive relations between voltage and current for a Josephson junction. Then, we have analyzed the dynamics of a Josephson junction, treating the element entirely classical, i.e. we have written down the kinetic and potential energy in terms of the variable $\delta$ and discussed the resulting equations of motion.
+
+We can now go one step further - as with any mechanical system, we can apply the process of canonical quantization to treat the entire circuit - including capacity and resistance - as a quantum mechanical system. Thus we write down a Lagrangian, determine the conjugate momenta, calculate the Hamiltonian and quantize by passing to operators that fulfill canonical commutation relations.
+
+To see how this works, let us first go through the process using a simple circuit for which we know what the outcome is - an LC circuit, consisting of an inductance L with a parallel capacitor C.
+
+Let us start by writing down the Lagrangian for this circuit. The magnetic field stored in the inductance makes a contribution to the total energy given by
+$$
+\frac{1}{2} L I^2
+$$
+where $I$ is the current flowing through the inductance. The capacitor will store an electric field with energy
+$$
+\frac{1}{2} C U^2 = \frac{1}{2} \frac{Q^2}{C}
+$$
+where $Q$ is the charge on the capacitor and $U$ the voltage across the capacitor.  We can now use the relation 
+$$
+U = L \frac{d}{dt} I
+$$
+to express this in terms of the time derivative of the current and obtain
+$$
+\frac{1}{2} C L^2 \dot{I}^2
+$$
+for the energy in the capacitor. Let us now choose the current $I$ as our primary variable. Then the energy in the capacitor should be interpreted as a kinetic energy associated with a change in $I$, and the energy in the inductance is interpreted as a potential energy. Thus we try the Lagrangian
+$$
+{\mathcal L} = \frac{1}{2}CL^2 \dot{I}^2 - \frac{1}{2} LI^2
+$$
+Next, we need to determine the free variable that we use to describe our state. This could be the current $I$, but is it useful to use instead the magnetic flux
+$$
+\Phi = L I
+$$
+through the inductance. Using this variable, we can rewrite the Lagrangian as
+$$
+{\mathcal L} = \frac{1}{2} C \dot{\Phi}^2 - \frac{1}{2L} \Phi^2
+$$
+We can now determine the conjugate momentum for the variable $I$. We have
+$$
+\frac{\partial}{\partial \dot{\Phi}} {\mathcal L} = C \dot{\Phi} = CL \dot{I} = CU = Q
+$$
+so that the conjugate momentum is just the charge (this is the reason why we have used the flux as primary variable and not the current). 
+
+We can now use this to express the Lagrangian in terms of $Q$ and $\Phi$ and find that
+$$
+{\mathcal L} = \frac{1}{2C}  Q^2 - \frac{1}{2L} \Phi^2 
+$$
+
+Now we can write down the Hamiltonian of our system. As always, the Hamiltonian is the product of the conjugate momentum with the time derivative of the primary variable minus the Lagrangian. In our case, this gives
+$$
+H = Q\dot{\Phi} - {\mathcal L} = \frac{1}{2} \frac{Q^2}{C} + \frac{1}{2} \frac{\Phi^2}{L}
+$$
+After quantization, $Q$ and $\Phi$ become operators with the canonical commutation relation
+$$
+[I,P] = i \hbar
+$$
+We then recognize our Hamiltonian as the Hamiltonian of a harmonic oscillator
+$$
+\frac{p^2}{2m} + \frac{1}{2}kx^2
+$$
+with the identifications
+\begin{align*}
+m &= C \\
+k &= L^{-1} \\
+p &= Q \\
+x &= \Phi
+\end{align*}
+This is not really unexpected, as we know that the classical LC circuit will oscillate. The frequency of the oscillation is given by
+$$
+\omega = \sqrt{\frac{k}{m}} =  \frac{1}{\sqrt{CL}}
+$$
+which is of course nothing else but the classical resonance frequency of an LC circuit. The energy spectrum of the quantum LC circuit is therefore quantized with energy levels being separated by the gap
+$$
+\Delta E = \hbar \omega = \frac{\hbar}{\sqrt{LC}}
+$$
+
+Let us now pause for a moment and discuss whether an LC circuit could serve as a qubit. At the first glance, this seems to be an almost optimal choice. If we use a superconducting circuit, the carriers of charge will be Cooper pairs and we will have almost no dissipation. We can hope to fabricate our quantum circuits using available technology for integrated circuits. At small temperatures, thermal fluctuations with energies in the order of $k_B T$ will be smaller than the energy gap, so that we can hope to create and maintain stable energy eigenstates.
+
+But there is one challenge. Of course, a harmonic oscillator is not a two-level system. So in order to use this as a qubit, we would have to restrict ourselves to the subspace spanned by the ground state and the first excited state. This isolation is much easier to handle if there is a significant energy gap between the first excited state (our state $|1\rangle$) and any other excited states. In the case of a harmonic oscillator, however, all energy levels are equidistant. Thus the distance from the first excited level to the second level is the same as from the ground state to the first excited level. This makes it more difficult to restrict our states to two-dimensional subspace. 
+
+In order to solve this problem, we would need a circuit element that brings a non-linear behaviour into play, i.e. has a potential containing higher order terms and not only quadratic terms. But we have already seen such a circuit element - a Josephson junction with a potential energy term $\cos \delta$. So let us now see whether we obtain something useful if we replace our ordinary inductance by a Josephson junction. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The charge qubit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The charge qubit}
+
+Let us now work out the idea developed in the previous section, i.e. let us consider an LC circuit where both the inductance and the capacity are provided by a Josephson junction. In addition, this circuit which is called a {\bf Cooper pair box} or {\bf charge qubit} contains an additional capacitor $C_g$ whose role will become clear later and an external voltage supply with constant voltage $V_g$, as displayed in figure \ref{fig:ChargeQubit}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/ChargeQubit}
+\caption[Charge qubit]{Charge qubit}
+\label{fig:ChargeQubit}
+\end{figure}
+
+Let us now try to write down the Hamiltonian of this system. We start with the energy associated with the field in the two capacitors. Applying the usual formula for the electrostatic energy in a capacitor and using the fact that the voltage across $C_g$ is $V_g - V$, we find that this energy is
+$$
+\frac{1}{2} \big[ CV^2 + C_g(V_g - V)^2 \big]
+=
+\frac{1}{2}  \big[ (C+C_g)V^2 + C_g V_g^2 - 2 C_g V V_g \big] 
+$$
+Introducing the abbreviation
+$$
+C_\Sigma = C + C_g
+$$
+this is the same as
+$$
+\frac{1}{2} C_\Sigma \big[ V^2 + \frac{C_g}{C_\Sigma} V_g^2 - 2 \frac{C_g}{C_\Sigma} V V_g \big] 
+$$
+Now by assumption, the external voltage $V_g$ is constant. This implies that the difference between this expression and
+$$
+\frac{1}{2} C_\Sigma \big[ V - \frac{C_g}{C_\Sigma} V_g \big]^2 
+$$
+is a constant. As the energy is only defined up to a constant, we can therefore use the latter term for the electrostatic energy of the two capacitors. Let us introduce the quantity
+$$
+\Phi = \frac{\hbar}{2e} \delta
+$$
+which is the equivalent of the magnetic flux. The quantity
+$$
+\Phi_0 = \frac{\hbar}{2e}
+$$
+is called the {\bf flux quantum}. With this notation, we have
+$$
+\delta = \frac{\Phi}{\Phi_0}
+$$
+and the second Josephson equation reads
+$$
+V = \dot{\Phi}
+$$
+Putting all this together, we can now again write down the Lagrangian, expressed in terms of the dynamical variable $\Phi$.
+$$
+{\mathcal L}  = \frac{1}{2} C_\Sigma \big[ \dot{\Phi} - \frac{C_g}{C_\Sigma} V_g \big]^2 + E_0 \cos \frac{\Phi}{\Phi_0}
+$$
+Next, we again determine the canonical momentum which, for the time being, we call $P$. 
+$$
+P = \frac{\partial {\mathcal L}}{\partial \dot{\Phi}} 
+= 
+C_\Sigma \big[ \dot{\Phi} - \frac{C_g}{C_\Sigma} V_g \big]
+$$
+Let us try to interpret this quantity. We can write $P$ equally well as
+$$
+P = C_\Sigma V - C_g V_g = CV + C_g V - C_g V_g = CV + C_g(V-V_g)
+= Q - Q_g
+$$
+where $Q = CV$ is the charge stored on the capacitor $C$ and $C_g(V-V_g) = - Q_g$ is minus the charge stored on $C_g$. Thus this quantity measures the number of Cooper pairs located on the "island" between the Josephon junction and the nearby conductor of $C_g$. It is therefore common to introduce the variable
+$$
+N = \frac{P}{2e}
+$$
+that directly corresponds to the number of Cooper pairs on the island. 
+
+Next let us try to express the time derivative of $\Phi$ in terms of P and N. We find that
+$$
+\dot{\Phi} = \frac{P}{C_\Sigma} + \frac{C_g}{C_\Sigma} V_g
+$$
+The Hamiltonian can now be written as
+\begin{align*}
+H &= P\dot{\Phi} - {\mathcal L} \\
+&= \frac{P^2}{C_\Sigma} + \frac{C_g}{C_\Sigma} V_g P
+-
+\frac{1}{2}  \frac{P^2}{C_\Sigma}  - E_0 \cos \frac{\Phi}{\Phi_0} \\
+&= 
+\frac{1}{2}  \frac{P^2}{C_\Sigma} + \frac{C_g}{C_\Sigma} V_gP - E_0 \cos \frac{\Phi}{\Phi_0} \\
+&= \frac{1}{2 C_\Sigma} \big[ P^2 + 2 C_g V_g P \big] - E_0 \cos \frac{\Phi}{\Phi_0} \\
+&= \frac{1}{2 C_\Sigma} \big[ P^2 + 2 C_g V_g P + C_g^2 V_g^2 \big] 
+- E_0 \cos \frac{\Phi}{\Phi_0} - \frac{C_g^2 V_g^2}{2 C_\Sigma} \\
+&= \frac{1}{2 C_\Sigma} \big[ P + C_g V_g \big]^2 - E_0 \cos \frac{\Phi}{\Phi_0} - \frac{C_g^2 V_g^2}{2 C_\Sigma}
+\end{align*}
+The last term is a constant term and can therefore be ignored, as we can always change the Hamiltonian by a constant. The first term can be simplified if we pull out the factor $4e^2$ and introduce the quantities
+$$
+N_g = \frac{-C_g V_g}{2e}
+$$
+and
+$$
+E_c = \frac{2e^2}{C_\Sigma} 
+$$
+With these simplifications, our final form for the Hamiltonian is now
+$$
+H = E_C \big[ N - N_g \big]^2 -  E_0 \cos \frac{\Phi}{\Phi_0}
+$$
+which is the form typically used in the literature (see for instance \cite{DevoretWallraffMartinis} or \cite{WendinShumeiko}). Note that the quantity $N_g$ is not - as the notation might suggest - the charge on the capacitor $C_g$. Rather, it is a constant that depends on $C_g$ and the constant external voltage $V_g$. In practice, we can use these two quantities to tune the circuit.
+
+Let us briefly discuss why the additional capacitor $C_g$ is needed.
+To see this, let us recall how the formula for the electrostatic energy of a capacitor is obtained. However, this time, we consider a capacitor which carries an offset charge caused by impurities during the fabrication process. Let us denote this charge by $Q_0$. Further, we denote the charge added to the capacitor by the current flowing into the capacitor over the lifetime of the circuit as $Q(t)$. Thus the total charge on the capacitor at a time $t$ is
+$$
+Q(t) + Q_0 = \int_{-\infty}^{t} I(\tau) d\tau + Q_0
+$$
+The voltage across the capacitor at at time $t$ is then given by
+$$
+U(t) = C \big[ Q(t) + Q_0 \big]
+$$
+Now we can go through the usual calculation to determine the electrostatic energy as the integral of the power over time.
+\begin{align*}
+E(t) &= \int_{-\infty}^{t} I(\tau) U(\tau) d\tau \\
+&= C^{-1} \int_{-\infty}^{t} I(\tau) \big[ Q(\tau) + Q_0 \big] d\tau \\
+&= C^{-1} \int_{-\infty}^{t} \dot{Q}(\tau) \big[ Q(\tau) + Q_0 \big] d\tau \\
+&= \frac{1}{2C} \int_{-\infty}^{t} \frac{d}{d\tau} Q^2 d \tau 
++ 
+C^{-1} \int_{-\infty}^{t} Q_0 \dot{Q} d\tau \\&= \frac{Q^2(t)}{2C}
++
+C^{-1} Q_0 Q(t)
+\end{align*}
+where we have used that $Q(-\infty) = 0$ with our definition. Now we can write this as
+\begin{align*}
+E &= \frac{1}{2C} \big[ Q^2 + 2 Q_0 Q\big] \\
+&= \frac{1}{2C} \big[ Q +  Q_0 \big]^2 - \frac{Q_0^2}{2C}
+\end{align*}
+We can now again ignore the constant term and find that the electrostatic energy of an impure capacitor is given by
+$$
+E = \frac{1}{2C} \big[ Q +  Q_0 \big]^2
+$$
+If we now use this energy term to write down a Lagrangian, we get a Lagrangian which has exactly the same form as the corresponding term in the Lagrangian for the Cooper pair box. Thus the voltage $V_g$ and the associated term $N_g$ can be tuned to compensate for impurities in the capacitor of the Josephson junction. Being able to do this is a very important ability, as the number of Cooper pairs located on the island can, for small energies, be easily outnumbered by the number of charges resulting out of impurities, so that our energy and therefore the behavior of our circuit would be dominated by the - essentially random - impurities.
+
+
+Now let us apply the canonical quantization procedure to this Hamiltonian. The basic variable $\Phi$ and its canonical momentum $P$ are turned into operators with the commutation relation
+$$
+[\hat{\Phi}, \hat{P} ] = i \hbar
+$$
+This implies the particularly simple relation between $\hat{N}$ and $\hat{\delta}$
+$$
+[\hat{\delta}, \hat{N}] = [\frac{2e}{\hbar}  \hat{\Phi}, \frac{1}{2e}\hat{P}] = i
+$$
+
+Let us now try to understand the spectrum of the Hamiltonian. We will work in an eigenstate of the operator $\hat{N}$. We know that the eigenvalues of $\hat{N}$ are the possible values of the observable $N$ which is the number of Cooper pairs on the island, so we know that the eigenvalues of $\hat{N}$ must be integers. 
+
+To obtain an explicit expression for the eigenvalues, observe that (as one can easily prove via induction using the commutation relation between $\hat{\delta}$ and $\hat{N}$)
+$$
+[\hat{\delta}^k, \hat{N}] = i k  \hat{\delta}^{k-1}
+$$
+which implies that
+$$
+[e^{i\hat{\delta}}, \hat{N}] = - e^{i\hat{\delta}}
+$$
+Now suppose that $|x \rangle$ is an eigenstate of $\hat{N}$ with eigenvalue $\lambda$. Then
+\begin{align*}
+\hat{N} e^{i\hat{\delta}} |x \rangle 
+&= 
+\big[ \hat{N} e^{i\hat{\delta}} -  e^{i\hat{\delta}} \hat{N} + 
+e^{i\hat{\delta}} \hat{N} \big] |x \rangle \\
+&= [\hat{N}, e^{i\hat{\delta}}] |x \rangle + e^{i\hat{\delta}} \hat{N} |x \rangle \\
+&= e^{i\hat{\delta}} |x \rangle + \lambda e^{i\hat{\delta}} |x \rangle \\
+&= (\lambda + 1) |x \rangle
+\end{align*}
+and similarly 
+$$
+\hat{N} e^{-i\hat{\delta}} |x \rangle  = (\lambda - 1) |x \rangle
+$$
+As the operator $e^{i\hat{\delta}}$ is unitary, we can therefore define an eigenbasis of $\hat{N}$ as follows. We assume that there exists an eigenstate $|0 \rangle_N$ with eigenvalue zero and define
+$$
+|N \rangle = e^{iN\hat{\delta}} |0 \rangle
+$$
+Next, let us express $\cos \hat{\delta}$ in this basis. Using that
+$$
+\cos \hat{\delta} = \frac{1}{2} \big[ e^{i\hat{\delta}} + e^{-i \hat{\delta}} \big]
+$$
+we find that
+$$
+\cos \hat{\delta} = \frac{1}{2} \sum_N
+\big[
+|N+1\rangle \langle N| +  |N-1\rangle \langle N|
+\big]
+$$
+Combining this with the obvious expression for $\hat{N}$, we find that the Hamiltonian is given by
+$$
+H = E_C \sum_N (N-N_g)^2 |N \rangle \langle N |
+- 
+\frac{1}{2}E_0 \sum_N
+\big[
+|N+1\rangle \langle N| +  |N-1\rangle \langle N|
+\big]
+$$
+ 
+The first term is the diagonal part of the Hamiltonian that we call $H_0$. Let us first discuss the eigenvalues of this Hamiltonian. Clearly, the energy levels are given by
+$$
+\epsilon_N = E_C (N - N_g)^2 
+$$
+Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for some integer $n$, as in this case, nearby values of $N$ give rise to the same energy level. For all other values of $N_g$, all energy levels are non-degenerate. Diagram \ref{fig:CooperPairBoxEnergyLevels_unperturbed} displays the energy levels for $N=0,1,2,3$ for various values of $N_g$ - the degeneracies clearly appear as intersections of the curves belonging to different values of $N$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/CooperPairBoxEnergyLevels_unperturbed}
+\caption[Energy levels for $E_0=0$]{Energy levels for $E_0=0$}
+\label{fig:CooperPairBoxEnergyLevels_unperturbed}
+\end{figure}
+
+For non-zero values of $E_0$, we have several methods at our disposal to find the eigenvalues and eigenstates of $H$. First, one can show that the Hamiltonian is equivalent to the {\bf Mathieu equation} which is a well-studied differential equation (see for instance \cite{DevoretWallraffMartinis}). Alternatively, we can cut off the Hamiltonian at some finite dimension and use a computer algebra program to calculate its eigenvalues and eigenvectors. 
+
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/CooperPairBoxEnergyLevels_perturbed}
+\caption[Eigenvalues for $E_0 = 0.1 \cdot E_c$]{Eigenvalues for $E_0 = 0.1 \cdot E_c$}
+\label{fig:CooperPairBoxEnergyLevels_perturbed}
+\end{figure}
+
+Diagram \ref{fig:CooperPairBoxEnergyLevels_perturbed} displays the results of this calculation for $E_0 = 0.1 \cdot E_C$. We see that the degeneracy at the half-integer values of $N_g$ between the ground state and the first excited state has been removed. If $N_g$ is sufficiently far away from a multiple of an integer, we therefore have a small gap between the two states of lowest energies in combination with a large gap between those two energies all higher energies, which indicates that the system restricted to those two energy eigenstates might be a good approximation to a two-level system as we need it for a qubit.
+
+Intuitively, the fact that $E_C >> E_0$ means that the probability for a Cooper pair to tunnel through the Josephson junction is comparatively small. Thus, the fluctuations in the quantum number $N$ are small, and the eigenstates of $\hat{N}$ are almost stationary and therefore almost energy eigenstates. This intuition is supported by numerical calculations of the first two energy eigenstates. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/EnergyEigenstatesChargeRegime}
+\caption[Energy eigenstates for $E_0 << E_C$]{Energy eigenstates for $E_0 << E_C$}
+\label{fig:EnergyEigenstatesChargeRegime}
+\end{figure}
+
+Diagram \ref{fig:EnergyEigenstatesChargeRegime} shows the amplitudes of the ground state and the first excited state for $N_g = 0.5$. We see that in both cases, the state is almost entirely contained in the subspace spanned by the charge eigenstates $|0 \rangle$ and $|1 \rangle$. Again, this is due to the fact that the characteristic energy $E_0$ of the Josephson junction is small compared to the energy $E_C$. This combination of parameters is often called the {\bf charge regime}, because the eigenstates of the charge operator $\hat{N}$ are approximate energy eigenstates. 
+
+In order to better understand this situation, let us now restrict our attention to the subspace spanned by $|0 \rangle$ and $|1 \rangle$. We can project the Hamiltonian to this subspace and obtain
+$$
+\begin{pmatrix}
+E_C N_g^2 &  - \frac{1}{2} E_0 
+\\
+- \frac{1}{2} E_0 & E_C (1 - N_g)^2
+\end{pmatrix}
+$$
+which, after multiplying out the square and subtracting a constant term that we ignore, becomes
+$$
+H = 
+\begin{pmatrix}
+- \frac{E_C}{2} (1 - 2N_g) &  - \frac{1}{2} E_0 
+\\
+- \frac{1}{2} E_0 &  \frac{E_C}{2} (1 - 2N_g)
+\end{pmatrix}
+=
+\frac{E_C}{2} (2N_g - 1) \sigma_z - \frac{E_0}{2} \sigma_x
+$$
+We restrict our attention to values of $N_g$ between $0$ and $1$. If $N_g = 0.5$, then the Hamiltonian will be proportional to $\sigma_x$, and hence the energy eigenstates are given by $\frac{1}{\sqrt{2}} (|0 \rangle \pm |1 \rangle)$, in good accordance with the numerical result shown in figure \ref{fig:EnergyEigenstatesChargeRegime}. If $N_g$ is significantly different from $0.5$, then - as $E_0$ is small - the first term will dominate and our Hamiltonian will be proportional to $\sigma_z$, with eigenstates $|0 \rangle$ and $|1 \rangle$.
+
+Now recall that we have treated $N_g$ as a constant term or rather as a parameter of the Hamiltonian, but it is in fact a parameter which can be adjusted by changing the voltage $V_g$. If, for instance, we initially adjust $N_g$ to be close sufficiently far away from $0.5$, then, at low temperatures, the system will settle down in the ground state $|0 \rangle$.  If we now suddenly set the voltage to a value corresponding to $N_g = 0.5$ and keep it at this level for some time $t$, the system will undergo a transformation given by
+$$
+U = e^{-iHt} = e^{\frac{i}{2} E_0 t\sigma_x} = \cos \frac{E_0}{2}t + \sin  \frac{E_0}{2}t \sigma_x
+$$
+which is a rotation by an angle proportional to $t$. In this way, short pulses in the voltage can change the state of the qubit and can be used to realize single qubit transformations. One can even couple two qubits and use similar manipulations to induce transformations on the resulting two-qubit system, see \cite{ShnirmanEtAl}. As we are operating the system in the charge regime, this is called the {\bf charge qubit}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{thebibliography}{9}
+
+
+\bibitem{Kittel}
+C.~Kittel, Introduction to solid state physics, John Wiley, New York 1996
+
+\bibitem{GrossMarxLectureNotes}
+R.~Gross, A.~Marx, Applied Superconductivity, Lecture Notes, available online at \url{https://www.wmi.badw.de/teaching/Lecturenotes/}
+
+\bibitem{FeynmanIII}
+R.~Feynman,
+The Feynman Lectures on Physics, Vol. III, Addison Wesley 1964, available online at \url{http://www.feynmanlectures.caltech.edu/}
+
+\bibitem{DevoretWallraffMartinis}
+M.H.~Devoret, A.~Wallraff, J.M.~Martinis,
+Superconducting Qubits: A Short Review, arXiv:cond-mat/0411174 
+
+\bibitem{VoolDevoret}
+U.~Vool, M.H.~Devoret, 
+Introduction to Quantum Electromagnetic Circuits, arXiv:1610.03438 [quant-ph]
+
+\bibitem{WendinShumeiko}
+G.~Wendin, V.S.~Shumeiko,
+Superconducting Quantum Circuits, Qubits and Computing,
+arXiv:cond-mat/0508729
+
+\bibitem{Likharev}
+K.K.~Likharev, Dynamics of Josephson junctions and circuits,
+Gordon and Breach, New York 1984
+
+\bibitem{ShnirmanEtAl}
+A.~Shnirman, G.~Sch\"on, Z.~Hermon,
+Quantum Manipulations of Small Josephson Junctions,
+Phys. Rev. Lett. 79 (1997), 2371--2374s
+
+\end{thebibliography}
+
+
+
+\end{document}
+

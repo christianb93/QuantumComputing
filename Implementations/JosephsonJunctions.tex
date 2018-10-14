@@ -117,9 +117,9 @@
 \maketitle
 
 
-In the early years of quantum computing, most progress - for instance a first successful application of Shor's algorithm - has been achieved with NMR based devices. However, it became soon clear (see for instance the discussion in \cite{WarrenEtAl} - that this technology does not scale well for principal reasons. Thus other alternatives were considered.
+In the early years of quantum computing, most progress - for instance a first successful application of Shor's algorithm - has been achieved with NMR based devices. However, it became soon clear (see for instance the discussion in \cite{WarrenEtAl}) - that this technology does not scale well for principal reasons. Thus other alternatives were considered.
 
-Given the highly advanced technology in place to create and manipulate microscopic circuits, it is natural to ask under which conditions this technology can be used to built quantum devices. There are, however, two serious limitations. First, classical electronic circuits are not reversible - there will always be dissipation by heat, so that such a system will never be an isolated quantum mechanical system with reversible unitary evolution. In addition, classical electronic elements can be given a quantum mechanical treatment using for instance canonical quantization, but tend to be linear, so that the quantized energy levels are equidistant. This makes it much more difficult to stimulate dedicated transitions between different energy levels, because the frequency of, for instance, a microwave pulse that we send into the system can lead to transitions between arbitrary energy levels.
+Given the highly advanced technology available to create and manipulate microscopically small circuits, it is natural to ask under which conditions this technology can be used to build quantum devices. There are, however, two serious limitations. First, classical electronic circuits are not reversible - there will always be dissipation by heat, so that such a system will never be an isolated quantum mechanical system with reversible unitary evolution. In addition, classical electronic elements can be given a quantum mechanical treatment using for instance canonical quantization, but tend to be linear, so that the quantized energy levels are equidistant. This makes it much more difficult to stimulate dedicated transitions between different energy levels, because the frequency of, for instance, a microwave pulse that we send into the system can lead to transitions between arbitrary energy levels.
 
 Now it turns out that both issues can be addressed using {\bf superconducting circuits}. For low temperatures, a current can circulate through a superconductor without any dissipation, making a reversible evolution possible. Moreover, superconducting circuits show a macroscopical quantum behavior that we can exploit. Finally, so-called {\bf Josephson junctions} provide non-linear elements and non-equidistant energy levels. For all these reasons, most of todays efforts to build a scalable quantum computer are focused on superconducting qubits. In this short paper, we provide an overview of some of these approaches, accessible to readers with a standard background in quantum computing and quantum mechanics.
 
@@ -131,7 +131,7 @@ Now it turns out that both issues can be addressed using {\bf superconducting ci
 
 In this section, we recall some basic facts about the theory of superconductivity. We refer the reader to section 12 of \cite{Kittel}, \cite{GrossMarxLectureNotes} or section 21 of \cite{FeynmanIII}.
 
-In an ordinary metal, charge is carried by electrons, i.e. by Fermions. According to the Pauli exclusion principle, no two electrons can be in the exact same quantum state. However, according to the so-called {\bf BCS theory of superconductivity}, the movement of the electrons in the solid creates waves, so-called phonons, which in turn lead to an interaction between electrons. This introduces an attractive force between electrons. At low temperatures, this force will result in the formation of pairs of electrons called {\bf Cooper pairs}. The spins of the electrons that form a Cooper pair cancel, so that the Cooper pairs obey Bose-Einstein statistics. Hence the Cooper pairs tend to move into the same quantum state, which is then described by a single wave function $\psi$. As this wave function describes the simultaneous state of a large number of particles, it becomes visible on the macroscopic level and is therefore called the {\bf macroscopic wave function}. 
+In an ordinary metal, charge is carried by electrons, i.e. by fermions. According to the Pauli exclusion principle, no two electrons can be in the exact same quantum state. However, according to the so-called {\bf BCS theory of superconductivity}, the movement of the electrons in the solid creates waves, so-called phonons, which in turn lead to an interaction between electrons. This introduces an attractive force between electrons. At low temperatures, this force will result in the formation of pairs of electrons called {\bf Cooper pairs}. The spins of the electrons that form a Cooper pair cancel, so that the Cooper pairs obey Bose-Einstein statistics. Hence the Cooper pairs tend to move into the same quantum state, which is then described by a single wave function $\psi$. As this wave function describes the simultaneous state of a large number of particles, it becomes visible on the macroscopic level and is therefore called the {\bf macroscopic wave function}. 
 
 To interpret this function, let us quickly recall the notion of a {\bf probability current}. We start with the Schr\"odinger equation
 \begin{align}\label{eq:schroedinger}
@@ -175,7 +175,7 @@ Let us now make the following definitions. We call the quantity
 $$
 \rho = \psi^* \psi
 $$
-the probability density. From elementary quantum mechanics, we know that for a single particle wave function, this quantity represents the probability of finding the particle in a certain region of space at a certain time. In our setting, applied to the macroscopic wave function, this number is the macroscopic particle density, i.e. it will describe the density of Cooper pairs and is therefore proportional to the charge density. The quantity
+the {\bf probability density}. From elementary quantum mechanics, we know that for a single particle wave function, this quantity represents the probability of finding the particle in a certain region of space at a certain time. In our setting, applied to the macroscopic wave function, this number is the macroscopic particle density, i.e. it will describe the density of Cooper pairs and is therefore proportional to the charge density. The quantity
 $$
 J = \frac{\hbar}{2mi} (\psi^* \nabla \psi - \psi \nabla \psi^*)
 $$
@@ -259,7 +259,7 @@ At the first glance, it seems that the right hand side is the integral of a grad
 $$
 \int_C (\Lambda J_s) dl + \int_S B ds = n \frac{h}{q}   
 $$
-To interpret this, let us assume that our material is thick enough and we are integrating along a path deep inside the superconductor. In this case, the Meissner effect will tell us that $J_s$ is zero (the supercurrent will be concentrated close to the surface of the ring, see ¢cite{Kittel}, chapter 12, or 21.6 in \cite{FeynmanIII}). What remains is the {\bf magnetic flux} through the curve $C$. We therefore obtain that the total magnetic flux through a superconducting ring is {\bf quantized}. Thus we have found a quantization condition for a macroscopic quantity. We refer to section 21.6 of \cite{FeynmanIII} for a description of how that flux can be created and measured.
+To interpret this, let us assume that our material is thick enough and we are integrating along a path deep inside the superconductor. In this case, the Meissner effect will tell us that $J_s$ is zero (the supercurrent will be concentrated close to the surface of the ring, see \cite{Kittel}, chapter 12, or 21.6 in \cite{FeynmanIII}). What remains is the {\bf magnetic flux} through the curve $C$. We therefore obtain that the total magnetic flux through a superconducting ring is {\bf quantized}. Thus we have found a quantization condition for a macroscopic quantity. We refer to section 21.6 of \cite{FeynmanIII} for a description of how that flux can be created and measured.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -384,8 +384,9 @@ Let us now summarize what we have found. A Josephson junction which is part of a
 I_S &= I_0 \sin (\delta(t)) \\
 \dot{\delta}(t) &=  \frac{2eV}{\hbar} 
 \end{align}
-We can now ignore the quantum mechanical details of the derivation and simply treat the junction as a circuit element that behaves according to these equations. We note that a full treatment would have to take other types of currents into accounts, for instance the current that results out of the flow of electrons not being part of a Cooper pair). Let us now study some of the consequences of these equations, following mainly \cite{Likharev} and \cite{GrossMarxLectureNotes}. 
+We can now ignore the quantum mechanical details of the derivation and simply treat the junction as a circuit element that behaves according to these equations. We note that a full treatment would have to take other types of currents into accounts, for instance the current that results out of the flow of electrons not being part of a Cooper pair), as discussed in \cite{Likharev}. 
 
+Let us now study some of the consequences of these equations, following mainly \cite{Likharev} and \cite{GrossMarxLectureNotes}. 
 First, we note that we can associate a potential energy with a Josephson junction. In fact, suppose that we are given a junction with a certain phase difference. We can image that the state of the junction was obtained by starting with a phase difference $\delta=0$ and slowly changing the phase to its current value. As we do this, a current flows through the junction, which means that an external power source needs to do some work on the junction. We can calculate this work as follows.
 \begin{align*}
 W &= \int_0^t I_S(s) V(s) ds 
@@ -416,7 +417,7 @@ $$
 $$
 Thus, the Josephson junction behaves as an {\bf inductance} with value
 $$
-L_S = \frac{\hbar}{2e I_0 \cos \delta}
+L = \frac{\hbar}{2e I_0 \cos \delta}
 $$
 Note that this inductance can have either sign and can in fact be infinite if $\cos \delta = 0$.
 
@@ -438,7 +439,7 @@ I = I_S + I_N + I_D = I_0 \sin \delta + \frac{\hbar}{2e} G_N \dot{\delta} + \fra
 \end{align}
 The circuit model that describes a Josephson junctions according to this interpretation is shown in figure \ref{fig:JosephsonJunction}. 
 
-Let us now try to understand what the potential energy of this circuit is. We have already seen that, up to a constant, the Josephson junction itself stores an energy proportional to $\cos \delta$. An additional energy contribution is made by the capacity. As in every capacitor, there is an electric field between the two pieces of the capacitor. This energy has a field whose energy is given by
+Let us now try to understand what the potential energy of this circuit is. We have already seen that, up to a constant, the Josephson junction itself stores an energy proportional to $\cos \delta$. An additional energy contribution is made by the capacity. As in every capacitor, there is an electric field between the two pieces of the capacitor. This field has an energy given by
 $$
 K = \frac{1}{2} \frac{Q^2}{C} = \frac{1}{2} C U^2
 $$
@@ -446,7 +447,7 @@ Now we can again utilize the second Josephson equation to express the voltage by
 $$
 K = \frac{\hbar^2}{8e^2} C \dot{\delta}^2
 $$
-Now let us write this in a slightly different way. First, we introduce a characteristic frequency of the junction called the {\bf plasma frequency} given by
+Let us write this in a slightly different way. First, we introduce a characteristic frequency of the junction called the {\bf plasma frequency} given by
 $$
 \omega_p^2 = \frac{2e I_0}{\hbar C}
 $$
@@ -539,9 +540,9 @@ where the first term is the potential energy and the last term is the kinetic en
 
 Let us briefly recall what we have done so far. First, we have used a quantum mechanical argument to derive relations between voltage and current for a Josephson junction. Then, we have analyzed the dynamics of a Josephson junction, treating the element entirely classical, i.e. we have written down the kinetic and potential energy in terms of the variable $\delta$ and discussed the resulting equations of motion.
 
-We can now go one step further - as with any mechanical system, we can apply the process of canonical quantization to treat the entire circuit - including capacity and resistance - as a quantum mechanical system. Thus we write down a Lagrangian, determine the conjugate momenta, calculate the Hamiltonian and quantize by passing to operators that fulfill canonical commutation relations.
+We can now go one step further: as with any mechanical system, we can apply the process of canonical quantization to treat the entire circuit - including capacity and resistance - as a quantum mechanical system. Thus we write down a Lagrangian, determine the conjugate momenta, calculate the Hamiltonian and quantize by passing to operators that fulfill canonical commutation relations.
 
-To see how this works, let us first go through the process using a simple circuit for which we know what the outcome is - an LC circuit, consisting of an inductance L with a parallel capacitor C.
+To see how this works, let us first go through the process using a simple circuit for which we know what the outcome is - an LC circuit, consisting of an inductance L with a parallel capacitor C. As this is the electric analogue of a harmonic oscillator, we expect that the quantum mechanical system that we get is equivalent to a quantum harmonic oscillator.
 
 Let us start by writing down the Lagrangian for this circuit. The magnetic field stored in the inductance makes a contribution to the total energy given by
 $$
@@ -601,7 +602,7 @@ k &= L^{-1} \\
 p &= Q \\
 x &= \Phi
 \end{align*}
-This is not really unexpected, as we know that the classical LC circuit will oscillate. The frequency of the oscillation is given by
+This is exactly what we expected - our model described a quantum harmonic oscillator. The frequency of the oscillation is given by
 $$
 \omega = \sqrt{\frac{k}{m}} =  \frac{1}{\sqrt{CL}}
 $$
@@ -621,11 +622,11 @@ In order to solve this problem, we would need a circuit element that brings a no
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{The charge qubit}
 
-Let us now work out the idea developed in the previous section, i.e. let us consider an LC circuit where both the inductance and the capacity are provided by a Josephson junction. In addition, this circuit which is called a {\bf Cooper pair box} or {\bf charge qubit} contains an additional capacitor $C_g$ whose role will become clear later and an external voltage supply with constant voltage $V_g$, as displayed in figure \ref{fig:ChargeQubit}
+Let us now work out the idea developed in the previous section, i.e. let us consider an LC circuit where both the inductance and the capacity are provided by a Josephson junction. In addition, this circuit, which is called a {\bf Cooper pair box} or {\bf charge qubit}, typically contains an additional capacitor $C_g$ whose role will become clear later and an external voltage supply with constant voltage $V_g$, as displayed in figure \ref{fig:ChargeQubit}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.7\linewidth]{images/ChargeQubit}
+\includegraphics[width=0.9\linewidth]{images/ChargeQubit}
 \caption[Charge qubit]{Charge qubit}
 \label{fig:ChargeQubit}
 \end{figure}
@@ -810,7 +811,7 @@ The first term is the diagonal part of the Hamiltonian that we call $H_0$. Let u
 $$
 \epsilon_N = E_C (N - N_g)^2 
 $$
-Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for some integer $n$, as in this case, nearby values of $N$ give rise to the same energy level. For all other values of $N_g$, all energy levels are non-degenerate. Diagram \ref{fig:CooperPairBoxEnergyLevels_unperturbed} displays the energy levels for $N=1,0,1$ for various values of $N_g$ - the degeneracies clearly appear as intersections of the curves belonging to different values of $N$.
+Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for some integer $n$, as in this case, nearby values of $N$ give rise to the same energy level. Diagram \ref{fig:CooperPairBoxEnergyLevels_unperturbed} displays the energy levels for $N=1,0,1$ for various values of $N_g$ - the degeneracies clearly appear as intersections of the curves belonging to different values of $N$.
 
 \begin{figure}[ht]
 \centering
@@ -890,7 +891,7 @@ One way to reduce the sensitivity to charge noise is to increase the ratio $E_0 
 
 We see that, compared to our previous ratio $E_0 / E_C << 1$, the sensitivity to charge noise is reduced, as the energy of the first two energy levels is almost flat, with a minimal dependency on $N_g$. However, this comes at the cost of a more equidistant spacing of the energy levels, and the question arises whether we gain an advantage at the cost of another one.
 
-Fortunately, a more systematic analysis carried out in \cite{KochEtAl} shows that the sensitivity to charge noise decreases exponentially fast, but the anharmonicity of the energy levels increases much slower. Thus there is a region for the ratio $E_0 / E_c$ in which this sensitivity is already comparatively low, but the energy levels are still sufficiently anharmonic to obtain a reasonable two-level system. A charge qubit operated in this regime is called a {\bf transmon qubit}.
+Fortunately, a more systematic analysis carried out in \cite{KochEtAl} shows that the sensitivity to charge noise decreases exponentially fast, but the anharmonicity of the energy levels decreases much slower. Thus there is a region for the ratio $E_0 / E_c$ in which this sensitivity is already comparatively low, but the energy levels are still sufficiently anharmonic to obtain a reasonable two-level system. A charge qubit operated in this regime is called a {\bf transmon qubit}.
 
 Technically, a larger value of $E_0$ compared to $E_C$ is obtained by reducing $E_C$, which can be achieved by adding an additional capacitor parallel to the Josephson junction. The effective capacity of the junction will then be the sum of this capacity and the internal capacity of the junction. If we use a high value for the additional capacity, we can make $E_C$ arbitrarily small and can achieve an arbitrary high ratio of $E_0$ compared to $E_C$. In \cite{KochEtAl}, a ratio somewhere between $20$ and $10^4$ is recommended.
 
@@ -931,7 +932,7 @@ We can now almost guess what the Hamiltonian for the circuit is, using the conju
 $$
 H = \frac{Q^2}{2C_J} - E_0 \cos \frac{\Phi}{\Phi_0} + \frac{1}{2L}( \Phi  - \Phi_{ext})^2
 $$
-To see that this is the correct Hamiltonian, let us see what the resulting equations of motion are. The first equation is
+To see that this is a correct Hamiltonian, let us see what the resulting equations of motion are. The first equation is
 $$
 \dot{\Phi} = \frac{\partial H }{\partial Q} = \frac{Q}{C_J} = V
 $$
@@ -986,7 +987,7 @@ To develop an intuition for the eigenstates, let us first study the classical po
 $$
 V(\delta) = - E_0 \cos \delta + E_L ( \delta  - \delta_{ext})^2
 $$
-and let us try to understand under which conditions this is symmetric. Clearly, the quadratic term is symmetric around $\delta = \delta_{ext}$. Thus the entire function is symmetric if and only if the cosine is symmetric around $\delta_{ext}$, i.e. if either $\delta_{ext} = 2\pi$ or $\delta_{ext} = \pi$. In the latter case, we can introduce the new variable
+and let us try to understand under which conditions this is symmetric. Clearly, the quadratic term is symmetric around $\delta = \delta_{ext}$. Thus the entire function is symmetric if and only if the cosine is symmetric around $\delta_{ext}$, i.e. if either $\delta_{ext} = 2\pi$ or $\delta_{ext} = \pi$. In the latter case - which is the usual choice for the flux qubit -  we can introduce the new variable
 $$
 s = \delta - \pi
 $$
@@ -1032,7 +1033,7 @@ where $n$ is a positive integer. We first determine the matrix elements of our H
 $$
 H = - E_C  \nabla^2 + E_0 \big[ 1 + \lambda \frac{s^2}{2} + \frac{s^4}{24} + \dots \big]  = - E_C  \nabla^2 + V(s)
 $$
-in this basis, were we have made the usual translation of the momentum operator into the position space representation
+in this basis, where we have made the usual translation of the momentum operator into the position space representation
 $$
 \hat{N} \mapsto -i \nabla
 $$
@@ -1085,9 +1086,9 @@ $$
 We can therefore express the matrix elements of the Hamiltonian as
 \begin{align*}
 \langle n | H | m \rangle = 
-E_C \frac{n^2 \pi^2}{L^2} \delta_{nm} + \frac{E_0}{L} \big[ (I_{n-m} - I_{n+m})  + \frac{(\lambda + 1)}{2} (J_{n-m} - J_{n+m})
+E_C \frac{n^2 \pi^2}{L^2} \delta_{nm} + \frac{E_0}{L} \big[ (I_{n-m} - I_{n+m})  + \frac{(\lambda + 1)}{2} (J_{n-m} - J_{n+m}) \big]
 \end{align*}
-We can now cut off this matrix at a certain dimension - which needs to be larger with a larger choice of $L$ - and determine the eigenvalues and eigenfunctions numerically. Diagram \ref{fig:FluxQubitEigenfunctions} shows the result of that calculation, where $L = 40$ and the cut-off was done at dimension 40 as well. 
+We can now cut off this matrix at a certain dimension - which needs to be larger for a larger choice of $L$ - and determine the eigenvalues and eigenfunctions numerically. Diagram \ref{fig:FluxQubitEigenfunctions} shows the result of that calculation, where $L = 40$ and the cut-off was done at dimension 40 as well. 
 
 \begin{figure}[ht]
 \centering
@@ -1139,10 +1140,10 @@ is the arithmetic mean of the first two eigenvalues and
 $$
 \Delta = \frac{1}{2} (E_e - E_g)
 $$
-is half the energy gap. We see that the value $\Delta$ measures the transition probability, i.e. the energy gap is directly related to the height of the barrier between the two wells. If that number is different from zero, then $|l \langle$ is not a stationary state, instead the probability amplitude will leak through the barrier from the left to the right, and similarly for $|r \rangle$. In the symmetric and antisymmetric combinations $|g \rangle$ and $|e \rangle$, the tunneling from the left to the right and from the right to the left are in equilibrium and the states are stationary. We can think of this system as two coupled harmonic oscillators where the coupling is provided by the tunneling and removes the degeneracy of the lowest energy level - see for instance \cite{FeynmanIII} chapter 8 for an in-depth discussion of this type of systems. 
+is half the energy gap. We see that the value $\Delta$ measures the transition probability, i.e. the energy gap is directly related to the height of the barrier between the two wells. If that number is different from zero, then $|l \rangle$ is not a stationary state, instead the probability amplitude will leak through the barrier from the left to the right, and similarly for $|r \rangle$. In the symmetric and antisymmetric combinations $|g \rangle$ and $|e \rangle$, the tunneling from the left to the right and from the right to the left are in equilibrium and the states are stationary. We can think of this system as two coupled harmonic oscillators where the coupling is provided by the tunneling and removes the degeneracy of the lowest energy level - see for instance \cite{FeynmanIII} chapter 8 for an in-depth discussion of this type of systems. 
 
-To conclude this interpretation, let us try to relate the states $|r \rangle$ and $|l \rangle$ back to the flux. The state $|l \rangle$ is a state having a peak around $s \approx -2.8$ (the minimum of the classical potentia), i.e. $\sin(\delta) = \sin(s + \pi) \approx 0.34$. The state $|r \rangle$ has a peak around $s = 2.8$, i.e. 
-$\sin(\delta) =  \sin(s + \pi) \approx -0.34$. Using the Josephson phase-current relation, we see that these two states correspond to superconducting current of approximately the same magnitude, but with different directions around the loop. So these are approximately pure {\bf flux states} with a well defined current and therefore a well defined corresponding flux. 
+To conclude this interpretation, let us try to relate the states $|r \rangle$ and $|l \rangle$ back to the flux. The state $|l \rangle$ is a state having a peak around $s \approx -2.8$ (the minimum of the classical potential), i.e. $\sin(\delta) = \sin(s + \pi) \approx 0.34$. The state $|r \rangle$ has a peak around $s = 2.8$, i.e. 
+$\sin(\delta) =  \sin(s + \pi) \approx -0.34$. Using the Josephson phase-current relation, we see that these two states correspond to superconducting currents of approximately the same magnitude, but with different directions around the loop. So these are approximately pure {\bf flux states} with a well defined current and therefore a well defined corresponding flux. 
 
 A nice property of the flux qubit is that the energy gap between the first excited state and the second excited state is much higher than the energy gap between the ground state and the first excited state - in our example, the second gap is roughly $0.3 E_0$ and therefore more than one order of magnitude higher than the first gap. This implies that the two level system spanned by $|0 \rangle = |l \rangle$ and $|1 \rangle = |r \rangle$ is a well isolated system. The Hamiltonian can be manipulated by changing the flux bias $\Phi_{ext}$, or an external microwave pulse can be used to stimulate a transition from the ground state to the first excited state. 
 

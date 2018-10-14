@@ -117,7 +117,11 @@
 \maketitle
 
 
+In the early years of quantum computing, most progress - for instance a first successful application of Shor's algorithm - has been achieved with NMR based devices. However, it became soon clear (see for instance the discussion in \cite{WarrenEtAl} - that this technology does not scale well for principal reasons. Thus other alternatives were considered.
 
+Given the highly advanced technology in place to create and manipulate microscopic circuits, it is natural to ask under which conditions this technology can be used to built quantum devices. There are, however, two serious limitations. First, classical electronic circuits are not reversible - there will always be dissipation by heat, so that such a system will never be an isolated quantum mechanical system with reversible unitary evolution. In addition, classical electronic elements can be given a quantum mechanical treatment using for instance canonical quantization, but tend to be linear, so that the quantized energy levels are equidistant. This makes it much more difficult to stimulate dedicated transitions between different energy levels, because the frequency of, for instance, a microwave pulse that we send into the system can lead to transitions between arbitrary energy levels.
+
+Now it turns out that both issues can be addressed using {\bf superconducting circuits}. For low temperatures, a current can circulate through a superconductor without any dissipation, making a reversible evolution possible. Moreover, superconducting circuits show a macroscopical quantum behavior that we can exploit. Finally, so-called {\bf Josephson junctions} provide non-linear elements and non-equidistant energy levels. For all these reasons, most of todays efforts to build a scalable quantum computer are focused on superconducting qubits. In this short paper, we provide an overview of some of these approaches, accessible to readers with a standard background in quantum computing and quantum mechanics.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Introduction to superconductivity
@@ -806,7 +810,7 @@ The first term is the diagonal part of the Hamiltonian that we call $H_0$. Let u
 $$
 \epsilon_N = E_C (N - N_g)^2 
 $$
-Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for some integer $n$, as in this case, nearby values of $N$ give rise to the same energy level. For all other values of $N_g$, all energy levels are non-degenerate. Diagram \ref{fig:CooperPairBoxEnergyLevels_unperturbed} displays the energy levels for $N=0,1,2,3$ for various values of $N_g$ - the degeneracies clearly appear as intersections of the curves belonging to different values of $N$.
+Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for some integer $n$, as in this case, nearby values of $N$ give rise to the same energy level. For all other values of $N_g$, all energy levels are non-degenerate. Diagram \ref{fig:CooperPairBoxEnergyLevels_unperturbed} displays the energy levels for $N=1,0,1$ for various values of $N_g$ - the degeneracies clearly appear as intersections of the curves belonging to different values of $N$.
 
 \begin{figure}[ht]
 \centering
@@ -815,7 +819,7 @@ Obviously, there is a degeneracy if $N_g$ is of the form $n + \frac{1}{2}$ for s
 \label{fig:CooperPairBoxEnergyLevels_unperturbed}
 \end{figure}
 
-For non-zero values of $E_0$, we have several methods at our disposal to find the eigenvalues and eigenstates of $H$. First, one can show that the Hamiltonian is equivalent to the {\bf Mathieu equation} which is a well-studied differential equation (see for instance \cite{DevoretWallraffMartinis}). Alternatively, we can cut off the Hamiltonian at some finite dimension and use a computer algebra program to calculate its eigenvalues and eigenvectors. 
+For non-zero values of $E_0$, we have several methods at our disposal to find the eigenvalues and eigenstates of $H$. First, one can show that the Hamiltonian is equivalent to the {\bf Mathieu equation} which is a well-studied differential equation (see for instance \cite{DevoretWallraffMartinis}). Alternatively, we can cut off the Hamiltonian at some finite dimension and use a computer algebra program to calculate its eigenvalues and eigenvectors.
 
 
 
@@ -867,10 +871,286 @@ $$
 which is a rotation by an angle proportional to $t$. In this way, short pulses in the voltage can change the state of the qubit and can be used to realize single qubit transformations. One can even couple two qubits and use similar manipulations to induce transformations on the resulting two-qubit system, see \cite{ShnirmanEtAl}. As we are operating the system in the charge regime, this is called the {\bf charge qubit}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The transmon qubit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The transmon qubit}
+
+In the previous section, we have investigated the charge qubit operated with a gate voltage that tunes $N_g$ to be of the form $\frac{1}{2} + n$ with an integer $n$, but we have not yet really argued via this value of the gate voltage is preferred. 
+
+To understand this, let us take a look at figure \ref{fig:CooperPairBoxEnergyLevels_perturbed} again. The two lowest lines in the diagram represent the ground state energy and the energy of the first excited state as a function of $N_g$. These curves are not flat, meaning that change in the value of $N_g$ is changing the energy levels and therefore the stationary states. Unfortunately, the value of $N_g$ does not only depend on the gate voltage $V_g$, but also on {\bf charge noise}, i.e. unwanted charge fluctuations that are hard to suppress. Therefore, the charge qubit is quite sensitive to charge noise. The point $N_g = 0.5$, called the {\bf sweet spot}, is typically chosen because at this point, at least the first derivative of the energy as a function of the charge vanishes, so that the qubit is only affected by charge noise to the second order. However, this dependency remains and limits the coherence time of the charge qubit.
+
+One way to reduce the sensitivity to charge noise is to increase the ratio $E_0 / E_C$. To understand what happens if we do this, look at diagram \ref{fig:CooperPairBoxEnergyLevels_Transmon}, which displays the first few energy levels for a ratio $E_0 / E_C = 5$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/CooperPairBoxEnergyLevels_Transmon}
+\caption[Flattening of energy levels for larger values of $E_0$]{Flattening of energy levels for larger values of $E_0$}
+\label{fig:CooperPairBoxEnergyLevels_Transmon}
+\end{figure}
+
+We see that, compared to our previous ratio $E_0 / E_C << 1$, the sensitivity to charge noise is reduced, as the energy of the first two energy levels is almost flat, with a minimal dependency on $N_g$. However, this comes at the cost of a more equidistant spacing of the energy levels, and the question arises whether we gain an advantage at the cost of another one.
+
+Fortunately, a more systematic analysis carried out in \cite{KochEtAl} shows that the sensitivity to charge noise decreases exponentially fast, but the anharmonicity of the energy levels increases much slower. Thus there is a region for the ratio $E_0 / E_c$ in which this sensitivity is already comparatively low, but the energy levels are still sufficiently anharmonic to obtain a reasonable two-level system. A charge qubit operated in this regime is called a {\bf transmon qubit}.
+
+Technically, a larger value of $E_0$ compared to $E_C$ is obtained by reducing $E_C$, which can be achieved by adding an additional capacitor parallel to the Josephson junction. The effective capacity of the junction will then be the sum of this capacity and the internal capacity of the junction. If we use a high value for the additional capacity, we can make $E_C$ arbitrarily small and can achieve an arbitrary high ratio of $E_0$ compared to $E_C$. In \cite{KochEtAl}, a ratio somewhere between $20$ and $10^4$ is recommended.
+
+To develop a physical intuition of why this happens, recall that the energy $E_0$ of the Josephson junction measures the tunneling probability. If $E_0$ is large compared to $E_C$, it is comparatively easy for a Cooper pair to tunnel through the junction. Therefore the phase difference $\delta$ across the junction will only fluctuate with a small amplitude around a stationary value, i.e. the wave function will be localized sharply in the $\delta$-space. Consequently, the charge $N$ will no longer be a good quantum number and the charge eigenstates will no longer be approximate energy eigenstates. Instead, we will see significant quantum fluctuations in the charge, which makes the system more robust to external charge noise. 
+
+To control and read out a transmon qubit, it is common to use a parallel LC circuit which is coupled with the transmon via an additional capacitor. Using microwave pulses to create currents in that LC circuit, we can manipulate and measure the state of the qubit and couple different qubits. Physically, the LC circuit is realized as a {\bf transmission line resonator}, in which - similar to an organ pipe - waves are reflected at both ends and create standing wave patterns (that {\it transm}issi{\it on} lines are used is the reason for the name transmon qubit). We refer the reader to \cite{KochEtAl} and the recent review \cite{Wendin2016} for more details and an overview of different physical realizations of the transmon qubit. At the time of writing, most major players (Google, IBM, Rigetti) are experimenting with transmon based qubit designs, as it appears that this type of qubit is most likely to be realizable at scale.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The flux qubit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The flux qubit}
+
+The charge qubit and the transmon are close relatives, they share the same Hamiltonian and are both variations of the same basic circuit - a Josephson junction and an additional capacitor. Let us now look at different qubit design based on superconducting circuits - the {\bf flux qubit}.
+
+In its simplest form, the flux qubit is given by a superconducting loop threaded by an external magnetic field and interrupt by a Josephson junction. This is visualized on the left hand side of diagram \ref{fig:FluxQubit}, the right hand side shows an equivalent circuit, formed of an inductance $L$, the capacity $C_J$ of the junction and the pure junction.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/FluxQubit}
+\caption[A flux qubit]{A flux qubit}
+\label{fig:FluxQubit}
+\end{figure}
+
+
+Let $\Phi$ denote the total magnetic flux through the loop. It turns out that the phase difference $\delta$ across the junction and the flux $\Phi$ are related by the fundamental equation
+\begin{align}
+\label{eq:fluxphase}
+\Phi = \delta \Phi_0
+\end{align}
+We refer to \cite{Likharev}, equation 6.2, or chapter 4 of \cite{GrossMarxLectureNotes} for an argument why this is true and note that for our purposes, it would even be sufficient to observe that this is true up to a constant as the time derivative of both sides is equal to the voltage across the junction and absorb this constant into the definition of $\Phi_{ext}$. 
+
+Now in our case, the total flux has two components. First, there is a flux created by the self inductance and given by $I_L L$, where $I_L$ is the current through the loop. Second, there is the external flux $\Phi_{ext}$. Thus
+\begin{align}
+\label{eq:totalflux}
+\Phi = \delta \Phi_0 = L I_L + \Phi_{ext}
+\end{align}
+We can now almost guess what the Hamiltonian for the circuit is, using the conjugate pair of variables $\{\Phi, Q\}$. Let us try 
+$$
+H = \frac{Q^2}{2C_J} - E_0 \cos \frac{\Phi}{\Phi_0} + \frac{1}{2L}( \Phi  - \Phi_{ext})^2
+$$
+To see that this is the correct Hamiltonian, let us see what the resulting equations of motion are. The first equation is
+$$
+\dot{\Phi} = \frac{\partial H }{\partial Q} = \frac{Q}{C_J} = V
+$$
+where $V$ is the voltage across the capacitor - this is just the second Josephson equation. The second equation of motion resulting from the Hamiltonian is 
+$$
+\dot{Q} = - \frac{\partial H}{\partial \Phi} = - \
+\big[ 
+\frac{E_0}{\Phi_0} \sin \frac{\Phi}{\Phi_0} + \frac{1}{L} (\Phi - \Phi_{ext})
+\big] 
+$$
+Let us now look at the individual terms of this equation. First, as $Q$ is the charge on the capacitor of the junction, the term on the left hand side is the displacement current $I_D$. The second term is
+$$
+- E_0 \frac{1}{\Phi_0} \sin \frac{\Phi}{\Phi_0} =  - \frac{\hbar I_0}{2e} \frac{2e}{\hbar} \sin{\delta} = - I_0 \sin \delta
+$$
+which is minus the Josephson current $I_J$. Thus our equation now reads
+$$
+I_D  + I_J =  - \frac{1}{L} (\Phi - \Phi_{ext})
+$$
+Now, by Kirchhoff's law, the left hand side is equal to minus the total current $I_L$ through the inductance $I_L$. Thus this equation reads
+$$
+ I_L L + \Phi_{ext} = \Phi
+$$
+and this is simply \eqref{eq:totalflux}. Of course we could also have started with the usual expression for the energies of the individual components of the circuit, write down the Lagrangian and derive the conjugate momentum and the Hamiltonian, which would give us the same result.
+
+When we quantize this Hamiltonian, $Q$ and $\Phi$ turn into operators with the commutation relation
+$$
+[\hat{\Phi}, \hat{Q}] = i \hbar
+$$
+As for the charge qubit, it is convenient to introduce the operators
+$$
+\hat{N} = \frac{\hat{Q}}{2e}
+$$
+and 
+$$
+\hat{\delta} = \frac{\hat{\Phi}}{\Phi_0}
+$$
+Then the commutation relation becomes
+$$
+[ \hat{\delta}, \hat{N}  ] =  i 
+$$
+Note, however, that the operator $\hat{\delta}$ now takes values on the entire real line, and the operator $\hat{N}$ does now longer have a discrete spectrum. With these variables, the Hamiltonian becomes (matching \cite{WendinShumeiko}, eq. 6.6, while other authors use slightly different conventions)
+$$
+H =  E_C \hat{N}^2 - E_0 \cos \hat{\delta} + E_L ( \hat{\delta}  - \delta_{ext})^2
+$$
+with the definitions
+\begin{align*}
+E_C &= \frac{4e^2}{2C_J}  \\
+E_L &= \frac{\Phi_0^2}{2L}
+\end{align*}
+
+To develop an intuition for the eigenstates, let us first study the classical potential
+$$
+V(\delta) = - E_0 \cos \delta + E_L ( \delta  - \delta_{ext})^2
+$$
+and let us try to understand under which conditions this is symmetric. Clearly, the quadratic term is symmetric around $\delta = \delta_{ext}$. Thus the entire function is symmetric if and only if the cosine is symmetric around $\delta_{ext}$, i.e. if either $\delta_{ext} = 2\pi$ or $\delta_{ext} = \pi$. In the latter case, we can introduce the new variable
+$$
+s = \delta - \pi
+$$
+and write the potential as
+$$
+- E_0 \cos (s + \pi) + E_L s^2 = E_0 \cos s + E_L s^2
+$$
+so that the symmetry around $s = 0$, i.e. $\delta = \pi$, becomes obvious. Noting that
+$$
+\frac{E_L}{E_0} = \frac{1}{2} \frac{L_J}{L}
+$$ 
+where $L_J$ is the characteristic inductance of the junction, and introducing the dimensionless quantity 
+$$
+\lambda = \frac{L_J}{L} - 1
+$$
+we can simplify this further as
+$$
+V = E_0 \big[ \cos s + (\lambda + 1) \frac{s^2}{2}\big] 
+$$
+If $\lambda $ is close to $-1$, this potential has two minima and the form of a double well potential, as shown in diagram \ref{fig:FluxQubitDoubleWellPotential}. This behaviour becomes clear if we expand the potential into a Taylor series around $s = 0$. The second term of the cosine series will give a contribution 
+$$
+- \frac{s^2}{2}
+$$
+so that the Taylor expansion is
+$$
+V = E_0 \big[ 1 + \lambda \frac{s^2}{2} + \frac{s^4}{24} + \dots \big] 
+$$
+from which we can also derive that the height of the potential barrier separating the two wells is roughly $E_0$. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{images/FluxQubitDoubleWellPotential}
+\caption[Flux qubit potential for $\lambda = -0.95$]{Flux qubit potential for $\lambda = -0.95$}
+\label{fig:FluxQubitDoubleWellPotential}
+\end{figure}
+
+
+To obtain a numerical approximation of the eigenvalues and eigenstates, we can apply the general method explained in \cite{JelicMarsiglio} and place the entire system in a box, i.e. an infinite square well of size $L$, centered around the origin $s=0$. In other words, we restrict our problem to the Hilbert space spanned by the well-known eigenfunctions of the "particle-in-a-box" problem, given by
+$$
+\psi_n(s) = \sqrt{\frac{2}{L}} \sin \frac{n\pi}{L} (s + \frac{L}{2})
+$$ 
+where $n$ is a positive integer. We first determine the matrix elements of our Hamiltonian
+$$
+H = - E_C  \nabla^2 + E_0 \big[ 1 + \lambda \frac{s^2}{2} + \frac{s^4}{24} + \dots \big]  = - E_C  \nabla^2 + V(s)
+$$
+in this basis, were we have made the usual translation of the momentum operator into the position space representation
+$$
+\hat{N} \mapsto -i \nabla
+$$
+(note that the factor $\hbar$ vanishes as we use $\delta$ and $s$ instead of $\Phi$). Of course, the matrix elements of $-\nabla^2$ are simply given by
+$$
+\langle n | - \nabla^2  | m \rangle = \frac{n^2 \pi^2}{L^2} \delta_{nm}
+$$
+To compute the matrix elements of $V$, we first calculate the matrix elements of $\cos s$. We have
+\begin{align*}
+\langle n | \cos s | m \rangle &= 
+\int_{-\frac{L}{2}}^{\frac{L}{2}}
+\cos s \big[ 
+\frac{2}{L} \sin \frac{n\pi}{L} (s + \frac{L}{2})
+\sin \frac{m\pi}{L} (s + \frac{L}{2})  ds \\
+&= \frac{1}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} \cos s \big[ 
+\cos (\frac{(n-m)\pi}{L} (s + \frac{L}{2}) 
+-
+\cos (\frac{(n+m)\pi}{L} (s + \frac{L}{2}) 
+\big] ds
+\end{align*}
+For any integer $k$, the integral
+$$
+I_k = \int_{-\frac{L}{2}}^{\frac{L}{2}} \cos s \cos (\frac{k\pi}{L} (s + \frac{L}{2})) ds
+$$
+can be calculated by elementary means or numerically. With this definition, we obtain
+$$
+\langle n | \cos s | m \rangle = \frac{1}{L} (I_{n-m} - I_{n+m})
+$$
+Next, we calculate the matrix elements corresponding to $s^2$. We find that
+\begin{align*}
+\langle n | s^2 | m \rangle &= 
+\int_{-\frac{L}{2}}^{\frac{L}{2}}
+s^2 \big[ 
+\frac{2}{L} \sin \frac{n\pi}{L} (s + \frac{L}{2})
+\sin \frac{m\pi}{L} (s + \frac{L}{2})  ds \\
+&= \frac{1}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} s^2 \big[ 
+\cos (\frac{(n-m)\pi}{L} (s + \frac{L}{2}) 
+-
+\cos (\frac{(n+m)\pi}{L} (s + \frac{L}{2}) 
+\big] ds
+\end{align*}
+If we let
+$$
+J_k = \int_{-\frac{L}{2}}^{\frac{L}{2}} s^2 \cos (\frac{k\pi}{L} (s + \frac{L}{2})) ds
+$$
+then we obtain
+$$
+\langle n | s^2 | m \rangle = \frac{1}{L} (J_{n-m} - J_{n+m})
+$$
+We can therefore express the matrix elements of the Hamiltonian as
+\begin{align*}
+\langle n | H | m \rangle = 
+E_C \frac{n^2 \pi^2}{L^2} \delta_{nm} + \frac{E_0}{L} \big[ (I_{n-m} - I_{n+m})  + \frac{(\lambda + 1)}{2} (J_{n-m} - J_{n+m})
+\end{align*}
+We can now cut off this matrix at a certain dimension - which needs to be larger with a larger choice of $L$ - and determine the eigenvalues and eigenfunctions numerically. Diagram \ref{fig:FluxQubitEigenfunctions} shows the result of that calculation, where $L = 40$ and the cut-off was done at dimension 40 as well. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\linewidth]{images/FluxQubitEigenfunctions}
+\caption[Flux qubit eigenfunctions ($E_C / E_0 = 0.01, \lambda = -0.95$)]{Flux qubit eigenfunctions ($E_C / E_0 = 0.01, \lambda = -0.95$)}
+\label{fig:FluxQubitEigenfunctions}
+\end{figure}
+
+The diagram shows the ground state (blue curve on the left hand side) and the first excited state (blue curve on the right hand side). The difference between the energies of these two states is very small - in this case, the energy gap is approximately $0.012 E_0$. In both diagrams, we have added the classical potential (orange line) for the purpose of comparison.
+
+Let us try to interpret this result. We see that, at least approximately, the ground state and the first excited state can be written as
+$$
+|g \rangle = \frac{1}{\sqrt{2}} (|l \rangle - |r \rangle)
+$$
+and
+$$
+|e \rangle = \frac{1}{\sqrt{2}} (|l \rangle + |r \rangle)
+$$
+where $|l \rangle$ and $|r \rangle$ are states localized in the left respectively right well of the potential. Solving this for $|l \rangle$ and $|r \rangle$, we obtain
+$$
+|l \rangle = \frac{1}{\sqrt{2}} (|g \rangle + |e \rangle )
+$$
+and
+$$
+|r \rangle = \frac{1}{\sqrt{2}} (|e \rangle - |g \rangle )
+$$
+We can now calculate the action of the Hamiltonian on these states, using the fact that $|e \rangle$ and $|g \rangle$ are eigenvalues. 
+For instance
+\begin{align*}
+H |l \rangle &= \frac{1}{\sqrt{2}} \big[  E_0 |g \rangle + E_1 |e \rangle \big] \\
+&= \frac{1}{2} \big[ E0 |l \rangle - E_0 |r \rangle + E_1 | l \rangle + E_1 |r \rangle \big] \\
+&= \frac{1}{2} \big[  (E_0 + E_1) |l \rangle + (E_1 - E_0) |r \rangle
+\big] 
+\end{align*}
+	
+Using similar short calculations for the other basis vectors (or using the fact that the trace is the sum of the eigenvalues that we know and the matrix is symmetric) we therefore find that the Hamiltonian acts on these two states as
+$$
+H = \frac{1}{2} 
+\begin{pmatrix}
+\bar{E} & \Delta \\
+\Delta & \bar{E}
+\end{pmatrix} 
+$$
+where
+$$
+\bar{E} = \frac{1}{2} (E_e + E_g) 
+$$
+is the arithmetic mean of the first two eigenvalues and 
+$$
+\Delta = \frac{1}{2} (E_e - E_g)
+$$
+is half the energy gap. We see that the value $\Delta$ measures the transition probability, i.e. the energy gap is directly related to the height of the barrier between the two wells. If that number is different from zero, then $|l \langle$ is not a stationary state, instead the probability amplitude will leak through the barrier from the left to the right, and similarly for $|r \rangle$. In the symmetric and antisymmetric combinations $|g \rangle$ and $|e \rangle$, the tunneling from the left to the right and from the right to the left are in equilibrium and the states are stationary. We can think of this system as two coupled harmonic oscillators where the coupling is provided by the tunneling and removes the degeneracy of the lowest energy level - see for instance \cite{FeynmanIII} chapter 8 for an in-depth discussion of this type of systems. 
+
+To conclude this interpretation, let us try to relate the states $|r \rangle$ and $|l \rangle$ back to the flux. The state $|l \rangle$ is a state having a peak around $s \approx -2.8$ (the minimum of the classical potentia), i.e. $\sin(\delta) = \sin(s + \pi) \approx 0.34$. The state $|r \rangle$ has a peak around $s = 2.8$, i.e. 
+$\sin(\delta) =  \sin(s + \pi) \approx -0.34$. Using the Josephson phase-current relation, we see that these two states correspond to superconducting current of approximately the same magnitude, but with different directions around the loop. So these are approximately pure {\bf flux states} with a well defined current and therefore a well defined corresponding flux. 
+
+A nice property of the flux qubit is that the energy gap between the first excited state and the second excited state is much higher than the energy gap between the ground state and the first excited state - in our example, the second gap is roughly $0.3 E_0$ and therefore more than one order of magnitude higher than the first gap. This implies that the two level system spanned by $|0 \rangle = |l \rangle$ and $|1 \rangle = |r \rangle$ is a well isolated system. The Hamiltonian can be manipulated by changing the flux bias $\Phi_{ext}$, or an external microwave pulse can be used to stimulate a transition from the ground state to the first excited state. 
+
+Several qubits have been implemented based on these ideas . The quantum device built by D-Wave systems using flux qubits, and several groups have developed different variations over the last few years - see for instance \cite{Wendin2016} for a survey.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \begin{thebibliography}{9}
 
 
@@ -905,6 +1185,20 @@ Gordon and Breach, New York 1984
 A.~Shnirman, G.~Sch\"on, Z.~Hermon,
 Quantum Manipulations of Small Josephson Junctions,
 Phys. Rev. Lett. 79 (1997), 2371--2374s
+
+\bibitem{Wendin2016}
+G.~Wendin, 
+Quantum information processing with superconducting circuits: a review, Rep. Prog. Phys. 80, 106001 (2017) or arXiv:1610.02208 
+
+\bibitem{KochEtAl}
+J.~Koch et. al., Charge insensitive qubit design derived from the Cooper pair box, Phys. Rev. A 76, 042319 (2007) or arXiv:cond-mat/0703002
+
+\bibitem{JelicMarsiglio}
+V.~Jelic, F.~Marsiglio, The double well potential in quantum mechanics: a simple, numerically exact formulation, Eur. J. Phys. 33, 1651-1666, 2012 or arxiv:1209.2521
+
+\bibitem{WarrenEtAl}
+W.S.~Warren et. al., 
+The Usefulness of NMR Quantum Computing, Science 277 (5332), 1688–-1689, availabel at \url{http://science.sciencemag.org/content/277/5332/1688}
 
 \end{thebibliography}
 

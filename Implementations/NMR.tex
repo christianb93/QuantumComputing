@@ -117,7 +117,7 @@
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Sspin systems
+%% Spin systems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Spin systems}
 
@@ -154,7 +154,7 @@ R_z(\phi) = e^{-\frac{i}{\hbar}\phi I_z} = e^{-\frac{1}{2} i \phi \sigma_z}
 \end{align}
 and similarly for the other axes. These rotation operators are easily computed using the fact that the square of the Pauli matrices is one and by splitting the series for the exponential into the cosine (even powers) and sine (odd powers) part. The cosine of a multiple of a Pauli matrix $\sigma$ is given by
 $$
-\cos a \sigma = \sum_{k=0}^\infty (-1)^k \frac{a^{2k}}{(2k)!} \sigma^{2k} = 1 \cdot \cos a
+\cos a \sigma = \sum_{k=0}^\infty (-1)^k \frac{a^{2k}}{(2k)!} \sigma^{2k} =  \cos a
 $$
 and the sine is given by
 $$
@@ -162,9 +162,8 @@ $$
 $$
 This makes it very easy to calculate the rotation matrices based on the Euler identity (which is an identity of power series). For instance
 \begin{align*}
-R_y(\phi) &=  e^{-i \frac{\phi}{2}   \sigma_y} \\
-&= \cos \big[ \frac{\phi}{2} \sigma_y \big] - i \sin \big[  \frac{\phi}{2} \sigma_y \big] \\
-&= 1 \cdot \cos \frac{\phi}{2} - i \sigma_y \sin \frac{\phi}{2}
+R_y(\phi) &=  e^{-i \frac{\phi}{2}   \sigma_y} = 
+ \cos \frac{\phi}{2} - i \sigma_y \sin \frac{\phi}{2}
 \end{align*}
 or, as a matrix
 $$
@@ -268,7 +267,7 @@ U(t) R_z(\gamma B_z t)
 $$
 where $U(t)$ is the time evolution of the original system acting on $V_0$ and the rotation acts on $V$. We therefore see that time evolution is described on the Bloch sphere as a precession around the z-axis with frequency
 $$
-\omega = \gamma B_z 
+\omega = -\gamma B_z 
 $$
 This is called the {\bf Larmor precession} and the frequency is called the {\bf Larmor frequency}. The energy gap caused by the Zeeman effect is then just $\hbar \omega$. 
 
@@ -311,7 +310,7 @@ $$
 To obtain the equation of motion in this new frame, let us take the time derivative of this equation. Applying the product rule and the Schr\"odinger equation, we find that
 \begin{align*}
 i \hbar \frac{d}{dt} \widetilde{|\psi\rangle} &= 
-- \hbar \frac{\omega_{ref}}{\hbar} I_z \widetilde{|\psi\rangle} + 
+-\hbar \frac{\omega_{ref}}{\hbar} I_z \widetilde{|\psi\rangle} + 
 R_z(-\omega_{ref} t) H |\psi \rangle \\
 &= R_z(-\omega_{ref}t ) H R_z(\omega_{ref}t ) \widetilde{|\psi\rangle} - \omega_{ref}  I_z  \widetilde{|\psi\rangle}
 \end{align*}
@@ -327,11 +326,11 @@ This modified Hamiltonian is usually called the {\bf rotating frame Hamiltonian}
 
 The are a few interesting observation that we can directly make. First, let us again specialize to the case that the Hamiltonian is a multiple of $I_z$, i.e. 
 $$
-H = -\omega I_z
+H = \omega I_z
 $$
 with the Larmor frequency $\omega$. Then, the Hamiltonian commutes with all rotations around the z-axis, and we obtain the new Hamiltonian
 $$
-\widetilde{H} = -(\omega - \omega_{ref}) I_z
+\widetilde{H} = (\omega - \omega_{ref}) I_z
 $$
 This is formally again a spin Hamiltonian, corresponding to a Larmor frequency 
 $$
@@ -347,7 +346,7 @@ Here $\Phi_p$ is the angle of the rotation at time $t = 0$ (which is, as we will
 $$
 H_{RF} = - \gamma B_{RF} \big[ \cos (\omega_{ref} t + \phi_p) I_x + \sin(\omega_{ref} t + \phi_p) I_y \big] 
 $$
-Now the relations between rotations in append \ref{app:rotations} imply that
+Now the relations between rotations in appendix \ref{app:rotations} imply that
 $$
 \cos (\omega_{ref} t + \phi_p) I_x + \sin(\omega_{ref} t + \phi_p) I_y 
 =
@@ -355,35 +354,35 @@ R_z(\omega_{ref} t + \Phi_p) I_x R_z(-\omega_{ref} t - \Phi_p)
 $$
 Using this, we can calculate the form of the additional in the rotation frame and find that this will change the Hamiltonian in the rotating frame by adding a term
 $$
-\widetilde{H_{RF}} = - \omega_{nut} R_z(\Phi_p) I_x R_z(-\Phi_p)
+\widetilde{H_{RF}} =  \omega_{nut} R_z(\Phi_p) I_x R_z(-\Phi_p)
 $$
 where 
 $$
-\omega_{nut} = \gamma B_{RF}
+\omega_{nut} = -\gamma B_{RF}
 $$
 is the {\bf nutation frequency}. Using again the relations from appendix \ref{app:rotations}, we could write this equally well as
 $$
-\widetilde{H_{RF}} = - \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
+\widetilde{H}_{RF} =  \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
 $$
-In both cases, the explicit dependence has been removed by passing to the rotating frame representation - again not really surprising. The full Hamiltonian is then given by
+In both cases, the explicit time dependency has been removed by passing to the rotating frame representation - again not really surprising. The full Hamiltonian is then given by
 $$
-\widetilde{H} = \Omega^0 I_z - \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
+\widetilde{H} = \Omega^0 I_z + \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
 $$
 
 
 Let us now consider a few special cases to see what this implies. First, let us suppose that we create a pulse with frequency $\omega_{ref}$ being exactly the Larmor frequency $\omega$, so that $\Omega^0 = 0$, and with $\Phi_p = 0$ - this is called an {\bf x-pulse} in \cite{Levitt}. The Hamiltonian in the rotating frame is then simply
 $$
-\widetilde{H} - \omega_{nut} I_x
+\widetilde{H} = \omega_{nut} I_x
 $$
 Thus, the time evolution operator for a duration $\tau$ of the pulse is
 $$
-e^{ \omega_{nut} \tau \frac{i}{\hbar} I_x} = R_x(-\omega_{nut} \tau)
+e^{ -\omega_{nut} \tau \frac{i}{\hbar} I_x} = R_x(\omega_{nut} \tau)
 $$
-We see that {\emph applying an x-pulse for a duration $\tau$ rotates the spin polarization axis by an angle $-\omega_{nut} \tau$ around the x-axis on the Bloch sphere}. Similarly, for other values of $\Phi_p$, we obtain a rotation around an axis in the x-y-plane, spanning the angle $\Phi_p$ with the x-axis. In particular, a pulse of length $\tau = \pi \omega_{nut}^{-1}$ exchanges the states $|0 \rangle$ and $|1 \rangle$ and  {\it a pulse of half that length  rotates the spin polarization axis by 90 degree around the x-axis}.
+We see that \emph{applying an x-pulse for a duration $\tau$ rotates the spin polarization axis by an angle $\omega_{nut} \tau$ around the x-axis on the Bloch sphere}. Similarly, for other values of $\Phi_p$, we obtain a rotation around an axis in the x-y-plane, spanning the angle $\Phi_p$ with the x-axis. In particular, a pulse of length $\tau = \pi \omega_{nut}^{-1}$ exchanges the states $|0 \rangle$ and $|1 \rangle$ and  {\it a pulse of half that length  rotates the spin polarization axis by 90 degree around the x-axis}.
 
 Let us now study the impact of a pulse with a frequency "off resonance", i.e. for which $\Omega^0 \neq 0$. To describe this, let us introduce the vector
 $$
-\Omega = - \omega_{nut} \cos \Phi_p e_x  -  \omega_{nut} \sin \Phi_p e_y + \Omega^0 e_z
+\Omega =  \omega_{nut} \cos \Phi_p e_x  +  \omega_{nut} \sin \Phi_p e_y + \Omega^0 e_z
 $$
 so that 
 $$
@@ -399,7 +398,7 @@ $$
 $$
 where $\hat{\Omega}$ is the unit vector in the direction of $\Omega$. If we apply the pulse again for the time $\tau$, the time evolution operator can be written - again using the formulas in appendix \ref{app:rotations} - as
 $$
-e^{-\frac{u}{\hbar} \widetilde{H} \tau} = e^{-\frac{i}{\hbar} \tau \omega_{eff} \hat{\Omega} \cdot I } = \cos \omega_{eff} \frac{\tau}{2} - i (\hat{\Omega} \cdot I) \sin \frac{\tau}{2}
+e^{-\frac{i}{\hbar} \widetilde{H} \tau} = e^{-\frac{i}{\hbar} \tau \omega_{eff} \hat{\Omega} \cdot I } = \cos \omega_{eff} \frac{\tau}{2} - i (\hat{\Omega} \cdot \sigma) \sin \frac{\tau}{2}
 $$
 If we apply the pulse for the time it would take to flip the state if we were exactly on resonance, i.e. for the time $\tau = \pi  \omega_{nut}^{-1}$ and with $\Phi_p = 0$, we get
 $$
@@ -411,21 +410,21 @@ $$
 $$
 and
 $$
-\hat{\Omega} \cdot \sigma = - \frac{\omega_{nut}}{\omega_{eff}} (\sigma_x - \lambda \sigma_z) 
+\hat{\Omega} \cdot \sigma =  \frac{\omega_{nut}}{\omega_{eff}} (\sigma_x - \lambda \sigma_z) 
 =
-\frac{-1}{\sqrt{1+\lambda^2}} (\sigma_x - \lambda \sigma_z)
+\frac{1}{\sqrt{1+\lambda^2}} (\sigma_x - \lambda \sigma_z)
 $$
 Let us now calculate the transition probability for the transition $|0 \rangle \rightarrow |1 \rangle$. Intuitively, we expect that off resonance, when the energy of the photons that make up the magnetic field is different from the energy gap between the two states, this probability is small. To verify this, we can form the matrix element
 \begin{align*}
-\langle 0 | e^{-\frac{u}{\hbar} \widetilde{H} \tau} | 1 \rangle
+\langle 0 | e^{-\frac{i}{\hbar} \widetilde{H} \tau} | 1 \rangle \\
  &=
-\frac{i}{\sqrt{1+\lambda^2}}  \langle 0 | \sigma_x | 1 \rangle 
+\frac{-i}{\sqrt{1+\lambda^2}}  \langle 0 | \sigma_x | 1 \rangle 
 \sin  \frac{\omega_{eff}\pi }{2\omega_{nut}} \\
-&= \frac{i}{\sqrt{1+\lambda^2}} \sin  \big[ \frac{\pi}{2}\sqrt{1+\lambda^2} \big] 
+&= \frac{-i}{\sqrt{1+\lambda^2}} \sin  \big[ \frac{\pi}{2}\sqrt{1+\lambda^2} \big] 
 \end{align*}
 where we have used that there is no contribution from $\sigma_y$ as $\Phi_p = 0$ and no contribution from $\sigma_z$ as $\sigma_z$ is diagonal. The the probability amplitude then becomes
 $$
-P(|0 \rangle \rightarrow |1 \rangle) = | \langle 0 | e^{-\frac{u}{\hbar} \widetilde{H} \tau} | 1 \rangle |^2 = \frac{1}{1+\lambda^2} \sin^2 \big[ \frac{\pi}{2}  \sqrt{1+\lambda^2} \big] 
+P(|0 \rangle \rightarrow |1 \rangle) = | \langle 0 | e^{-\frac{i}{\hbar} \widetilde{H} \tau} | 1 \rangle |^2 = \frac{1}{1+\lambda^2} \sin^2 \big[ \frac{\pi}{2}  \sqrt{1+\lambda^2} \big] 
 $$
 Clearly, this function is symmetric, has a maximum with value 1 at $\lambda = 0$ and decays quadratically with growing $\lambda$. 
 
@@ -483,9 +482,9 @@ $$
 $$
 where again $H$ is the Hamiltonian of the system. In our case, the Hamiltonian (in the laboratory frame) is again 
 $$
-H = - \omega I_z = \omega \frac{\hbar}{2} \sigma_z
+H =  \omega I_z = \omega \frac{\hbar}{2} \sigma_z
 $$
-where $\omega = \gamma B$ is the Larmor frequency. Therefore we find that
+where $\omega = -\gamma B$ is the Larmor frequency. Therefore we find that
 $$
 \rho(t=0) = \frac{1}{Z} \exp (\frac{1}{2} \frac{\hbar \gamma B}{kT} \sigma_z)
 $$
@@ -509,7 +508,7 @@ $$
 0 & \frac{1}{2} - \frac{\beta}{4}
 \end{pmatrix} = \frac{1}{2} + \frac{1}{2} \frac{\beta}{\hbar} I_z
 $$
-Let us now pause for a moment and look at this matrix. The first diagonal element $\rho_{00}$ can be interpreted as the probability to be in the ground state (or, more precisely, as the average expectation value of the operator $|0 \rangle \langle 0 |$). Assuming the standard case of positive $\gamma$, this probability is slightly higher than the probability $\rho_{11}$ to be in the first excited state. This corresponds to the fact that the Hamiltonian - which is proportional to {\bf minus} $\omega I_z$ - takes a negative value on this state, i.e. this is the state of lowest energy. We note, however, that the difference between the probabilities is very small, as we have assumed that $\beta$ is very small. 
+Let us now pause for a moment and look at this matrix. The first diagonal element $\rho_{00}$ can be interpreted as the probability to be in the ground state (or, more precisely, as the average expectation value of the operator $|0 \rangle \langle 0 |$). Assuming the standard case of positive $\gamma$, this probability is slightly higher than the probability $\rho_{11}$ to be in the first excited state. This corresponds to the fact that the Hamiltonian - which is proportional to {\bf minus} $\gamma B I_z$ - takes a negative value on this state, i.e. this is the state of lowest energy (this is true when $\gamma > 0$, which is more common, however there are also nuclei with $\gamma < 0$). We note, however, that the difference between the probabilities is very small, as we have assumed that $\beta$ is very small. 
 
 We also see that the density matrix is diagonal. This is what we expect for an equilibrium state. In fact, the Liouville-von Neumann equation tells us that for a stationary state $\rho$, the commutator $[\rho, H]$ vanishes, so the energy eigenstates $|0 \rangle$ and $|1 \rangle$ are also eigenvectors of $\rho$. Thus our density matrix is the matrix that we would obtain from a statistical ensemble in which all nuclei are either in a spin-down or a spin-up energy eigenstate. This is quite remarkable - in a real ensemble, we would expect that the spin polarization axis is randomly distributed and almost no nucleus is in an exact eigenstate. The fact that the density matrix in thermal equilibrium is diagonal tells us that as far as macroscopic observables are involved, we can treat the system {\bf as if} all nuclei where either spin up or spin down. 
 
@@ -550,7 +549,7 @@ where $N$ is the number of particles in the probe. This is a very weak field, ma
 
 But there is hope - based on our previous results, we expect that we can rotate this field into the x-y-plane by applying a short pulse. To see how this works, let us now study the evolution of the density matrix. We will again switch into the rotating reference frame and study the time evolution under Hamiltonians of the form
 $$
-\widetilde{H} = - \omega_{eff} n \cdot I
+\widetilde{H} =  \omega_{eff} n \cdot I
 $$
 for a unit vector $n$ - in fact, all Hamiltonians that we need in this section are of this form. We know that $tr(\rho) = 1$, so that the matrix $\rho - \frac{1}{2}$ is traceless and hermitian and therefore be written as a linear combination of Pauli matrices with real coefficients. In other words, we can write
 $$
@@ -558,16 +557,16 @@ $$
 $$
 with a time dependent vector valued function $f$. Then, using the relations from the appendix, we find that
 $$
-[H,\rho] = [- \omega_{eff} n \cdot I, \frac{1}{2} f(t) \cdot I]
-= - i \hbar \frac{\omega_{eff}}{2} (n \times f(t)) \cdot I
+[H,\rho] = [ \omega_{eff} n \cdot I, \frac{1}{2} f(t) \cdot I]
+=  i \hbar \frac{\omega_{eff}}{2} (n \times f(t)) \cdot I
 $$
 Plugging this into the Liouville-von Neumann equation yields
 $$
-i \hbar \frac{1}{2} \dot{f} \cdot I  = - i \hbar \frac{\omega_{eff}}{2} (n \times f(t)) \cdot I
+i \hbar \frac{1}{2} \dot{f} \cdot I  =  i \hbar \frac{\omega_{eff}}{2} (n \times f(t)) \cdot I
 $$
 i.e.
 $$
-\dot{f} =  \omega_{eff} \big[  f \times n \big] 
+\dot{f} =  -\omega_{eff} \big[  f \times n \big] 
 $$
 Before we proceed to find solutions for this equation, let us quickly clarify the physical interpretation of the vector $f$. To do this, let us try to express the expectation value of the magnetic moment in terms of $f$. For the x-component, we have
 \begin{align*}
@@ -581,38 +580,10 @@ $$
 $$
 Thus, up to a constant, the vector $f$ is nothing but the average expectation value of the magnetic moment. We can therefore multiply our differential equation for the magnetic moment by this constant and obtain
 $$
-\dot{\mu} = \omega_{eff} \big[ \mu \times n \big] 
+\dot{\mu} = -\omega_{eff} \big[ \mu \times n \big] 
 $$
-for the macroscopically observed magnetic moment $\mu$. This equation is called the {\bf Bloch equation} (the actual Bloch equation also takes relaxation into account by adding an additional term that we ignore for the time being).
+for the macroscopically observed magnetic moment $\mu$. This equation is called the {\bf Bloch equation} (the actual Bloch equation also takes relaxation into account by adding an additional term that we ignore for the time being). By splitting the magnetization into a component perpendicular to $n$ and a component parallel to $n$, it is easy to see that this equation describes a precession of the magnetic moment around the axis $n$, as expected.
 
-We claim that this equation describes a precession of the magnetic moment around the axis $n$. To see this, let us split the magnetic moment into a part $\mu_{||}$ parallel to $n$ and a part $\mu_{\perp}$ perpendicular to $n$. Then
-$$
-\dot{\mu}_{||} + \dot{\mu}_{\perp} = \omega_eff (\mu_{\perp} \times n)
-$$
-which gives two equations
-\begin{align*}
-\dot{\mu}_{||} &= 0 \\
-\dot{\mu}_{\perp} &= \omega_eff (\mu_{\perp} \times n)
-\end{align*}
-Let now $v_x, v_y$ be two orthogonal vectors in the plane perpendicular to $n$, oriented such that $v_x \times v_y = n$. We can then write
-$$
-\mu_{\perp} (t) = a(t) v_x + b(t) v_y
-$$
-Let us also assume that $v_x$ and $v_y$ are chosen such that $\mu_{\perp}(t=0) = v_x$. Then 
-$$
-\mu_{\perp} \times n = a(t) v_x \times n + b(t) v_y \times n = b(t) v_x - a(t) v_y 
-$$
-so that we obtain
-\begin{align*}
-\dot{a} &= \omega_{eff} b(t)  \\
-\dot{b} &= - \omega_{eff} a(t)  
-\end{align*}
-which is solved by
-$$
-\mu_{\perp} (t) = 
-v_x \cos \omega_{eff} t  +  v_y \sin \omega_{eff} t 
-$$
-Thus we see that the vector $\mu_{\perp}$ rotates around $n$ with the frequency $\omega_{eff}$, as claimed. 
 
 We are now in a position to go through the individual steps of a typical NMR experiment and compute the resulting magnetic moment. First, we initialize the system, i.e. we establish a strong static magnetic field $B$ along the z-axis and wait until the system has settled in thermal equilibrium. We have seen above that in thermal equilibrium, the net magnetic moment of the probe is in the direction of the z-axis, with magnitude
 $$
@@ -620,7 +591,7 @@ $$
 $$
 Now we turn on a pulse with frequency $\omega_{ref}$. Let us assume that we are exactly on-resonance, i.e. that $\omega_{ref} = \omega$, the Larmor frequency. As we have seen, this results in a Hamiltonian
 $$
-\widetilde{H} = - \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
+\widetilde{H} =  \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
 $$
 This is of the form considered above, with $n = \cos \Phi_p e_x + \sin \Phi_p e_y$ and $\omega_{eff} = \omega_{nut}$. For simplicity, let us assume that $\Phi_p = 0$. Then we find that the effect of the pulse is {\it a rotation of the net magnetic moment around the x-axis} with frequency $\omega_{nut}$. If we do this for a time $\tau$ such that
 $$
@@ -673,7 +644,42 @@ V = \big[ \frac{\mu_0}{4\pi} \frac{1}{d^3}  \frac{\gamma \beta \hbar}{4} N \big]
 $$
 The term in the parentheses is the static magnetic field that we have already found to be present in the static state (but directed along the z-axis). We see that the voltage that is induced is many orders of magnitudes higher than the strength of that field, mainly caused by the very rapid oscillations, i.e. by the high Larmor frequency. This voltage is therefore measurable. Thus by applying the pulse to turn the magnetic moment into the x-axis where it then precesses with the very high Larmor frequency, we have turned the very weak net magnetic moment into a measurable quantity! 
 
-To get an idea of the magnitudes, let us do an example. Assume that the static magnetic field has 11.74 Tesla, and that our substance is water. Then the Larmor frequency of the nucleus (a proton) will be
+This is a good point in time to visualize what is happening. Given the explicit formulas for the density matrix derived in this section, and the formulas describing the measurement process that we will derive in a later section, it is not difficult to numerically simulate the state changes and NMR signals during an experiment as the one that we have just described. 
+
+Diagram \ref{fig:SingleNucleusNMRSignal} shows the result of such a simulation. Here, we have simulated a carbon nucleus in a TCE (Trichloroethylene) molecule which, at 11.74 Tesla, has a Larmor precession frequency of 125 MHz. At the start of the simulation, the system was put into a thermal state. Then, an RF pulse was applied to flip the magnetization in the direction of the x-axis, and then a sample was taken over 0.2 seconds.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{images/SingleNucleusNMRSignal}
+\caption[FID (Free induction decay) signal of a single nucleus]{FID (Free induction decay) signal of a single nucleus}
+\label{fig:SingleNucleusNMRSignal}
+\end{figure}
+
+The signal that we see looks at the first glance as expected. We see an oscillating signal with an amplitude that is slowly decaying. The decay is caused by the relaxation of the system, i.e. its slow return into the thermal equilibrium which turns the magnetization back into the z-axis. However, you might notice that the frequency of the oscillation is clearly not 125 MHz. Instead, the period is roughly 0.005 seconds, corresponding to a frequency of 1200 Hz. The reason for this is that in an NMR spectrometer, the circuit processing the received signal will typically apply a combination of a mixer and a low pass filter to effectively shift the frequency by an adjustable reference frequency (see section \ref{sec:measurements} or \cite{Levitt} for details). In our case, the reference frequency was adjusted to be 1200 Hz above the Larmor frequency of the carbon nucleus, so the signal will oscillate with a frequency of 1200 Hz. In practice, the reference frequency determines a window in the frequency space in which we can detect signals, and all frequencies outside this window will be suppressed by the low pass filter.
+
+Now let us take a look at a more complicated signal. We again place the system in the thermal equilibrium state first, but then apply RF pulses to flip the spin of both carbon nuclei into the x-axis (in a simulation, this is easy, in a real experiment, this requires some thought, as the Larmor frequencies of these two carbon nuclei differ only by a small chemical shift of 900 Hz). We then again take a sample and plot the signal. The result is shown in diagram 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{images/TwoNucleiNMRSignal}
+\caption[FID signal of a pair of nuclei]{FID signal of a pair of nuclei}
+\label{fig:TwoNucleiNMRSignal}
+\end{figure}
+
+This time, we see a superposition of two oscillations. The first oscillations is what we have already seen - an oscillation with 1200 Hz, which is the difference of the chosen reference frequency and the Larmor frequency of the first carbon. The second oscillation corresponds to a frequency of roughly 300 Hz. This is the signal caused by the Larmor precession of the second spin. As we again measure the difference between the real frequency and the reference frequency, we can conclude that this frequency differs from the Larmor frequency of the first spin by 900 Hz - the chemical shift between the two nuclei.
+
+In reality, the signal that we observe is the superposition of many different oscillations and is not easy to interpret - even with a few oscillations, it soon becomes impossible to extract the frequencies by a graphical analysis as we have done it so far. Instead, one usually digitizes the signal and applies a Fourier transform (or, more precisely, a discrete Fourier transform). The following diagram shows the result of applying such a DFT to the signal above.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{images/TwoNucleiNMRSignalFFT}
+\caption[FFT of the FID for a pair of nuclei]{FFT of the FID for a pair of nuclei}
+\label{fig:TwoNucleiNMRSignalFFT}
+\end{figure}
+
+Here, we have shifted the x-axis by the difference between the Larmor frequency $\omega_0$ of the first nucleus and the reference frequency, so that the value zero corresponds to $\omega_0$. We clearly see two peaks. The first peak at zero, i.e. at Larmor frequency $\omega_0$, is the signal emitted by the first nucleus. The second peak is shifted by 900 Hz and is emitted by the second nucleus. In general, each nucleus will result in one peak (ignoring couplings that we will study in a later section) and the differences between the peaks belonging to nuclei of the same isotope are the chemical shifts. 
+
+To get an idea of the magnitudes of the voltages that we need to measure, let calculate the field strenght for an example. Assume that the static magnetic field has 11.74 Tesla, and that our substance is water. Then the Larmor frequency of the nucleus (a proton) will be
 $$
 \omega \approx 500 \text{MHz}
 $$
@@ -696,7 +702,7 @@ density matrix will change, and the system will slowly return to equilibrium. Th
 $$
 \frac{1}{2} + \frac{1}{2} \frac{\beta}{\hbar} I_y
 $$
-Thus the off-diagonal elements are 
+and the off-diagonal elements are 
 \begin{align*}
 \rho_{12} &= \frac{-i}{2} \frac{\beta}{\hbar} \\
 \rho_{21} &= \frac{i}{2} \frac{\beta}{\hbar} 
@@ -716,6 +722,589 @@ A second type of relaxation is called {\bf longitudinal relaxation}. This proces
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interactions}
 
+So far, we have studied isolated spin-1/2 nuclei under the influence of external magnetic fields. In reality, however, nuclei interact. There is a {\bf long range interaction} between spins of nuclei in different molecules, that we ignore, but there are also {\bf short range interactions} between spins within the same molecule. 
+
+These interactions come in various flavors. To simplify our treatment, we now specialize to the case of a {\bf liquid probe}. As the rotational and spatial degrees of freedom are then completely randomized, many interaction terms average out. The only interactions terms that are relevant in this situation (see chapter 9 of \cite{Levitt} are the {\bf chemical shift} and the {\bf J-coupling}.
+	
+The chemical shift arises from the interaction of the external magnetic field with the electrons surrounding the nuclei. Essentially, the same nuclei at different positions in the molecule will not experience the same external magnetic field. Instead, the shielding of the magnetic field by the electron cloud will lead to different effective magnetic fields and therefore different Larmor frequencies. Thus the Larmor frequency is shifted by a term characteristic for the position of the nucleus inside the molecule. This shift is called chemical shift and is extremely useful in practical applications as it allows us to stimulate the spins of different nuclei in the same molecule separately and because its value reveals information on the valence and bonding structures.
+
+The second type of coupling that is relevant is called {\bf J-coupling}. This coupling is an indirect coupling - the magnetic moment created by a spin interacts with the electric field of an electron, which in turn interacts with the magnetic moment of a different spin. 
+
+Let us now look at an ensemble of quantum systems, where each system describes two spin-1/2 nuclei. We make the assumption that we are in the {\bf weak coupling regime}, i.e. that the strength of the J-coupling is much smaller than the difference between the Larmor frequencies of the two nuclei. Then, the Hamiltonian is - in good approximation - given by (see \cite{Levitt}, section 14.5 or \cite{NMRReview}, section 2.3)
+$$
+H  =  \omega_1 I^1_z + \omega_2 I^2_z + \frac{2 \pi}{\hbar} J_{12} I^1_z I^2_z
+$$
+Here $\omega_i$ is the Larmor frequency of nucleus $i$, the upper index at an operator indicates the spin on which the operator is acting and $J_{12}$ is the strength of the J-coupling, measured in Hz. The weak coupling condition is then the condition that
+$$
+|J_{12} | << |\omega_1 - \omega_2 |
+$$
+The system consisting of the two nuclei is described by the basis states $|0 \rangle |0 \rangle$, $|0 \rangle | 1 \rangle$, $|1 \rangle |0 \rangle$ and $|1 \rangle |1 \rangle$. These states are all eigenstates of the $I_z^i$ and therefore the Hamiltonian is already diagonal in this basis. The energy levels are
+\begin{align*}
+\frac{\hbar}{2} (\omega_1 + \omega_2 + 2\pi J_{12}) \\
+\frac{\hbar}{2} (\omega_1 -\omega_2 - 2\pi J_{12}) \\
+\frac{\hbar}{2} (-\omega_1 +\omega_2 - 2\pi J_{12}) \\
+\frac{\hbar}{2} (-\omega_1 - \omega_2 + 2\pi J_{12}) 
+\end{align*}
+Due to the weak coupling condition, these are four different energies and the system is fully non-degenerate. The transformation into the rotating frame system is given by the unitary transformation
+$$
+T = e^{i \omega_{ref}t (I^1_z + I^2_z)} =  e^{i \omega_{ref}t I^1_z} e^{-i\omega_{ref}t I^2_z}
+$$
+As all parts of the Hamiltonian commute with this transformation, the Hamiltonian in the rotating frame is easily seen to be
+$$
+\widetilde{H} =  \Omega^0_1 I^1_z + \Omega^0_2 I_z^2 + \frac{2 \pi}{\hbar} J_{12} I_z^1 I_z^2
+$$
+where again
+$$
+\Omega^0_i = \omega_i - \omega_{ref}
+$$
+is the difference between the Larmor frequency of spin i and the rotation frequency. This Hamiltonian has three parts:
+\begin{itemize}
+	\item The first two terms $\Omega^0_i I^i_z$ which are called the {\bf resonance offset} Hamiltonian and result in precession around the z-axis of the respective spin
+	\item The third term which is the {\bf J-coupling term}
+\end{itemize}
+Note that these three terms all commute. Therefore we can write the time evolution as a product of the individual time evolution operators, which are nothing but rotations around the z-axis, and these operators will commute as well. These operators act on the density matrix by conjugation. As the density is hermitian, we can always expand it into a sum of products of Pauli operators (or angular momentum operators, which is the same up to a factor) and use the relations in appendix \ref{app:rotations} to calculate how the time evolution operators act on these terms. This is sometimes called the {\bf operator product formalism} and very useful in our situation. 
+
+As in the case of an ensemble of a single spin-1/2 system, let us now try to determine the state at thermal equilibrium. Again, we assume that, at thermal equilibrium, our ensemble can be described as a canonical ensemble. The density matrix is then given as
+$$
+\rho = \frac{1}{Z} e^{-\frac{H}{kT}}
+$$
+Again, we use the high temperature approximation, i.e. we use the fact that all energies are much smaller than the thermal energy at room temperature. Then we can make the approximation
+$$
+\rho = \frac{1}{Z} (1 - \frac{1}{kT} H)
+$$
+If we set
+$$
+\beta_i = \frac{\gamma_i  B \hbar}{kT}
+$$
+and
+$$
+\beta_{12} = \frac{2\pi J_{12} \hbar}{kT}
+$$
+the density matrix at equilibrium becomes
+$$
+\rho = \frac{1}{4} \big[  1 + \frac{\beta_1}{\hbar} I^1_z + \frac{\beta_2}{\hbar} I^2_z - \frac{\beta_{12}}{\hbar^2} I_z^1 I_z^2 \big] 
+$$
+Following \cite{Levitt}, chapter 15, we can make a second approximation in a few special cases. If the two nuclei that we consider are the same isotope and the chemical shift is small compared to the Larmor frequency, the values of the $\beta_i$ are very close to
+$$
+\beta = \frac{-\omega \hbar}{kT}
+$$
+In addition, the J-coupling is usually some orders of magnitude smaller, so that it is a good approximation to use
+$$
+\rho = \frac{1}{4} + \frac{1}{4} \frac{\beta}{\hbar} (I_z^1 + I_z^2)
+$$
+for the density matrix in the thermal equilibrium state. This is often written as
+$$
+\rho = \frac{1}{4} + \frac{1}{4} \frac{\beta}{\hbar} I_z
+$$
+with the total spin $I = I^1 + I^2$. Systems of this type are called {\bf homonuclear systems}. The first quantum algorithm carried out using NMR, for instance, was using two protons in a cytosin molecule (see \cite{JonesMosca}), which would fall into this category. 
+
+In a {\bf heteronuclear system}, the two nuclei can be different isotopes, so the values of $\beta_i$ can be significantly different. If the J-coupling is small, however, we can still make the approximation
+$$
+\rho = \frac{1}{4} + \frac{1}{4} \frac{\beta_1}{\hbar} I_z^1 + \frac{1}{4} \frac{\beta_2}{\hbar} I_z^2
+$$
+
+Let us now again try to understand how this state evolves over time. Clearly, $\rho$ commutes with the Hamiltonian, so this state is stable. Further, $\rho$ commutes with the transformation $T$ describing the rotating frame, so we find that the thermal equilibrium density matrix in the rotating frame is given by
+$$
+\widetilde{\rho} = \frac{1}{4} + \frac{1}{4} \frac{\beta_1}{\hbar} I_z^1 + \frac{1}{4} \frac{\beta_2}{\hbar} I_z^2
+$$
+Clearly, the second term can again be interpreted as the magnetization, i.e. we find that there is a net magnetization in the direction of the z-axis.
+
+
+Next, let us again consider the impact of a rotating RF field with frequency $\omega_{ref}$. Similar to the case of a single spin system, the additional term in the Hamiltonian in the rotating frame is given by
+$$
+\widetilde{H}_{RF} =  \omega_{nut} ( \cos \Phi_p I_x + \sin \Phi_p I_y)
+$$
+with the difference that now, the operator $I$ is the total spin $I^1 + I^2$. For simplicity, let us assume that $\Phi_p$ is zero and that the pulse is exactly on resonance for the first spin. Then, during the presence of the pulse, the Hamiltonian in the rotating frame is
+$$
+\big[  \Omega^0_2 I_z^2 + \omega_{nut} I_x^2 \big] + \omega_{nut} I_x^1  + \frac{2 \pi}{\hbar} J_{12} I_z^1 I_z^2 
+$$
+Note that the resonance offset part for the first spin vanishes. Now, in most situations, the coupling is much smaller than the contribution of the other terms. In \cite{NMRReview}, for example, the molecule in question contains two ${}^{13}$C nuclei with a Larmor frequency of 125 MHz and a chemical shift between 600-900 Hz. The J-coupling corresponds to a frequency of 100 Hz. Assuming that the RF field is weaker than the static field by a factor $10^3$, the nutation frequency will be in the order of 100 kHz. 
+
+The first term in this Hamiltonian acts on the second spin only. According to our discussion of off-resonance effects, this will induce a rotation around an axis almost parallel to the z-axis with a frequency almost equal to the difference between the two Larmor frequencies, i.e. several hundred MHz. If we compare this to the coupling term - the only other term acting on the second spin - we see that it is around six orders of magnitude weaker and can therefore safely be ignored. Thus the impact of the pulse on the second spin will be that of an RF pulse very far off resonance. This will have almost no impact if the system is already parallel to the z-axis. In general, it will contribute a very rapidly oscillating term that averages out over the duration of the RF pulse. Thus we are left with the contribution of the term
+$$
+\omega_{nut} I_x^1
+$$
+The upshot of the discussion is that essentially, the pulses can be tuned such that the pulse only acts on one of the spins and has the same impact on this spin as in the case of a single spin system. Thus we can build pulses that rotate each of the spins individually. If, however, we apply so called hard pulses with a nutation frequency much higher than the energy shift between the spins, the pulse will rotate both spins simultaneously (see also the discussion in section 2.2. of \cite{NMRReview}).
+
+Let us now study the role of the coupling term during a free evolution, i.e. when no pulse is active. To illustrate this, let us consider two thought experiments. First, suppose we were able to prepare an ensemble of the form (we will get back to the question whether this can be done in a later section)
+$$
+\rho = \frac{1}{4} (1 - \epsilon) + \epsilon |00 \rangle \langle 00 |
+$$
+where we work with an eigenbasis for the operators $I_z^i$ with eigenvalues $\pm \frac{\hbar}{2}$.  
+To be able to easily carry out calculations, let us first rewrite this in terms of the Pauli matrices. A short calculation shows that
+$$
+|00 \rangle \langle 00 | = \frac{1}{4} (1 + \sigma_z^1 + \sigma_z^2 +  \sigma_z^1 \sigma_z^2)
+$$
+so that our state becomes
+$$
+\frac{1}{4} + \epsilon \big[ \sigma_z^1 + \sigma_z^2 + \sigma_z^1 \sigma_z^2 \big] 
+$$
+After absorbing some constants into the definition of $\epsilon$, we can write this as
+$$
+\rho = \frac{1}{4} + \epsilon \big[  \frac{\hbar}{2} I_z + I_z^1 I_z^2    \big]
+$$
+
+This is a good point in time to understand the physical meaning of the indiviudal terms, i.e. their impact on the expectation value of macroscopically observable quantities. First, let us see how the expectation value of the magnetization $I$ can be calculated. When we take the trace of $\rho I$, only the term proportional to $I_z$ will make a contribution, and therefore we find that we observe a net magnetization in the direction of the z-axis, as in the case of the uncoupled system. 
+
+Now assume that we wanted to observe macroscopic correlations, corresponding to the product $I_z^1 I_z^2$ of the spins in z-direction which is course again a hermitian operator. If we multiply $\rho$ by this matrix and take the trace, all terms in $\rho$ that have no or only one spin operator produce a tracefree term. Thus, in the final trace, only the term proportional to $I_z^1 I_z^2$ survices. Thus we need to interpret this term as the observable correlation between the spins of the two nuclei. 
+
+Let us now study how this term behaves under the impact of the Hamiltonian in the absence of a pulse. We have already seen that we can study the impact of the different terms - the resonance offset term and the J-coupling term - individually.  The resonance offset terms comnmute with the density matrix and therefore do not contribute to the time evolution. The J-coupling 
+$$
+\frac{2 \pi}{\hbar} J_{12} I_z^1 I_z^2 
+$$
+does contribute and creates a time evolution operator
+$$
+U(t) = \exp 
+\big[  
+- i \frac{2 \pi J_{12}}{\hbar^2}  I_z^1 I_z^2  t
+\big]
+=
+\exp 
+\big[  
+- i \frac{\pi J_{12}}{2}  \sigma_z^1 \sigma_z^2  t
+\big]
+$$
+Now the operator $\sigma_z^1 \sigma_z^2$ squares to one. Therefore, we can again apply the exponential series to see that
+\begin{align}\label{eq:jcouplingtimeevolution}
+U(t) = \cos (\frac{\pi J_{12}}{2} t) -i \sigma_z^1 \sigma_z^2 \sin (\frac{\pi J_{12}}{2}  t)
+\end{align}
+This formula allows us to easily compute the action of conjugation with $U(t)$ on each of the Pauli matrices. In particular, the time evolution commutes with all product of $\sigma_z$-matrices alone. Therefore it leaves the density matrix $\rho$ considered above invariant. 
+
+Now let us try to rotate one of the spins in the direction onto the x-axis, say the first spin. We know that the time evolution operator induced by a pulse at resonance acts (in good approximation) only on this spin and is given by a rotation
+$$
+R_x(\omega_{nut} \tau)
+$$
+where $\tau$ is the duration of the pulse. Let us see how this process of rotation is expressed in terms of the density matrix, i.e. let us calculate the result of conjugating $\rho$ with this matrix. Conjugation is a group homomorphism, so the conjugate of a product is the product of the conjugates. We also know that the rotation only acts on the first system. So the only calculation that we actually have to make is
+$$
+R_x(\omega_{nut} \tau) I_z^1 R_x(-\omega_{nut} \tau)
+$$
+which yields, using the formulas from the appendix, that
+$$
+R_x(\omega_{nut} \tau) I_z^1 R_x(-\omega_{nut} \tau) = \cos (\omega_{nut} \tau) I_z^1 - \sin (\omega_{nut} \tau) I_y^1
+$$
+Let us now apply what is called a {\bf $\frac{\pi}{2}$-pulse}, i.e. a pulse for which 
+$$
+\omega_{nut} \tau = \frac{\pi}{2}
+$$
+Then  
+$$
+R_x(-\omega_{nut} \tau) I_z^1 R_x(\omega_{nut} \tau) = - I_y^1
+$$
+Consequently, we find that the transformed state is described by the density matrix
+$$
+\rho' = \frac{1}{4} + \epsilon \big[  \frac{\hbar}{2} I_z^2 - \frac{\hbar}{2} I_y^1 - I_y^1 I_z^2    \big]
+$$
+in which we have simply replaced all occurrences of $I_z^1$ by $-I_y^1$. This is a nice example that demonstrates the operator product formalism - we simply have to calculate the time evolution for the angular momentum operators and then can reduce our calculation to simple replacements. 
+
+When we look at the result, we see that two things have changed - we now have magnetizations in the z-axis and the y-axis, and we have a correlation between the y-axis of spin 1 and the z-axis of spin 2. How does this state evolve under the J-coupling?
+
+To see this, we need to calculate the action of the conjugation by the time evolution operator \eqref{eq:jcouplingtimeevolution} on the operators that appear in $\rho'$. We already know that $I_z^2$ is mapped to itself. What is the action on $I_y^1$? To see this, let us first calculate
+\begin{align*}
+U(t) \sigma_y^1 U(-t) &= \big[   \cos a -i \sigma_z^1 \sigma_z^2 \sin a \big] 
+\sigma_y^1  
+\big[ \cos a +i \sigma_z^1 \sigma_z^2 \sin a \big] \\
+&= \cos^2 a \sigma_y^1 
++ 
+i (\cos a \sin a) \sigma_y^1 \sigma_z^1 \sigma_z^2
+-i (\cos a \sin a) \sigma_z^1 \sigma_z^2 \sigma_y^1 
+- \sin^2 a \sigma_y^1 \\
+&= (\cos^2 a - \sin^2 a) \sigma_y^1 - (2  \cos a \sin a) \sigma_x^1 \sigma_z^2 \\
+&= \sigma_y^1 \cos 2a - \sigma_x^1 \sigma_z^2 \sin 2a
+\end{align*}
+where we have used the abbreviation
+$$
+a = \frac{\pi J_{12}}{2} t
+$$
+Now let us apply this to the individual terms of the density matrix $\rho'$. We know that the first two terms are left invariant. The action on the third term is
+\begin{align*}
+U(t) \frac{\hbar}{2} I_y^1 U(t^{-1}) &= \frac{\hbar^2}{4} U(t) \sigma_y^1 U(t^{-1}) \\
+&= \frac{\hbar^2}{4} 
+\big[ 
+\sigma_y^1 \cos 2a - \sigma_x^1 \sigma_z^2 \sin 2a
+\big] \\
+&= \frac{\hbar}{2} I_y^1 \cos 2a - I_x^1 I_z^2 \sin 2a
+\end{align*}
+and the action on the last term is
+\begin{align*}
+U(t)  I_y^1  I_z^2 U(t^{-1}) &=
+I_z^2 U(t) I_y^1 U(t^{-1}) \\
+&= I_z^2 I_y^1 \cos 2a - \frac{2}{\hbar} I_z^2 I_x^1 I_z^2 \sin 2a  \\
+&= I_z^2 I_y^1 \cos 2a - \frac{\hbar}{2} I_x^1 \sin 2a
+\end{align*}
+This gives a rather complicated expression for the density matrix which is an oscillation with frequency given by $J_{12}$. However, if we look at the $I_x$ and $I_y$ terms, we see that these two terms describe a rotation of the spin polarization vector in the x-y-plane. To get an intuition for what is going on, let us consider the case that $2a = \frac{\pi}{2}$. Then we obtain the following substitution rules
+\begin{align*}
+\frac{\hbar}{2} I_y^1 &\mapsto - I_x^1 I_z^2 \\
+I_y^1 I_z^2  &\mapsto - \frac{\hbar}{2} I_x^1
+\end{align*}
+Thus we exchange correlation terms for magnetization terms and vice versa. In our case, the new density matrix is
+$$
+\rho'' = \frac{1}{4} + \epsilon \big[  \frac{\hbar}{2} I_z^2   
++ \frac{\hbar}{2} I_x^1  + I_x^1 I_z^2 \big]
+$$
+We can think of the coupling as rotating the original net magnetization of spin 1 along the y-axis into a net magnetization along the x-axis, thereby turning the correlation between y-axis and z-axis into a correlation between x-axis and z-axis. If we had flipped the second spin as well, we would see a similar oscillation here.
+
+Again, it is instructive to simulate the impact of the J-coupling term on the NMR spectrum. Diagram shows the result of such a simulation, again using the two carbon nuclei of a TCE molecule.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{images/TwoCoupledNucleiNMRSignalFFT}
+\caption[Impact of J-coupling on the NMR spectrum]{Impact of J-coupling on the NMR spectrum}
+\label{fig:TwoCoupledNucleiNMRSignalFFT}
+\end{figure}
+
+
+In this simulation, we have first placed the system in a state given by the density matrix
+$$
+\rho = \frac{1}{4} (1 - \epsilon) + \epsilon |00 \rangle \langle 00 |
+$$
+as studied before. We then apply two pulses to turn both spins into the direction of the x-axis. Then we let the system evolve under the influence of the coupling term and take a sample of the resulting magnetization over time, to which we again apply a Fourier transform. We see that the two peaks belonging to the two carbon nuclei have split into two subpeaks, separated by a distance of roughly 100 Hz which is the strength of the coupling in this case. This splitting corresponds to the rotation of the spin polarization vectors in the x-y-plane caused by the J-coupling that we have derived above.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Realizing quantum gates
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Realizing quantum gates}
+
+
+In the previous sections, we have studied the basic principles of NMR. We will now turn out attention to the use of NMR devices as quantum computers, using the individual nuclei in a molecule as qubits. 
+
+We have seen that we can use RF pulses to manipulate the state of individual qubits, and that the J-coupling is causing a correlation between different qubits, which will allow us to implement mult-qubit gates. But there is an issue with this approach. In quantum computing, we are typically manipulating individual qubits which are initially in a pure state. In an NMR probe, we usually have a highly mixed state. It appears almost impossible to prepare the system in a pure state, i.e. to prepare all molecules consistently in the same quantum state. So we first need to understand how the usual description of a quantum computer in terms of qubits and unitary operations relates to the description of an NMR experiment in terms of density matrices and mixed states.
+
+The formalism that we will apply is called the formalism of {\bf pseudo-pure states}. A pseudo-pure state is a density matrix of the form
+$$
+\rho = \frac{1}{2^N} (1-\epsilon) + \epsilon |\psi \rangle \langle \psi | 
+$$
+where $N$ is the number of involved qubits, i.e. nuclei. This is a convex combination of two density matrices and therefore again a density matrix. It describes an ensemble for which almost all molecules are in purely statistically distributed states, but a small part - measured by $\epsilon$ - of them are in a pure state. 
+
+Given such a state, we can reconstruct the number $\epsilon$ as the difference of the two eigenvalues and therefore - up to phase - the state $|\psi \rangle$. The part 
+$$
+\rho_{\Delta} = \epsilon |\psi \rangle \langle \psi | 
+$$
+is often called the {\bf deviation} of the density matrix. The reason why pseudo-pure states are useful is that their time evolution and their expectation values are directly related to the time evolution and expectation values of the corresponding pure states.
+
+Let us start with the time evolution. In general, the time evolution of a density matrix is given by conjugation with a unitary operator $U(t)$. Now
+\begin{align*}
+U(t) \rho U(t)^{-1} &= U(t) \big[   \frac{1}{2^N} (1-\epsilon) + \epsilon |\psi \rangle \langle \psi |  \big] \\
+&= \epsilon U(t) |\psi \rangle \langle \psi | U(t)^{-1} \\
+&= \epsilon |U(t) \psi \rangle \langle U(t) \psi |
+\end{align*}
+In other words, under the correspondence of pseudo-pure states and pure states, the time evolution of the density matrix transforms into the time evolution of the corresponding pure state with the same time evolution operator. In particular, once we have placed the system in a pseudo-pure state, it will be at (a different) pseudo-pure state at any later point in time.
+
+A similar relation holds for observables. Suppose that $A$ is an observable, i.e. a hermitian operator, with vanishing trace (this holds for most of the observables interesting in this context, especially for the Pauli operators). Then we can use the usual relation between traces and expectation values to write
+\begin{align*}
+\langle \psi | A | \psi \rangle &= tr (|\psi \rangle \langle \psi | A) \\
+&=  \epsilon^{-1} tr(\rho_{\Delta} A) =  \epsilon^{-1} tr(\rho A)
+\end{align*}
+where we have used that the difference between $\rho$ and $\rho_{Delta}$ is a multiple of the identity so that its product with $A$ is a multiple of $A$ and therefore traceless. This is remarkable, because it relates a macroscopically observable quantity, i.e. the average of the expectation values of $A$ across the ensemble, to the quantum mechanical expectation value of $A$. Of course the value of $\epsilon$ might not be known, but is the same for all observables and therefore cancels out if we measure only ratios, for instance the value of $A$ before and after a computation.
+
+Using these relations, we can now translate the typical process of a quantum computation into NMR terminology as follows. 
+
+\begin{enumerate}
+	\item The process of initializing a quantum computer into an initial state $|\psi \rangle$ corresponds to putting the NMR probe into the corresponding pseudo-pure state with $\rho_{\Delta} \sim |\psi \rangle \langle \psi|$
+	\item If the quantum algorithm is described as a unitary operator $U$ (typically presented as a sequence of gates $U_i$), we apply the same unitary operator to the density matrix, i.e. we realize the gates as an NMR experiment
+	\item We then measure the macroscopic quantity $A$ using the procedure desribed above
+\end{enumerate}
+
+In this section, we will discuss how quantum gates are realized in NMR, and leave the subject of state preparation and measurement to separate sections. To discuss gates, it is useful to again use a rotating frame of reference. This time, however, we are dealing with several qubits, each realized by a nucleus with a specific Larmor frequency $\omega_i$. We therefore use a rotating frame in which the spin polarization vector of nucleus $i$ is rotating with frequency $\omega_i$, i.e. the transformation $T$ between states in the laboratory frame and the rotating frame is given by
+\begin{align}\label{eq:logicalframetransformation}
+T = \prod_i R_{z^i}(-\omega_i t) = \prod_i e^{i\frac{\omega_i}{\hbar}t I_z^i} 
+\end{align}
+A short calculation shows that the transformed state
+$$
+\widetilde{|\psi \rangle} = T |\psi \rangle
+$$
+evolves according to the equation
+$$
+i \hbar \frac{d}{dt} \widetilde{|\psi \rangle} = 
+\big[
+T H T^{-1} - \sum_i \omega_i I^i_z 
+\big]
+\widetilde{|\psi\rangle}
+$$
+Thus the Hamiltonian in the rotating frame is given by 
+$$
+\widetilde{H} = T H T^{-1} - \sum_i \omega_i I^i_z 
+$$
+Now, as before, the Hamiltonian in the absence of an RF pulse H is the sum of the chemical shift terms and the coupling term. We see that the chemical shift terms cancel with the terms $\omega_i I^i_z$. The J-coupling term
+$$
+\frac{2 \pi}{\hbar} J_{12} I^1_z I^2_z
+$$
+is invariant under rotations around the z-axis. Therefore, only the coupling term survives and the Hamiltonian in the rotating frame is
+$$
+\widetilde{H_C} = \frac{2 \pi}{\hbar} J_{12} I^1_z I^2_z
+$$
+Thus, in this rotating frame, the Hamiltonian during free evolution, i.e without an RF field, takes a very convenient form. For later reference, let us call this frame the {\bf logical frame of reference}.
+
+Let us now again see how the Hamiltonian changes in the presence of an RF field. In the laboratory frame, the RF field will add a term
+$$
+- \sum_i \gamma_i B_{RF} \big[ \cos (\omega_{ref} t + \phi_p) I_x^i + \sin(\omega_{ref} t + \phi_p) I_y^i \big]
+$$
+which we can again write as
+$$
+\sum \omega_{nut}^i R_{z^i}(\omega_{ref} t + \Phi_p) I_x^i R_{z^i}(-\omega_{ref} t - \Phi_p) 
+$$
+with the nutation frequency
+$$
+\omega_{nut}^i = \gamma_i B_{RF}
+$$
+Thus, in the rotating frame, we obtain an additional RF term in the Hamiltonian which is given by
+$$
+\widetilde{H_{RF}} = \sum \omega_{nut}^i R_{z^i}((\omega_{ref} - \omega_i)t+\Phi_p) I_x^i R_{z^i}(- (\omega_{ref} - \omega_i) t- \Phi_p) 
+$$
+Let us now again consider the case of a sharp x-pulse (i.e. a pulse with $\Phi_p = 0$) that is on-resonance with qubit $i$. Then, the RF part of the Hamiltonian will be
+$$
+\omega^i_{nut} I_x^i + \sum_{j \neq i} \omega_{nut}^j R_{z^j}((\omega_i - \omega_j)t) I_x^j R_{z^j}(- (\omega_i - \omega_j)t) 
+$$
+Similar to our previous discussion for the case of two spins, we find that with correct relation of chemical shifts, field strengths and pulse length, this can safely be approximated by 
+$$
+\widetilde{H_{RF}} = \omega^i_{nut} I_x^i
+$$
+
+What do these calculations imply for our ability to manipulate our qubits, i.e. for the set of gates that we can apply? First, let us consider the most fundamental of all gates - the "no operation" gate, i.e. the gate that represents an unchanged qubit. To implement this gate should be trivial, but in NMR, there is a complication. In fact, even in the absence of RF pulses, we have non-trivial time evolution given by the coupling Hamiltonian. So it appears that we cannot even create a stable qubit.
+
+Fortunately, the arsenal of NMR techniques contains a method to turn off the coupling that is called {\bf refocussing}. To understand the idea, suppose that we let the system evolve freely over some time $t$, so that the evolution is described by the unitary transformation (see equation \eqref{eq:jcouplingtimeevolution})
+$$
+U_1 = \cos (\frac{\pi J_{12}}{2} t) -i \sigma_z^1 \sigma_z^2 \sin (\frac{\pi J_{12}}{2}  t)
+$$
+Next, we use an RF pulse with length $\tau = \pi \omega_{nut}^{-1}$ to apply a rotation
+$$
+U_2 = R_x(\omega_{nut} \tau) = R_x(\pi) = - i \sigma_x^1
+$$
+around the x-axis of spin one, assuming that the pulse is sufficiently short compared to the coupling frequency such that we can neglect the coupling Hamiltonian for the duration of the pulse. We know that this will change the sign of the z-component of spin one. Thus, intuitively, we expect that the sign of the Hamilton coupling Hamiltonian is reverted. When now the free evolution continues, the reverted sign of the Hamiltonian as the same impact on the time evolution operator as reverting the sign of the time $t$. Therefore, we will know evolve "backwards in time" and undo the evolution during the first time interval $t$. We can then finally apply the pulse again to also undo the change of spin one and should now be in the same state as before. 
+
+Formally, the entire time evolution during this sequence of events is given by
+$$
+U_1 U_2 U_1 U_2
+$$
+Let us try to calculate this to see that our intuitive picture is correct. First, we calculate the product 
+\begin{align*}
+U_1 U_2 &= -i \big[ \cos (\frac{\pi J_{12}}{2} t) -i \sigma_z^1 \sigma_z^2 \sin (\frac{\pi J_{12}}{2}  t) \big] \sigma_x^1 \\
+&= -i \cos (\frac{\pi J_{12}}{2} t) \sigma_x^1 - i \sin (\frac{\pi J_{12}}{2}  t) \sigma_y^1 \sigma_z^2
+\end{align*}
+Multiplying this from the right with $U_1$, we obtain, after applying the commutation relations for the Pauli matrices to combine terms, that
+$$
+U_1 U_2 U_1 = -i \sigma_x^1
+$$
+This is already what we did expect - the second free evolution reverts the change caused by the first free evolution. Finally, we can multiply by $U_2$ again to find that
+$$
+U_1 U_2 U_1 U_2 = (-i \sigma_x^1)^2 = -1
+$$
+so that we obtain the initial state up to an unimportant global phase. 
+
+What does this imply for the set of possible one-qubit gates? First, we can realize the trivial gate that does not change the state by applying the refocusing pulse sequence. Second, we know that an RF pulse will describe a rotation around an axis in the x-y-plane, determined by the phase $\Phi_p$. Now it is not difficult to see that any rotation of the Bloch sphere can be written as a product of rotations around the x-axis and the y-axis (see also appendix \ref{app:rotations}). Therefore, RF pulses can be used to realize any rotation of the Bloch sphere, i.e. any one-qubit quantum gate. 
+
+To develop an intuition, let us write down a few examples. We will use the formula
+$$
+R_a(\phi) = \cos \frac{\phi}{2} - i \sigma_a \sin \frac{\phi}{2}
+$$
+for the rotation around an axis $a$. If we choose the angle, i.e. the duration of the pulse, such that $\varphi = \pi$, we obtain multiples of the Pauli matrices.  For $\varphi = \frac{\pi}{2}$, we get linear combinations of the Pauli matrices. For instance, we find that
+$$
+R_z(\frac{\pi}{2}) = \frac{1}{\sqrt{2}} (1 - i \sigma_z) = 
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+1 - i & 0 \\
+0 & 1 + i
+\end{pmatrix}
+= 
+\begin{pmatrix}
+e^{-i\frac{\pi}{4}} & \\
+& e^{i\frac{\pi}{4}}
+\end{pmatrix}
+$$
+which changes the relative phase of the two qubits. Similarly, a rotation by that angle around the y-axis gives
+$$
+R_y(\frac{\pi}{2}) = \frac{1}{\sqrt{2}} (1 - i \sigma_y) = 
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+	1  & -1 \\
+	1 & 1
+\end{pmatrix} = H \sigma_z
+$$
+where $H$ is the Hadamard gate. We have already seen above that $-i\sigma_z$ can be realized by a single pulse. Consequently, we can realize the Hadamard gate, up to a phase, as a sequence of two pulses:
+$$
+H = i R_y(\frac{\pi}{2}) R_z(\pi) 
+$$
+
+To prove that NMR techniques can be used to realize a universal set of quantum gates, we still have to find a realization of the CNOT gate. It turns out that the J-coupling can be used to do this. In fact, if we apply a free evolution without refocussing over the time $t$, we have seen that the J-coupling leads to the time evolution
+$$
+\cos (\frac{\pi J_{12}}{2} t) -i \sigma_z^1 \sigma_z^2 \sin (\frac{\pi J_{12}}{2}  t)
+$$
+If we choose $t$ such that
+$$
+\frac{\pi J_{12}}{2} t = \frac{\pi}{4} 
+$$
+then we obtain the transformation
+$$
+U = \frac{1}{\sqrt{2}} (1 -i \sigma_z^1 \sigma_z^2) 
+$$
+It is instructive to write this as a matrix. Clearly, the matrix is already diagonal on the standard basis, and the second term is $-i$ if both qubits have the same value and $i$ otherwise. Thus
+$$
+U = \frac{1}{\sqrt{2}} 
+\begin{pmatrix}
+1 - i & & & \\
+& 1 + i & &  \\
+& & 1 + i & \\
+& & & 1 - i
+\end{pmatrix}
+$$
+Let us now compute the product
+\begin{align*}
+R_{z^2}(-\frac{\pi}{2}) R_{z^1}(-\frac{\pi}{2}) U  &= \frac{1}{2\sqrt{2}} (1 + i \sigma^1_z) (1 + i \sigma^2_z) (1 -i \sigma_z^1 \sigma_z^2) 
+ \\
+&= \frac{1+i}{2\sqrt{2}} \big[ 1 +  \sigma_z^1 + \sigma_z^2 - \sigma_z^1 \sigma_z^2 \big] 
+\end{align*}
+Again, this matrix is diagonal. If both qubits have the same value, the first and the last term cancel, and the term in the parentheses is either $+2$ or $-2$. If both qubits have a different value, the two terms in the middle cancel and the parentheses gives a $+2$. Thus the matrix is
+$$
+R_{z^2}(-\frac{\pi}{2}) R_{z^1}(-\frac{\pi}{2}) U =  \frac{1+i}{\sqrt{2}}
+\begin{pmatrix}
+1 & & & \\
+& 1 & & \\
+& & 1 & \\
+& & & -1 
+\end{pmatrix}
+$$
+The matrix in this equation is known as the {\bf controlled phase gate} $C_{PHASE}$. It is well known (see for instance \cite{NielsenChuang} section 7.4.2) that this gate is equivalent to the CNOT gate, up to single qubit gates. Specifically,
+$$
+C_{NOT} = (I \otimes H) C_{PHASE} (I \otimes H)
+$$
+which can easily be seen by applying the sequence on the basis vectors. 
+
+It is interesting to compare the switching times for the gates considered so far. Single qubit gates are realized by applying an RF field for a time that is in the order of the inverse of the nutation frequency. For instance, the Larmor frequency for a proton at $11.74$ Tesla is 500 MHz. If the RF field is weaker by a factor $10^3$ than the static field, the nutation frequency will be 500 kHz. This results in switching times in the order of a few microseconds. The switching time of the CNOT gate, in constrast, is determined by the coupling term $J_{12}$. This is usually in the order of a few hundred Hz, so that several milliseconds will be required to apply a CNOT gate. In addition, in molecules with more than two qubits, the coupling decreases quickly with the spatial distance between the qubits. To implement operations involving distant qubits, we first need to apply swap gates (which can be implemented as a combination of three CNOT gates) to propagate the states of the qubits that we want to combine across the molecule and then back, consuming additional time. Thus quantum gates implemented in NMR computing are rather slow. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Measurement
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Measurements}\label{sec:measurements}
+
+Let us now take a closer look at the process of measurement and understand how the actual measure process in an NMR experiment works. Our starting point will be the density matrix $\widetilde{\rho}$ in the logical frame that we have introduced in the previous section. This density matrix is related to the density matrix in the laboratory frame by
+$$
+\widetilde{\rho} = T \rho T^{-1}
+$$
+where $T$ is the transformation described by equation \eqref{eq:logicalframetransformation}. At any point in time, the density matrix, being a hermitian matrix, can be written as a sum of products of Pauli matrices. Thus, we can decompose
+$$
+\widetilde{\rho} = \frac{1}{2^N} + \sum_i \widetilde{m^i}(t) \cdot I^i + \widetilde{c}(t)
+$$
+where $\widetilde{c}(t)$ collects all terms that contain Pauli matrices acting on at least two different nuclei and $I^i$ is the vector whose components are the spin angular momentum operators acting on qubit $i$. 
+
+If we calculate the average of a spin, say $_x^i$ for some $i$, i.e. if we calculate $tr(\rho I_x^i)$, the only term that will contribute the trace is the term $m^i_x I_x^i$. All other terms contain at least one Pauli matrix and therefore have trace zero. Thus we can interpret the time dependent and vector valued function $\widetilde{m}$ as the magnetic moment of the spin ensemble. 
+
+Let us now make the transformation back into the laboratory frame. We know that conjugation with $T$ will map a term that contains at least two Pauli matrices into a similar term. A term containing no Pauli matrices at all is invariant, and a term that contains one Pauli matrix will again yield a term containing one Pauli matrix. Thus we can write
+$$
+\rho = T^{-1} \rho T = \frac{1}{2^N} +  \sum_i T^{-1} \widetilde{m}^i \cdot I^i T + c(t)
+$$
+Again, the second term will represent the magnetic moment in the laboratory frame. Let us take a closer look at this term. First, the transformation $T$ is a product of terms that each act on one qubit only. So in a product
+$$
+T^{-1} \widetilde{m}^i \cdot I^i T
+$$
+almost all factors in $T$ commute through the term, and we find that we can write the magnetization in the laboratory frame as
+$$
+m(t) = \sum_i R^{z^i}(\omega_i t ) \widetilde{m}^i \cdot I^i R^{z^i}(-\omega_i t )
+$$
+Using again the relations in the appendix and sorting terms, we find that
+\begin{align*}
+m^i_x(t) &= \widetilde{m}_x(t) \cos \omega_i t - \widetilde{m}_y(t) \sin \omega_i t \\
+m^i_y(t) &= \widetilde{m}_y(t) \cos \omega_i t + \widetilde{m}_x(t) \sin \omega_i t \\
+m^i_z(t) &=  \widetilde{m}_z(t)
+\end{align*}
+This is not very surprising and simply says that the magnetization in the laboratory frame is related to the magnetization in the logical frame by a rotation around the angle $\omega_i t$. 
+
+Let us now again suppose that we have a receiver coil placed at a point on the x-axis that is also oriented along the x-axis. This coil is able to detect the change of the magnetic field in the x-direction. This change is proportional to the change of the magnetic moment in the x-direction. Therefore the induced voltage is proportional to
+$$
+v(t) \approx \sum_i a_i \big[  \widetilde{m}_x(t) \sin \omega_i t 
++ \widetilde{m}_y(t) \cos \omega_i t
+\big] 
+$$
+where we assume that the magnetization in the logical frame changes so slowly that the time derivative of the magnetization $\widetilde{m}$ can be ignored and the $a_i$ are constants depending on the geometry of the coil, the gyromagnetic ratio of the nucleus, the number of nuclei in the probe and the strength of the magnetic field.
+
+Now that voltage is sent into a circuit that looks as displayed in diagram \ref{fig:MeasurementCircuit} and is known as a {\bf quadrature receiver} (see also A.5 in \cite{Levitt}).
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{images/MeasurementCircuit}
+\caption[Quadrature receiver]{Quadrature receiver}
+\label{fig:MeasurementCircuit}
+\end{figure}
+
+In this circuit, the signal from the coil is first split and then follows two paths through the circuit. Each path contains a mixer, that essentially multiplies its inputs, and a low pass filter, that filters out high frequencies. The second input of each mixer is reference signal.
+
+Let us look at the upper path first. Here, the reference signal is $\sin \omega_{ref} t$ with a reference frequency that can be adjusted. Thus, the output of the mixer is a sum of terms of the form
+$$
+\sin(\omega_{ref} t) a_i \big[  \widetilde{m}_x(t) \sin \omega_i t 
+ + \widetilde{m}_y(t) \cos \omega_i \big] 
+$$
+We can calculate this, using the well known formulas for the products of trigonometric functions, and obtain
+\begin{align*}
+& a_i 
+\big[
+\frac{1}{2} \widetilde{m}_x(t) (\cos (\omega_{ref}-\omega_i)t ) 
+- \cos ((\omega_{ref} + \omega_i)t) \big] + \\
+&
+ a_i 
+\big[
+\frac{1}{2} \widetilde{m}_y(t) (\sin (\omega_{ref}-\omega_i)t ) 
++ \sin ((\omega_{ref} - \omega_i)t) \big]
+\end{align*}
+Now let us assume that the reference frequency $\omega_{ref}$ is close to one of the $\omega_i$. The low pass filter will then let the oscillations with frequency $\omega_{ref} - \omega_i$ pass, but will suppress the oscillations with frequency $\omega_{ref} + \omega_i$. Thus the output of the upper path of the circuit will be proportional to
+$$
+s_R(t) = \sum_i a_i  
+\big[ 
+\widetilde{m}_x(t) \cos \Omega^i t 
++
+\widetilde{m}_y(t) \sin \Omega^i t 
+\big] 
+$$
+where 
+$$
+\Omega^i = \omega_{ref} - \omega_i
+$$
+Similarly, we can calculate the output of the lower path. Each term contributes a term of the form
+$$
+\cos(\omega_{ref} t) \omega_i \big[  \widetilde{m}_x(t) \sin \omega_i t 
++ \widetilde{m}_y(t) \cos \omega_i \big] 
+$$
+which can be written as
+\begin{align*}
+& a_i 
+\big[
+\frac{1}{2} \widetilde{m}_x(t) (\sin (\omega_i - \omega_{ref})t ) 
++ \sin ((\omega_{ref} + \omega_i)t) \big] + \\
+&
+a_i 
+\big[
+\frac{1}{2} \widetilde{m}_y(t) (\cos (\omega_{ref}-\omega_i)t ) 
++ \cos ((\omega_{ref} - \omega_i)t) \big]
+\end{align*}
+Again, the low pass filter will suppress the terms that oscillate with frequency $\omega_i + \omega_{ref}$, and we obtain that the output of the lower path is proportional to
+$$
+s_I(t) = \sum_i a_i  
+\big[ 
+- \widetilde{m}_x(t) \sin \Omega^i t 
++
+\widetilde{m}_y(t) \cos \Omega^i t 
+\big] 
+$$
+Thus we find that the two terms differ by a phase shift of $\frac{\pi}{2}$. In fact, the term $s_I$ is proportional to the induced voltage that a coil placed along the y-axis would detect. It is common practice to combine these two signals into one complex signal given by
+$$
+s(t) = s_R(t) + i s_I(t)
+$$
+which can then be written as
+$$
+s(t) = \sum_i a_i (\widetilde{m}_x(t) + i \widetilde{m}_y(t)) e^{i \Omega^i t}
+$$
+Thus the signal that we receive is a sum of oscillations with frequencies $\Omega^i$, overlayed by the change of the magnetization, so that we can recover the magnetization in the x- and y-direction in the local frame from the Fourier transform of $s(t)$. Essentially, we are therefore able to measure both, the magnetization in the x-direction and the magnetization in the y-direction, at the same time, i.e the expectation values of the operators $I_x^i$ and $I_y^i$ for arbitrary $i$ (assuming that the chemical shifts are larger than the resolution of the measurement so that we can distinguish the contributions from the individual $\Omega^i$). Equivalently, we are able to measure the expectation values of the (non-hermitian) operators
+$$
+I_x^i + i I_y^i
+$$
+for every spin $i$ in the logical frame.
+
+It is worth noting that there is a fundamental difference between the measurement in an NMR quantum computer and the usual measurement in quantum computing. To a very good approximation, the measurement is a macroscopic measurement, i.e. it is not projecting the state of the system onto an eigenstate. Instead, we measure averages, i.e. expectation values. This is very useful, as it allows us - as we have seen - to measure the values of the non-commuting operators $I_x$ and $I_y$. On the other hand, some quantum algorithms use the projective measurement as a means of preparing a certain state. Shor's algorithm, for instance, ends with a measurement and has a success probability different from one. In an NMR setup, the algorithm would not fail or be successful, but we would measure a - useless - average of failed and successful execution. To deal with this, we either have to find a way to extract useful information from the average - which works in some cases - or move the classical post processing into the quantum part, i.e. execute the entire post processing as a quantum algorithm until we obtain a definite result, see the short discussion in \cite{ShorNMR}. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% State preparation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{State preparation}
 
 
 \appendix
@@ -728,8 +1317,8 @@ In this appendix, we collect a few additional properties of the rotation matrice
 e^{ia\sigma_x} \sigma_y e^{-ia\sigma_x} &= (\cos a + i \sin a \sigma_x) \sigma_y (\cos a - i \sin a \sigma_x) \\&= \cos^2 a \sigma_y  -i \cos a \sin a \sigma_y \sigma_x 
 + i \sin a \cos a \sigma_x \sigma_y
 + \sin^2 a \sigma_x \sigma_y \sigma_x \\
-&= \big[ \cos^2 -\sin^2 \big] \sigma_y + 2 i \sin a \cos a \sigma_x \sigma_y \\
-&= \big[ \cos^2 -\sin^2 \big] \sigma_y - 2 \sin a \cos a \sigma_z \\
+&= \big[ \cos^2 a -\sin^2  a\big] \sigma_y + 2 i \sin a \cos a \sigma_x \sigma_y \\
+&= \big[ \cos^2 a -\sin^2  a\big] \sigma_y - 2 \sin a \cos a \sigma_z \\
 &= \cos 2a \sigma_y - \sin 2a \sigma_z
 \end{align*}
 where we have used that any two Pauli matrices anti-commute and that $\sigma_x \sigma_y = i \sigma_z$ as well as the usual addition theorems for sine and cosine. If we combine this with the definition of the rotations, we obtain
@@ -779,6 +1368,54 @@ $$
 [a \cdot I, b \cdot I ] = i \hbar (a \times b) \cdot I
 $$
 
+Another fact that we will need is the fact that any rotation of the Bloch sphere can be written as a product of rotations around the x-axis and y-axis. To see that this is true, assume that are given a vector $n$ and a rotation around $n$. First, let us consider the special case that $n$ is in the y-z-plane, i.e.
+$$
+n = a e_y + b e_z
+$$
+Let $v$ be a vector in the y-z-plane perpendicular to $n$, such that $(e_x, n, v)$ is a positively oriented triple, i.e. $v = e_x \times n$. Then the rotation $R$ around $n$ is given by the mapping rules
+\begin{align*}
+e_x &\mapsto e_x \cos \varphi - v \sin \varphi \\
+v & \mapsto e_x \sin \varphi +v  \cos \varphi \\
+n & \mapsto n
+\end{align*}
+for some rotation angle $\varphi$. Let now $R_1$ be the rotation around the x-axis that rotates $n$ onto $e_y$. Of course $R_1(e_x) = e_x$ and by our choice of $v$, $R_1(v) = e_z$. Thus $R_1$ maps the coordinate axes
+$$
+(e_x, n, v)
+$$
+to 
+$$
+(e_x, e_y, e_z)
+$$
+Let $R_2$ be the rotation around $e_y$ by the angle $\varphi$, i.e. $R_2$ is given by
+\begin{align*}
+e_x &\mapsto e_x \cos \varphi - e_z \sin \varphi \\
+e_z & \mapsto e_x \sin \varphi + e_z  \cos \varphi \\
+e_y & \mapsto e_y
+\end{align*}
+We now claim that
+$$
+R = R_1^{-1} R_2 R_1
+$$
+To see that this is true, it suffices to verify this equation on the axis. First, we have
+\begin{align*}
+(R_1^{-1} R_2 R_1) e_x &= (R_1^{-1} R_2) e_x \\
+&= R_1^{-1} \big[ e_x \cos \varphi - e_z \sin \varphi \big] \\
+&= e_x \cos \varphi - v \sin \varphi = Re_x
+\end{align*}
+Next, let us evaluate this on $n$. We find that
+\begin{align*}
+(R_1^{-1} R_2 R_1) n = R_1^{-1} R_2 e_y = R_1^{-1} e_y = n
+\end{align*}
+as expected. Finally, 
+\begin{align*}
+(R_1^{-1} R_2 R_1) v &= (R_1^{-1} R_2) e_z \\
+&= R_1^{-1} \big[ e_x \sin \varphi + e_z \cos \varphi \big] \\
+&= e_x \sin \varphi + v \cos \varphi = Rv
+\end{align*}
+
+This proves our claim for the special case of a rotation around an axis in the y-z-plane. Now suppose we are given a rotation $R$ around an arbitrary axis $n$. Let $R_1$ be a rotation around the z-axis that rotates $n$ onto a vector $m$ in the y-z-plane. Then $R' = R_1 R R_1^{-1}$ is a rotation that maps $m$ to itself, i.e. a rotation around $m$. Thus we can decompose $R'$ as a product of rotations around the x-axis and the y-axis. The same is true for $R_1$, being a rotation around an axis in the y-z-plane, and therefore for $R$. 
+
+
 \section{The density matrix formalism}\label{app:densitymatrix}
 
 In this appendix, we give a quick introduction into the density matrix formalism, which is very common in quantum statistics. For the sake of simplicity, we will restrict ourselves to the case of finite dimensional Hilbert spaces. We refer the reader to section 3.3 in \cite{WeinbergQM} or section 2.4 in \cite{NielsenChuang} for more details. 
@@ -796,7 +1433,7 @@ Plugging this into the expression for the expectation value, we find that
 \langle A \rangle = \sum_a a \langle \psi | a \rangle \langle a | \psi \rangle 
 = \sum_a a |\langle \psi | a \rangle |^2
 \end{align}
-So far this is nothing new and not surprising - this is just the average across all values of $a$, weighted by the probability to find the system in the state $|a \rangle$ after a measurement. In this way, we usually express the expecation values of all observables in terms of $|\psi \rangle$ and then argue that, because $|\psi \rangle$ in this way determines the expectation values of all observables, the vector (or rather the ray of the vector in the underlying projective space) can be considered to obtain the full information on the physical state of the system.
+So far this is nothing new and not surprising - this is just the average across all values of $a$, weighted by the probability to find the system in the state $|a \rangle$ after a measurement. In this way, we usually express the expectation values of all observables in terms of $|\psi \rangle$ and then argue that, because $|\psi \rangle$ in this way determines the expectation values of all observables, the vector (or rather the ray of the vector in the underlying projective space) can be considered to obtain the full information on the physical state of the system.
 
 However, it turns out that there is a different object that we can use instead of $|\psi \rangle$ to express these expectation values - and that we can then, with the same rationale, accept as being a representative of the state of the physical system. To see this, note that we can express the individual summands in  equation \eqref{eq:expectationvalue} as matrix elements of an operator. In fact,
 $$
@@ -876,7 +1513,22 @@ We can rewrite this equation as
 $$
 i \hbar \frac{d}{dt} \rho(t)=  [H, \rho]
 $$
-This equation of motion for the density operator is often called the {\bf Liouville-von Neumann equation}. 
+This equation of motion for the density operator is often called the {\bf Liouville-von Neumann equation}. In case of a time-independent Hamiltonian, this is solved by
+$$
+\rho(t) = U(t) \rho(0) U(t)^{-1}
+$$
+where 
+$$
+U(t) = e^{-\frac{i}{\hbar} H t}
+$$
+is the usual time evolution operator. In fact, using the product rule, we can differentiate this expression and find that
+\begin{align*}
+\frac{d}{dt} U(t) \rho(0) U(t)^{-1} &= \big[ \frac{d}{dt} U(t) \big] \rho(0) U(t)^{-1} +
+U(t) \rho(0) \frac{d}{dt} U(t)^{-1} \\
+&= -\frac{i}{\hbar} H U(t) \rho(0) U(t)^{-1} + \frac{i}{\hbar} U(t) \rho(0)  U(t)^{-1} H \\&= -\frac{i}{\hbar} \big[ H \rho(t) - \rho(t) H \big] \\
+&= -\frac{i}{\hbar} [H, \rho]
+\end{align*}
+where we have used that $U(t)$ and $H$ commute.
 
 Let us now make the relation between the description of states in terms of rays and the description of states in terms of density operators a bit more precise. Let ${\mathcal H}$ denote the unit sphere in the Hilbert space $\mathcal H$. We have a well-defined map
 \begin{align*}
@@ -1003,6 +1655,20 @@ Cambridge University Press, Cambridge, 2010
 
 \bibitem{Levitt}
 M.H.~Levitt, Spin dynamics - basics of nuclear magnetic resonance, John Wiley \& Sons 2008
+
+\bibitem{NMRReview}
+E.~Knill et.al., 
+Introduction to NMR Quantum Information Processing,
+arXiv:quant-ph/0207172
+
+\bibitem{JonesMosca}
+J.A.~Jones, M.~Mosca,
+Implementation of a Quantum Algorithm to Solve Deutsch's Problem on a Nuclear Magnetic
+Resonance Quantum Computer, J.Chem.Phys. 109 (1998) 1648-1653 or arXiv:quant-ph/9801027
+
+\bibitem{ShorNMR}
+L.M.K.~Vandersypen et. al.,
+Experimental realization of Shor's quantum factoring algorithm using nuclear magnetic resonance, Nature Vol 414, Dec. 2001
 
 \end{thebibliography}
 

@@ -599,9 +599,9 @@ And finally, the additional circuitry that we need to detect and correct errors 
 	\item Finally, our measurements must not introduce an uncontrollable number of new errors and must reach a certain a certain precision
 \end{enumerate}
 
-Fault-tolerant quantum computation is a highly non-trivial subject, and we can only provide a few examples to illustrate the types of techniques and arguments used. We refer the reader to the many excellent material on the subject (including original work like \cite{Shor96} or \cite{GThesis} and reviews like \cite{Kempe}, \cite{Beginners} and the respective sections in \cite{RieffelPolak} and \cite{NC}).
+Fault-tolerant quantum computation is a highly non-trivial subject, and we can only provide a few examples to illustrate the types of techniques and arguments used. We refer the reader to the many excellent papers on the subject (including original work like \cite{Shor96} or \cite{GThesis} and reviews like \cite{Kempe}, \cite{Beginners} and the respective sections in \cite{RieffelPolak} and \cite{NC}).
 
-As a first example, let us see how we might detect errors in fault-tolerant way. We again use the three-bit code as an example to keep things simple, even though this code does not protect against phase flip errors.
+As a first example, let us see how we might detect errors in a fault-tolerant way. We again use the three-bit code as an example to keep things simple, even though this code does not protect against phase flip errors.
 
 Let us take a look at the circuit displayed in figure \ref{fig:SyndromeMeasurement} again, that we have used before to measure the error syndrome for the three-bit code. This circuit works, but it is not fault-tolerant. The reason is that the CNOT gate can propagate errors in an uncontrolled way.
 
@@ -705,7 +705,7 @@ The proof of this theorem is long and complicated, so we restrict ourselves to a
 
 Let us now look at the different combinations of faults that can occur during a specific run of the simulation circuit, i.e. a different {\bf fault paths}. A first fault path is given a single bit flip error in one of the target qubits after executing the CNOT operation. However, this affects only one qubit and can therefore be corrected by the error correction circuit. Thus, for this fault path, the simulation works correctly.
 
-Let us now assume a different fault path, given by a fault in target qubit one and target qubit two, whereas the CNOT acting on target qubit three operates correctly. Assuming that the individual faults are statistically independent, the probability for this fault path is
+There is, however, a different fault path, given by a fault in target qubit one and target qubit two, whereas the CNOT acting on target qubit three operates correctly. Assuming that the individual faults are statistically independent, the probability for this fault path is
 $$
 p \cdot p \cdot (1 - p) = p^2 - p^3 
 $$
@@ -725,7 +725,7 @@ Of course this is a very naive model, but it turns out that a similar result can
 $$
 p \mapsto c p^{t+1}
 $$
-where $t$ is the number of errors that the used code can correct and $A$ is a constant that reflects the growth of the circuit when passing to the simulation and depends on the code and the used fault-tolerant implementations of gates, measurements and state preparations.
+where $t$ is the number of errors that the used code can correct and $c$ is a constant that reflects the growth of the circuit when passing to the simulation and depends on the code and the used fault-tolerant implementations of gates, measurements and state preparations.
 
 Of course this is not necessarily better than $p$, unless $c p^t < 1$, i.e. unless the error rate $p$ of the physical operations is below a critical threshold given by 
 $$
@@ -745,7 +745,7 @@ As $\epsilon < 1$, this quickly goes to zero, and we can therefore reach any des
 
 Unfortunately, the exact value of the threshold is not known. The initial estimate provided in \cite{AharonovOr} was in the range of $p_{crit} = 10^{-6}$. Later, this was improved by several authors, and is mostly assumed to be in the range between $10^{-4}$ and $10^{-2}$ (see \cite{Beginners} for an overview of some results in this direction and \cite{SurfaceCodes} for the error threshold for surface codes). 
 
-As $c$ is in the order of $p_{crit}^{-1}$, this implies that we need as many as a few hundred to a few thousand physical gates and qubits to simulate one logical qubit. Note that in general, the overhead depends on the desired accurary and the level of simulations needed as well as on the factors entering the constant $c$, i.e. the encoding, the architecture of the logical gates, as well as on the quotient $\epsilon$ that measures how close the actual physical error rate is compared to the threshold. Improving the threshold and thereby reducing the overhead remains one of the most active areas of current research in quantum computing and is essential for paving the road towards a large-scale fully fault tolerant universal quantum computer.
+As $c$ is in the order of $p_{crit}^{-1}$, this implies that we need as many as a few hundred to a few thousand physical gates and qubits to simulate one logical qubit. Note that in general, the overhead depends on the desired accuracy and the level of simulations needed as well as on the factors entering the constant $c$, i.e. the encoding, the architecture of the logical gates, as well as on the quotient $\epsilon$ that measures how close the actual physical error rate is compared to the threshold. Improving the threshold and thereby reducing the overhead remains one of the most active areas of current research in quantum computing and is essential for paving the road towards a large-scale fully fault tolerant universal quantum computer.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1964,7 +1964,7 @@ P.~Shor, \emph{Scheme for reducing decoherence in quantum computer memory},
 Phys. Rev. A Vol. 52 (1995) Issue 4, pp. 2493--2496 
 
 \bibitem{Beginners}
-S. J.~Devitt, W. J.~Munro, Kae~Nemoto, \emph{Quantum Error Correction for Beginners},
+S. J.~Devitt, W. J.~Munro, K.~Nemoto, \emph{Quantum Error Correction for Beginners},
 arXiv:0905.2794v4
 
 \bibitem{KL}
@@ -1986,7 +1986,7 @@ D.~Arahonov, M.~Ben-Or, \emph{Fault Tolerant Quantum Computation with Constant E
 arXiv:quant-ph/9611025
 
 \bibitem{KnillLaflammeZurek}
-E.~Knill, R.~Laflamme, W.H.~Zurek, \emph{Threshold accuracy for quantum computation}, arXiv:quantph/9610011,
+E.~Knill, R.~Laflamme, W.H.~Zurek, \emph{Threshold accuracy for quantum computation}, arXiv:quant-ph/9610011,
 
 \bibitem{AliferisGottesmanPreskill}
 P.~Aliferis, D.~Gottesman, J.~Preskill, \emph{Quantum accuracy threshold for concatenated distance-3 codes}, arXiv:quant-ph/0504218v3

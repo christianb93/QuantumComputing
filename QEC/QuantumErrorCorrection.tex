@@ -753,7 +753,7 @@ As $c$ is in the order of $p_{crit}^{-1}$, this implies that we need as many as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Toric codes}
 
-So far we have studied stabilizer codes on abstract Hilbert spaces, assuming no additional relations between the involved qubits. However, in reality, qubits are typically organized on a surface or in a three-dimensional structure. In order to be able to apply a stabilizer code, qubits need to interact, and this is in general not possible between any two qubits in a real world quantum computer, but only between qubits which are direct neighbors. Roughyl speaking, {\bf Topological codes} are quantum error correction codes that take this additional structure into account, and {\bf toric codes}, which we describe in this section, have been the first example of topological codes.
+So far we have studied stabilizer codes on abstract Hilbert spaces, assuming no additional relations between the involved qubits. However, in reality, qubits are typically organized on a surface or in a three-dimensional structure. In order to be able to apply a stabilizer code, qubits need to interact, and this is in general not possible between any two qubits in a real world quantum computer, but only between qubits which are direct neighbors. Roughl< speaking, {\bf topological codes} are quantum error correction codes that take this additional structure into account, and {\bf toric codes}, which we describe in this section, have been the first example of topological codes.
 
 To describe toric codes, let us first assume that we have organized our qubits on a two-dimensional lattice $L$. More precisely, we assume that each edge of a regular two-dimensional lattice carries exactly one qubit. We identify opposite edges of the lattice so that alternatively, we could think of the lattice as a cell decomposition of the 2-dimensional torus $T^2 = S^1 \times S^1$. 
 
@@ -773,7 +773,7 @@ X_c = \prod_i (\sigma_{x}^i)^{c_i}
 $$
 and 
 $$
-X_c = \prod_i (\sigma_{z}^i)^{c_i}
+Z_c = \prod_i (\sigma_{z}^i)^{c_i}
 $$
 where again $\sigma_x^i$ is the Pauli matrix $\sigma_x$ acting on qubit $i$ and similarly for $\sigma_z^i$. As the Pauli matrices square to one, this gives us two group homomorphisms
 $$
@@ -1009,16 +1009,16 @@ $$
 $$
 If we now apply a measurement to the control qubit, which serves as an ancilla here, the state is projected onto either $|1 \rangle \otimes |\psi_- \rangle$ or $|0 \rangle \otimes |\psi_+ \rangle$, with probabilities $|\beta|^2$ and $|\alpha|^2$. The remaining qubits end up in the state $|\psi_-\rangle$ or $|\psi_+ \rangle$, i.e. in an eigenstate. Thus applying this circuitry and measuring the ancilla has the same implications as measuring the operator $U$.
 
-Let us now apply this idea to the problem of measuring one of the operators $X_v$. This operator is a tensor product of four $\sigma_x$ operators, i.e. inversion operators. Therefore a controlled-$X_v$ circuit is nothing but a sequence of controlled inversions, i.e. CNOT gates. Thus we can measure a face operator using the following circuit.
+Let us now apply this idea to the problem of measuring one of the operators $X_v$. This operator is a tensor product of four $\sigma_x$ operators, i.e. inversion operators. Therefore a controlled-$X_v$ circuit is nothing but a sequence of controlled inversions, i.e. CNOT gates. Thus we can measure a vertex operator using the circuit in diagram \ref{fig:MeasuringXfI}.
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.7\linewidth]{images/MeasuringXfI}
 \caption{Measuring a vertex operator $X_v$}
 \label{fig:MeasuringXfI}
 \end{figure}
 
-Here the four qubits at the bottom correspond to the four edges meeting the vertex $f$. So we need one ancilla qubit for doing the measurement, and we need to be able to combine it in gates with all the four qubits sitting on the edges meeting $v$. For the physical implementation, the easiest approach is to place this additional qubit called {\bf measurement qubit} in the vertex itself, in contrast to the {\bf data qubits} sitting on the edges.
+Here the four qubits at the bottom correspond to the four edges meeting the vertex $v$. So we need one ancilla qubit for doing the measurement, and we need to be able to combine it in gates with all the four qubits sitting on the edges meeting $v$. For the physical implementation, the easiest approach is to place this additional qubit called {\bf measurement qubit} in the vertex itself, in contrast to the {\bf data qubits} sitting on the edges.
 
 A circuit along the same lines can be constructed to measure $Z_f$ for a face $f$. Using that $H \sigma_x H = \sigma_z$, we can construct such a circuit as follows. In the first time step, apply a Hadamard to both the ancilla and all target qubits. Then apply CNOT operators to all target qubits, controlled by the ancilla, and then apply Hadamard operators again. Now, it is well known that conjugating the CNOT with Hadamard gates switches the roles of target qubits and control qubits. This gives us the circuit displayed in figure \ref{fig:MeasuringZv}.
 
@@ -1030,7 +1030,7 @@ A circuit along the same lines can be constructed to measure $Z_f$ for a face $f
 \label{fig:MeasuringZv}
 \end{figure}
 
-Again, for each vertex, we need an ancilla qubit to measure $Z_f$. This qubit will have to interact with all data qubits on the edges bounding this face, so it is easiest to position it in the midle of that vertex. 
+Again, for each vertex, we need an ancilla qubit to measure $Z_f$. This qubit will have to interact with all data qubits on the edges bounding this face, so it is easiest to position it in the center of that face. 
 
 Overall, we have now added $F + V$ measurement qubits to our original $E$ data qubits. Now the Euler characteristic of the torus is zero, and therefore $F + V = E$, showing that this procedure actually doubles the number of physical qubits. 
 
@@ -1092,7 +1092,7 @@ $$
 $$
 and we see that the elements of the code space can be identified as the \emph{ground states} of our system. We also see that the ground state is degenerate, as the dimension of the code space is not one but four.
 
-Now let us introduce an error into our system. Thus, we start with a ground state $|g \rangle$ and, say, apply an operator $Z_c$ for some 1-chain $c$. We have already seen that the error syndrome will be localized on those two vertices which form the boundary of the chain $c$. The energy of that state is now no longer $E$. Instead, if we expand the state into a sum of eigenstates and calculate the expectation value of $H$, we see that two of the coefficients in the expansion have flipped, and this state will have energy $E + 4$. Thus, we have found an excitation which is localized on two locations on our lattice. Is is tempting to call this excitation a {\bf particle} (similar to, for instance, quantum field theory, where the elementary excitations of a field are considered as the particles described by the theory).
+Now let us introduce an error into our system. Thus, we start with a ground state $|g \rangle$ and, say, apply an operator $Z_c$ for some 1-chain $c$. We have already seen that the error syndrome will be localized on those two vertices which form the boundary of the chain $c$. The energy of that state is now no longer $-E$. Instead, if we expand the state into a sum of eigenstates and calculate the expectation value of $H$, we see that two of the coefficients in the expansion have flipped, and this state will have energy $-E + 4$. Thus, we have found an excitation which is localized on two locations on our lattice. Is is tempting to call this excitation a {\bf particle} (similar to, for instance, quantum field theory, where the elementary excitations of a field are considered as the particles described by the theory).
 
 In fact, our model contains two types of particles. We have particles created by applying the operator $Z_c$ for a string $c$, which correspond to excitations localized on two vertices of the lattice - these are called {\bf electric charges} or e-particles in \cite{Kitaev}. And there are particles created by an operator $X_{c^*}$ for some string $c^*$ in the dual lattice, which are called {\bf magnetic vortices} or m-particles. These particles live on the faces of the lattice, namely those faces at which $c^*$ starts and ends. Thus we can interpret errors as excitations or particles, located at the points of the lattice and dual lattice with a non-trivial error syndrome. 
 

@@ -8,5 +8,6 @@ This repository contains a couple of documents and Python scrips related to quan
 - Material on **implementations** of quantum computers, specifically **superconducting qubits** based on Josephson junctions and quantum computing based on **nuclear magnetic resonance**, including a few Python notebooks
 - a few **Python notebooks** that demonstrate how to work with IBMs Qiskit framework are collected in the directory Qiskit - this currently includes example code for **quantum Fourier transform**, the **Deutsch-Jozsa algorithm**, **Shor's algorithm** and **Quantum Teleportation**
 
+Of course all these implementations and documents have been created for educational purposes and are not intended for production use - feel free to play with them and modify them if needed. When you use or cite this code or the documentation, please add a reference to this site or my blog www.leftasexercise.com.
 
 
